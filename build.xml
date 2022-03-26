@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<project name="TP3" default="compile" basedir=".">
+	<!-- Defining project properties -->
+	<property name="SRC" value="src"/>
+	<property name="BIN" value="bin"/>
+	<property name="PROG" value="Main"/>
+
+	<!-- Defining project classpath -->
+	<path id="project.classpath">
+		<pathelement location="${BIN}"/>
+	</path>
+
+	<target name="clean" description="Deleting bin directory">
+		<delete includeEmptyDirs="true">
+			<fileset dir="${BIN}"/>
+		</delete>
+	</target>
+
+	<target name="bin" description="Making bin directory">
+		<mkdir dir="${BIN}"/>
+	</target>
+ 
+	<target name="compile" description="Compiling classes" depends="bin">
+		<echo message="Compiling..."/>
+		<javac srcdir="${SRC}" 
+				destdir="${BIN}" 
+				debug="on" 
+				optimize="on" 
+				deprecation="on"
+				includeAntRuntime="false">
+			<classpath refid="project.classpath"/>
+		</javac>
+		<echo message="Project compiled."/>
+	</target>
+
+	<target name="jar" description="Creating executable jar file" depends="compile">
+		<jar destfile="${PROG}.jar" basedir="${BIN}">
+			<manifest>
+				<attribute name="Main-Class" value="${PROG}"/>
+			</manifest>
+		</jar>
+	</target>
+
+	<target name="run" description="Running the program" depends="compile">
+		<java classname="${PROG}" classpath="${BIN}" fork="true"/>
+	</target>
+
+	<target name="doc" description="Making documentation">
+		<mkdir dir="doc"/>
+		<javadoc sourcepath="${SRC}" destpath="doc">
+			<fileset dir="${SRC}" defaultexcludes="yes">
+				<include name="*.java"/>
+			</fileset>
+		</javadoc>
+	</target>
+
+</project>
