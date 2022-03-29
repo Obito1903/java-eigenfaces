@@ -12,18 +12,18 @@ public class ImageVector extends Vector {
 	}
 
 	public String getFileName() {
-		return(fileName);
+		return (fileName);
 	}
 
 	public String getName() {
-		return(name);
+		return (name);
 	}
 
 	public int getHeight() {
-		return(height);
+		return (height);
 	}
 
 	public int getWidth() {
-		return(width);
+		return (width);
 	}
 }
