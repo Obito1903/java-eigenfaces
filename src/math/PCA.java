@@ -1,6 +1,6 @@
 package math;
 
-public class CPA {
+public class PCA {
 	public static Matrix eMatrix(Matrix aMatrix) {
 	}
 
