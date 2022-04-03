@@ -1,3 +1,5 @@
+import math.*;
+
 public class Compiler {
 	public static void compileDB() {
 	}
@@ -6,5 +8,6 @@ public class Compiler {
 	}
 
 	public static Matrix[] readCompiledMatrixes() {
+		return null;
 	}
 }
