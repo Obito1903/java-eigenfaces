@@ -3,11 +3,15 @@
 	<!-- Defining project properties -->
 	<property name="SRC" value="src"/>
 	<property name="BIN" value="bin"/>
-	<property name="PROG" value="Main"/>
+	<property name="LIB" value="lib"/>
+	<property name="PROG" value="math.PCA"/>
 
 	<!-- Defining project classpath -->
 	<path id="project.classpath">
 		<pathelement location="${BIN}"/>
+		<fileset dir="${LIB}">
+			<include name="**/*.jar"/>
+		</fileset>
 	</path>
 
 	<target name="clean" description="Deleting bin directory">
@@ -42,7 +46,9 @@
 	</target>
 
 	<target name="run" description="Running the program" depends="compile">
-		<java classname="${PROG}" classpath="${BIN}" fork="true"/>
+		<java classname="${PROG}" fork="true">
+			<classpath refid="project.classpath"/>
+		</java>
 	</target>
 
 	<target name="doc" description="Making documentation">

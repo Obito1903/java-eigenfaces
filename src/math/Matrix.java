@@ -69,4 +69,12 @@ public class Matrix {
 	public int getLength() {
 		return this.nbColumn * this.nbRow;
 	}
+
+	public int getNbRow() {
+		return this.nbRow;
+	}
+
+	public int getNbColumn() {
+		return this.nbColumn;
+	}
 }
