@@ -31,6 +31,18 @@ public class Matrix {
 		}
 	}
 
+	public static Vector[] matrixToVector(Matrix matrix) {
+		Vector[] vector = new Vector[matrix.getNbRow()];
+		for (int row = 0; row < matrix.getNbRow(); row++) {
+			vector[row] = new Vector(matrix.getRow(row));
+		}
+		return vector;
+	}
+
+	public Matrix(Matrix matrix) {
+		this(matrixToVector(matrix));
+	}
+
 	public Vector getColumn(int index) {
 		double[] vector = new double[this.nbRow];
 		for (int j = 0; j < this.nbRow; j++) {
@@ -47,6 +59,22 @@ public class Matrix {
 		return new Vector(vector);
 	}
 
+	protected Vector[] getElements() {
+		return matrixToVector(this);
+	}
+
+	protected double[][] getElementsAsArray() {
+		return elements;
+	}
+
+	protected void setXY(int x, int y, double value) {
+		this.elements[x][y] = value;
+	}
+
+	protected double getXY(int x, int y) {
+		return this.elements[x][y];
+	}
+
 	public Matrix multiply(Matrix m) {
 		return null;
 
@@ -58,7 +86,15 @@ public class Matrix {
 	}
 
 	public Matrix subtract(Matrix m) {
-		return null;
+
+		Matrix matrix = new Matrix(this);
+
+		for (int column = 0; column < this.nbColumn; column++) {
+			for (int row = 0; row < this.nbRow; row++) {
+				matrix.setXY(row, column, this.elements[row][column] - matrix.getXY(row, column));
+			}
+		}
+		return matrix;
 
 	}
 
