@@ -104,29 +104,21 @@ public class Matrix {
 	
 	/*PIPI DE BAGUETTETRASH*/
 
-	public Matrix multiply(Matrix m) {
-		if (this.nbColumn == m.nbRow) {
-			
-			/*Initialising a matrix*/
-			Matrix product = new Matrix(this.nbRow,m.getNbColumn());
-			double somme;
-			/*Fill in the vectorial product of the two matrixes*/
-			for (int row = 0; row < this.nbRow; row++) {
-				for (int column = 0; column < m.getNbColumn(); column++) {
-					somme = 0.0;
-					for (int index = 0; index<this.nbColumn; index++) {
-						somme += this.getXY(row,index)*m.getXY(index,column);
-					}
-					product.setXY(row,column,somme);	
+	public Matrix multiply(Matrix m) throws DimensionMismatchException{	
+		/*Initialising a matrix*/
+		Matrix product = new Matrix(this.nbRow,m.getNbColumn());
+		double somme;
+		/*Fill in the vectorial product of the two matrixes*/
+		for (int row = 0; row < this.nbRow; row++) {
+			for (int column = 0; column < m.getNbColumn(); column++) {
+				somme = 0.0;
+				for (int index = 0; index<this.nbColumn; index++) {
+					somme += this.getXY(row,index)*m.getXY(index,column);
 				}
+				product.setXY(row,column,somme);	
 			}
-			return product;
-		} else {
-			return null;
-		}/* else {
-			throw new MatrixesDimensionIncompatibilityException("An operation (multiplication) was attempted between 2 matrices but it was not possible due to dimensional incompatibility (the length of the first matrix was different from the height of the second one).");
-			return null;
-		}*/
+		}
+		return product;
 	}
 
 
@@ -181,11 +173,11 @@ public class Matrix {
 		return retour;
 	}
 
-	/*verification*/
+	//Verification
 	public static void main(String[] args) {
 		Matrix caca = new Matrix(2,4);
 		Matrix pipi = new Matrix(4,3);
-		//Matrix zizi = new Matrix(3,3);
+		Matrix zizi = new Matrix(3,3);
 		
 		/*donner valeur aux matrices*/
 		caca.fill();
@@ -193,9 +185,14 @@ public class Matrix {
 		pipi.fill();
 		System.out.println(pipi);
 
-
-		System.out.println(caca.multiply(pipi));
-		//System.out.println(caca.multiply(zizi));
+		try {
+			
+		//if (this.nbColumn == m.nbRow) {
+			System.out.println(caca.multiply(pipi));
+			System.out.println(caca.multiply(zizi));
+		} catch (DimensionMismatchException e) {
+			System.out.println("An operation (multiplication) was attempted between 2 matrices but it was not possible due to dimensional incompatibility (the length of the first matrix was different from the height of the second one).");
+		}
 	}
 
 }

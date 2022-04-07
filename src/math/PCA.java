@@ -1,5 +1,7 @@
 package math;
 
+import image.*;
+
 import org.apache.commons.math3.linear.EigenDecomposition;
 import org.apache.commons.math3.linear.SingularValueDecomposition;
 import org.apache.commons.math3.linear.RealMatrix;
@@ -12,6 +14,19 @@ import org.ejml.simple.SimpleEVD;
 
 public class PCA {
 
+	public static ImageVector averageFace(Matrix faces) {
+		int w = ((ImageVector)faces.getRow(0)).getWidth();
+		int h = ((ImageVector)faces.getRow(0)).getHeight();
+		double[] elements = new double[faces.getNbColumn()];
+		for (int i = 0; i < faces.getNbColumn(); i++) {
+			int sum = 0;
+			for (int j = 0; j < faces.getNbRow(); j++)
+				sum += faces.getXY(j, i);
+			sum /= faces.getNbColumn();
+			elements[i] = sum;
+		}
+		return(new ImageVector(elements, h, w, "AVERAGE_FACE.jpg"));
+	}
 
 	public static Matrix eMatrix(Matrix aMatrix) {
 		//Assuming number of pixels > number of images
