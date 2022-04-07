@@ -36,7 +36,7 @@ public class ImageVector extends Vector {
 			Raster raster = image.getRaster();
 			System.out.println(raster.getNumBands());
 
-			// Create the which will contain the pixels data
+			// Create the vector which will contain the pixels data
 			double[] pixelVector = new double[image.getWidth() * image.getHeight()];
 
 			// Fill the vector
