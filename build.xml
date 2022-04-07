@@ -4,7 +4,7 @@
 	<property name="SRC" value="src"/>
 	<property name="BIN" value="bin"/>
 	<property name="LIB" value="lib"/>
-	<property name="PROG" value="math.PCA"/>
+	<property name="PROG" value="Compiler"/>
 
 	<!-- Defining project classpath -->
 	<path id="project.classpath">
