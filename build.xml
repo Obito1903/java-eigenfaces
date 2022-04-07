@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
-<project name="TP3" default="compile" basedir=".">
+<project name="PROJET JAVA RECONNAISSANCE FACIALE" default="compile" basedir=".">
 	<!-- Defining project properties -->
 	<property name="SRC" value="src"/>
 	<property name="BIN" value="bin"/>
 	<property name="LIB" value="lib"/>
-	<property name="PROG" value="math.PCA"/>
+	<property name="PROG" value="math.Matrix"/>
 
 	<!-- Defining project classpath -->
 	<path id="project.classpath">
