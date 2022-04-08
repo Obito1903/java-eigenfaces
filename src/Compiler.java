@@ -38,12 +38,18 @@ public class Compiler {
 		System.out.println("Generating average face");
 		Vector averageFace = PCA.averageFace(images);
 		System.out.println(averageFace);
+		//TODO generate average face as an image file
+		System.out.println("Average face generated.");
+		//TODO get eigenfaces
+		//TODO take the k first eigenvectors, maybe show the percentage of information lost
+		//TODO make the G matrix
+		//TODO write the E and G matrix in a file
 	}
 
 	public static void verifyValidity() {
 	}
 
-	public static Matrix[] readCompiledMatrixes() {
+	public static Matrix[] readCompiledMatrices() {
 		return null;
 	}
 
