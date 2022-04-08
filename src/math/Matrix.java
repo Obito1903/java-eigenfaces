@@ -84,19 +84,19 @@ public class Matrix {
 		return new Vector(vector);
 	}
 
-	protected Vector[] getElements() {
+	public Vector[] getElements() {
 		return matrixToVector(this);
 	}
 
-	protected double[][] getElementsAsArray() {
+	private double[][] getElementsAsArray() {
 		return elements;
 	}
 
-	protected void setXY(int x, int y, double value) {
+	private void setXY(int x, int y, double value) {
 		this.elements[x][y] = value;
 	}
 
-	protected double getXY(int x, int y) {
+	public double getXY(int x, int y) {
 		return this.elements[x][y];
 	}
 

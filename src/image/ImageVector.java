@@ -64,7 +64,7 @@ public class ImageVector extends Vector {
 	 * @param width     Width of the original image
 	 * @param imagePath Path of the original image
 	 */
-	protected ImageVector(double[] vector, int height, int width, String imagePath) {
+	public ImageVector(double[] vector, int height, int width, String imagePath) {
 		super(vector);
 		this.fileName = imagePath;
 		this.name = imagePath;
