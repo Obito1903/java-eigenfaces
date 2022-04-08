@@ -32,18 +32,16 @@ public class Matrix {
 			}
 		}
 	}
-
-	//////////////////////////////////////////////////////////////////////////////
 	
-	/*CACA DE BAGUETTETRASH*/
-	
-	/*tempo peut etre - initialisé matrice null*/
+	/*Method 'multiply(Matrix matrix)' dependent of the constructor*/
+	/*Constructor method - initiate empty matrix from dimensions taken through parameters*/
 	public Matrix(int nbRow, int nbColumn) {
 		this.nbRow = nbRow;
 		this.nbColumn = nbColumn;
 		this.elements = new double[nbRow][nbColumn];
 	}
 	
+	/*TEMPORARY*/
 	//Rempli la matrice avec des valeurs entre 0 et 5;
 	public void fill() {
 		Random rand = new Random();
@@ -54,8 +52,6 @@ public class Matrix {
 		}
 	}
 	
-	//////////////////////////////////////////////////////////////////////////////
-
 	public static Vector[] matrixToVector(Matrix matrix) {
 		Vector[] vector = new Vector[matrix.getNbRow()];
 		for (int row = 0; row < matrix.getNbRow(); row++) {
@@ -98,31 +94,24 @@ public class Matrix {
 
 	public double getXY(int x, int y) {
 		return this.elements[x][y];
-	}
-
-	/////////////////////////////////////////////////////////////////////////////////////////////
-	
-	/*PIPI DE BAGUETTETRASH*/
+	}	
 
 	public Matrix multiply(Matrix m) throws DimensionMismatchException{	
 		/*Initialising a matrix*/
 		Matrix product = new Matrix(this.nbRow,m.getNbColumn());
-		double somme;
+		double sum;
 		/*Fill in the vectorial product of the two matrixes*/
 		for (int row = 0; row < this.nbRow; row++) {
 			for (int column = 0; column < m.getNbColumn(); column++) {
-				somme = 0.0;
+				sum = 0.0;
 				for (int index = 0; index<this.nbColumn; index++) {
-					somme += this.getXY(row,index)*m.getXY(index,column);
+					sum += this.getXY(row,index)*m.getXY(index,column);
 				}
-				product.setXY(row,column,somme);	
+				product.setXY(row,column,sum);	
 			}
 		}
 		return product;
 	}
-
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
 
 
 	public Matrix subtract(Matrix m) {
@@ -153,14 +142,9 @@ public class Matrix {
 	public int getNbColumn() {
 		return this.nbColumn;
 	}
+		
 	
-
-	////////////////////////////////////////////////////////////////////////////////////////////
-	
-	
-	/*ZIZI DE BAGUETTETRASH*/
-	
-	//Affichage de matrice
+	/*Affichage de la matrice*/
 	@Override
 	public String toString() {
 		String retour = "";
@@ -173,23 +157,23 @@ public class Matrix {
 		return retour;
 	}
 
-	//Verification
+	//Verification de la méthode 
 	public static void main(String[] args) {
-		Matrix caca = new Matrix(2,4);
-		Matrix pipi = new Matrix(4,3);
-		Matrix zizi = new Matrix(3,3);
+		Matrix matA = new Matrix(2,4);
+		Matrix matB = new Matrix(4,3);
+		Matrix matC = new Matrix(3,3);
 		
 		/*donner valeur aux matrices*/
-		caca.fill();
-		System.out.println(caca);
-		pipi.fill();
-		System.out.println(pipi);
+		matA.fill();
+		System.out.println(matA);
+		matB.fill();
+		System.out.println(matB);
 
 		try {
 			
 		//if (this.nbColumn == m.nbRow) {
-			System.out.println(caca.multiply(pipi));
-			System.out.println(caca.multiply(zizi));
+			System.out.println(matA.multiply(matB));
+			System.out.println(matA.multiply(matC));
 		} catch (DimensionMismatchException e) {
 			System.out.println("An operation (multiplication) was attempted between 2 matrices but it was not possible due to dimensional incompatibility (the length of the first matrix was different from the height of the second one).");
 		}
