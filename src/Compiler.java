@@ -12,7 +12,7 @@ public class Compiler {
 	 * @param dbPath Path to the directory with the images
 	 * @return The matrix with all images in a row as ImageVectors
 	 */
-	public static Matrix readImages(String dbPath) throws IOException, ImageSizeMismatchException {
+	public static ImageVector[] readImages(String dbPath) throws ImageSizeMismatchException {
 		File dbDir = new File(dbPath);
 		String[] files = dbDir.list();
 		int i = 0;
@@ -23,17 +23,21 @@ public class Compiler {
 		i = 0; //Have to loop twice here, sadly
 		for (String path: files) {
 			if (path.toLowerCase().endsWith(".jpg")) {
-				System.out.println(path);
-				images[i] = new ImageVector(dbPath + "/" +path);
+				images[i] = new ImageVector(dbPath + "/" + path);
 				if (images[i].getHeight() != images[0].getHeight() || images[i].getWidth() != images[0].getWidth())
 					throw new ImageSizeMismatchException("Image dimensions mismatched: (" + images[0].getFileName() + " and " + images[i].getFileName() + ")");
 				i++;
 			}
 		}
-		return(new Matrix(images));
+		return(images);
 	}
 
-	public static void compileDB() {
+	public static void compileDB(final String dbPath, final int k) {
+		System.out.println("Reading reference database at " + dbPath);
+		ImageVector[] images = readImages(dbPath);
+		System.out.println("Generating average face");
+		Vector averageFace = PCA.averageFace(images);
+		System.out.println(averageFace);
 	}
 
 	public static void verifyValidity() {
@@ -44,13 +48,6 @@ public class Compiler {
 	}
 
 	public static void main(String[] args) {
-		try {
-			Matrix m = readImages("img/reference");
-		} catch (ImageSizeMismatchException e) {
-			System.err.println(e);
-		} catch (IOException e) {
-			System.err.println(e);
-		}
-
+		compileDB("img/reference", 0);
 	}
 }

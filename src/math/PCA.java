@@ -14,16 +14,17 @@ import org.ejml.simple.SimpleEVD;
 
 public class PCA {
 
-	public static ImageVector averageFace(Matrix faces) {
-		int w = ((ImageVector)faces.getRow(0)).getWidth();
-		int h = ((ImageVector)faces.getRow(0)).getHeight();
-		double[] elements = new double[faces.getNbColumn()];
-		for (int i = 0; i < faces.getNbColumn(); i++) {
-			int sum = 0;
-			for (int j = 0; j < faces.getNbRow(); j++)
-				sum += faces.getXY(j, i);
-			sum /= faces.getNbColumn();
-			elements[i] = sum;
+	public static ImageVector averageFace(ImageVector[] faces) {
+		int w = faces[0].getWidth();
+		int h = faces[0].getHeight();
+		double[] elements = new double[w*h];
+		for (int i = 0; i < w*h; i++) {
+			double sum = 0;
+			for (int j = 0; j < faces.length; j++)
+				sum += faces[j].getElements()[i];
+			System.out.println(sum);
+			elements[i] = (double)sum / (double)(faces.length);
+			System.out.println(elements[i]);
 		}
 		return(new ImageVector(elements, h, w, "AVERAGE_FACE.jpg"));
 	}
@@ -86,11 +87,17 @@ public class PCA {
 			{2, 4, 4, 8}
 		};
 		//EigenDecomposition svd = new EigenDecomposition(MatrixUtils.createRealMatrix(stuff4));
-		SimpleMatrix sm = new SimpleMatrix(stuff4);
-		SimpleEVD svd = sm.eig();
-		System.out.println(svd.getEigenvalues());
-		//for (int i = 0; i < svd.getNumberOfEigenvalues(); i++)
-			//System.out.println(svd.getEigenVector(i));
-		System.out.println(svd.getEVD());
+		SimpleMatrix sm = new SimpleMatrix(stuff3);
+		
+		SimpleEVD evd = sm.eig();
+		System.out.println(evd.getEigenvalues());
+		for (int i = 0; i < evd.getNumberOfEigenvalues(); i++)
+			System.out.println(evd.getEigenVector(i));
+		
+		/*
+		SimpleSVD svd = sm.svd();
+		System.out.println(svd.getV());
+		System.out.println(svd.getW());
+		*/
 	}
 }

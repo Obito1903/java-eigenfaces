@@ -34,7 +34,7 @@ public class ImageVector extends Vector {
 
 			// Extract pixels data from the buffered image
 			Raster raster = image.getRaster();
-			System.out.println(raster.getNumBands());
+			//System.out.println(raster.getNumBands());
 
 			// Create the vector which will contain the pixels data
 			double[] pixelVector = new double[image.getWidth() * image.getHeight()];
@@ -110,16 +110,26 @@ public class ImageVector extends Vector {
 		return (width);
 	}
 
+	/**
+	 * Returns the image vector as a string printable in the terminal
+	 */
+	@Override
+	public String toString() {
+		String res = this.getName() + "'s face:\n";
+		double[] elements = this.getElements();
+		for (int i = 0; i < this.getHeight(); i++) {
+			for (int j = 0; j < this.getWidth(); j++) {
+				int index = j*this.getHeight() + i;
+				res += "\033[38;2;"+(int)(elements[index]*255)+";"+(int)(elements[index]*255)+";"+(int)(elements[index]*255)+"m██";
+			}
+			res += ("\n");
+		}
+		return(res);
+	}
+
 	public static void main(String[] args) {
 		System.out.println("testImgVector");
-		ImageVector imgV = imageToVector("Benjamin_Blondey_0.jpg");
-		int index = 1;
-		for (double elements : imgV.getElements()) {
-			System.out.print(elements + "|");
-			if (index % 178 == 0) {
-				System.out.print("\n");
-			}
-			index++;
-		}
+		ImageVector imgV = imageToVector("img/reference/Samuel_Rodrigues_2.jpg");
+		System.out.println(imgV);
 	}
 }
