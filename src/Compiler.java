@@ -35,11 +35,18 @@ public class Compiler {
 	public static void compileDB(final String dbPath, final int k) {
 		System.out.println("Reading reference database at " + dbPath);
 		ImageVector[] images = readImages(dbPath);
-		System.out.println("Generating average face");
+
+		System.out.println("Generating average face.");
 		Vector averageFace = PCA.averageFace(images);
-		System.out.println(averageFace);
+		//System.out.println(averageFace);
 		//TODO generate average face as an image file
 		System.out.println("Average face generated.");
+		
+		System.out.println("Generating eigenface matrix.");
+		Matrix e = PCA.eMatrix(images);
+		System.out.println("Eigenface matrix generated.");
+		ImageVector eig = new ImageVector(e.getColumn(22).getElements(), images[0].getHeight(), images[0].getWidth(), "EIGEN_0.jpg");
+		System.out.println(eig);
 		//TODO get eigenfaces
 		//TODO take the k first eigenvectors, maybe show the percentage of information lost
 		//TODO make the G matrix

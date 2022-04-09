@@ -120,7 +120,7 @@ public class ImageVector extends Vector {
 		for (int i = 0; i < this.getHeight(); i++) {
 			for (int j = 0; j < this.getWidth(); j++) {
 				int index = j*this.getHeight() + i;
-				res += "\033[38;2;"+(int)(elements[index]*255)+";"+(int)(elements[index]*255)+";"+(int)(elements[index]*255)+"m██";
+				res += "\033[38;2;"+(int)(elements[index]*25500)+";"+(int)(elements[index]*25500)+";"+(int)(elements[index]*25500)+"m██";
 			}
 			res += ("\n");
 		}

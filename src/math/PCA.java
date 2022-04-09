@@ -2,17 +2,18 @@ package math;
 
 import image.*;
 
-import org.apache.commons.math3.linear.EigenDecomposition;
 import org.apache.commons.math3.linear.SingularValueDecomposition;
 import org.apache.commons.math3.linear.RealMatrix;
-import org.apache.commons.math3.linear.Array2DRowRealMatrix;
-import org.apache.commons.math3.linear.BlockRealMatrix;
 import org.apache.commons.math3.linear.MatrixUtils;
-import org.ejml.simple.SimpleMatrix;
-import org.ejml.simple.SimpleSVD;
-import org.ejml.simple.SimpleEVD;
 
 public class PCA {
+
+	/**
+	 * Returns the average vector from a matrix
+	 *
+	 * @param faces Array of ImageVectors to calculate the average
+	 * @return The average vector as an ImageVector
+	 */
 
 	public static ImageVector averageFace(ImageVector[] faces) {
 		int w = faces[0].getWidth();
@@ -22,29 +23,46 @@ public class PCA {
 			double sum = 0;
 			for (int j = 0; j < faces.length; j++)
 				sum += faces[j].getElements()[i];
-			System.out.println(sum);
 			elements[i] = (double)sum / (double)(faces.length);
-			System.out.println(elements[i]);
 		}
 		return(new ImageVector(elements, h, w, "AVERAGE_FACE.jpg"));
 	}
 
-	public static Matrix eMatrix(Matrix aMatrix) {
-		//Assuming number of pixels > number of images
-		//multiply the transpose by the normal matrix
-		//in order to have a smaller dimension result
-		Matrix covMatrix = aMatrix.transpose().multiply(aMatrix);
+	/**
+	 * Calculates the eigenmatrix of the input matrix
+	 *
+	 * @param aMatrix the matrix (Vector array) we want to get the eigenvectors from
+	 * @return The eigenvectors matrix, along with the eigenvalues at the last row
+	 */
 
-		//Convert covariance matrix to format accepted by the SVD library
-		double[][] cm = new double[covMatrix.getNbRow()][];
-		for (int i = 0; i < cm.length; i++)
-			cm[i] = covMatrix.getRow(i).getElements();
+	public static Matrix eMatrix(Vector[] a) {
+		//Convert matrix A to format accepted by the SVD library
+		double[][] m = new double[a.length][];
+		for (int i = 0; i < m.length; i++)
+			m[i] = a[i].getElements();
 
 		//Let the SVD do its job
-		SingularValueDecomposition svd = new SingularValueDecomposition(MatrixUtils.createRealMatrix(cm));
+		SingularValueDecomposition svd = new SingularValueDecomposition(MatrixUtils.createRealMatrix(m));
 
+		//Convert it back to our format
+		double[][] eVec = svd.getV().getData();
+		double[] eVal = svd.getSingularValues();
+		Vector[] res = new Vector[eVal.length];
+		System.out.println("eval.length: " + eVal.length);
+		System.out.println("evec.length: " + eVec.length);
+		for (int i = 0; i < res.length; i++) {
+			double[] vector = new double[eVec.length+1];
+			for (int j = 0; j < vector.length-1; j++) {
+				vector[j] = eVec[j][i];
+				//if (i == 0)
+					//System.out.println(vector[j]);
+			}
+			vector[vector.length-1] = eVal[i];
+			//System.out.println(eVal[i]);
+			res[i] = new Vector(vector);
+		}
 
-		return null;
+		return new Matrix(res);
 	}
 
 	public static Matrix gMatrix(Matrix eMatrix, Matrix aMatrix) {
@@ -52,6 +70,7 @@ public class PCA {
 	}
 
 	public static void main(String[] args) {
+		
 		double[][] stuff = {
 			{1, 0, 1, 1},
 			{0, 1, 0, 1},
@@ -86,18 +105,8 @@ public class PCA {
 			{3, 0, 5, 4},
 			{2, 4, 4, 8}
 		};
-		//EigenDecomposition svd = new EigenDecomposition(MatrixUtils.createRealMatrix(stuff4));
-		SimpleMatrix sm = new SimpleMatrix(stuff3);
 		
-		SimpleEVD evd = sm.eig();
-		System.out.println(evd.getEigenvalues());
-		for (int i = 0; i < evd.getNumberOfEigenvalues(); i++)
-			System.out.println(evd.getEigenVector(i));
-		
-		/*
-		SimpleSVD svd = sm.svd();
-		System.out.println(svd.getV());
-		System.out.println(svd.getW());
-		*/
+		SingularValueDecomposition svd = new SingularValueDecomposition(MatrixUtils.createRealMatrix(stuff2));
+		System.out.println(svd.getVT());
 	}
 }
