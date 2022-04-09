@@ -45,9 +45,9 @@ public class Compiler {
 		System.out.println("Generating eigenface matrix.");
 		Matrix e = PCA.eMatrix(images);
 		System.out.println("Eigenface matrix generated.");
-		ImageVector eig = new ImageVector(e.getColumn(22).getElements(), images[0].getHeight(), images[0].getWidth(), "EIGEN_0.jpg");
-		System.out.println(eig);
-		//TODO get eigenfaces
+
+		ImageVector eig = new ImageVector(e.getColumn(6).getElements(), images[0].getHeight(), images[0].getWidth(), "EIGEN_0.jpg");
+		System.out.println(eig.centerReduce(true));
 		//TODO take the k first eigenvectors, maybe show the percentage of information lost
 		//TODO make the G matrix
 		//TODO write the E and G matrix in a file

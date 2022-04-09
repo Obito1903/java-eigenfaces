@@ -120,11 +120,40 @@ public class ImageVector extends Vector {
 		for (int i = 0; i < this.getHeight(); i++) {
 			for (int j = 0; j < this.getWidth(); j++) {
 				int index = j*this.getHeight() + i;
-				res += "\033[38;2;"+(int)(elements[index]*25500)+";"+(int)(elements[index]*25500)+";"+(int)(elements[index]*25500)+"m██";
+				res += "\033[38;2;"+(int)(elements[index]*255)+";"+(int)(elements[index]*255)+";"+(int)(elements[index]*255)+"m██";
 			}
 			res += ("\n");
 		}
 		return(res);
+	}
+
+	/**
+	 * Centers and reduces the vector
+	 * Transforms the vector so that its values' range goes from [min, max] to [0, 1]
+	 * @param ignoreLastValue whether or not to include the vector's last value, which can be the vector's eigenvalue due to how we've implemented it
+	 * @return A new imageVector that is centered and reduced
+	 */
+
+	public ImageVector centerReduce(boolean ignoreLastValue) {
+		double min = this.elements[0];
+		double max = this.elements[0];
+		double[] values = new double[this.elements.length - (ignoreLastValue ? 1 : 0)];
+		
+		//Find the min and the max values of the vector
+		for	(int i = 1; i < values.length; i++) {
+			if (this.elements[i] < min)
+				min = this.elements[i];
+			else if (this.elements[i] > max)
+				max = this.elements[i];
+		}
+		System.out.println("Max: " + max);
+		System.out.println("Min: " + min);
+
+		//For every value v of the original vector, apply (v-min)/(max-min) and store it in the new vector
+		for (int i = 0; i < values.length; i++)
+			values[i] = (this.elements[i] - min) / (max - min);
+
+		return(new ImageVector(values, height, width, fileName));
 	}
 
 	public static void main(String[] args) {

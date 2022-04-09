@@ -1,7 +1,7 @@
 package math;
 
 public class Vector {
-	private double[] elements;
+	protected double[] elements;
 
 	public Vector(Vector vector) {
 		this.elements = vector.getElements().clone();
