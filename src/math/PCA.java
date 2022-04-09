@@ -48,17 +48,11 @@ public class PCA {
 		double[][] eVec = svd.getV().getData();
 		double[] eVal = svd.getSingularValues();
 		Vector[] res = new Vector[eVal.length];
-		System.out.println("eval.length: " + eVal.length);
-		System.out.println("evec.length: " + eVec.length);
 		for (int i = 0; i < res.length; i++) {
 			double[] vector = new double[eVec.length+1];
-			for (int j = 0; j < vector.length-1; j++) {
+			for (int j = 0; j < vector.length-1; j++)
 				vector[j] = eVec[j][i];
-				//if (i == 0)
-					//System.out.println(vector[j]);
-			}
 			vector[vector.length-1] = eVal[i];
-			//System.out.println(eVal[i]);
 			res[i] = new Vector(vector);
 		}
 

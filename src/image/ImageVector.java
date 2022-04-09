@@ -130,14 +130,13 @@ public class ImageVector extends Vector {
 	/**
 	 * Centers and reduces the vector
 	 * Transforms the vector so that its values' range goes from [min, max] to [0, 1]
-	 * @param ignoreLastValue whether or not to include the vector's last value, which can be the vector's eigenvalue due to how we've implemented it
 	 * @return A new imageVector that is centered and reduced
 	 */
 
-	public ImageVector centerReduce(boolean ignoreLastValue) {
+	public ImageVector centerReduce() {
 		double min = this.elements[0];
 		double max = this.elements[0];
-		double[] values = new double[this.elements.length - (ignoreLastValue ? 1 : 0)];
+		double[] values = new double[width * height];
 		
 		//Find the min and the max values of the vector
 		for	(int i = 1; i < values.length; i++) {
@@ -146,8 +145,6 @@ public class ImageVector extends Vector {
 			else if (this.elements[i] > max)
 				max = this.elements[i];
 		}
-		System.out.println("Max: " + max);
-		System.out.println("Min: " + min);
 
 		//For every value v of the original vector, apply (v-min)/(max-min) and store it in the new vector
 		for (int i = 0; i < values.length; i++)
