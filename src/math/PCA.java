@@ -31,11 +31,12 @@ public class PCA {
 	/**
 	 * Calculates the eigenmatrix of the input matrix
 	 *
-	 * @param aMatrix the matrix (Vector array) we want to get the eigenvectors from
+	 * @param aMatrix The matrix (Vector array) we want to get the eigenvectors from
+	 * @param k How many eigenvectors we want to keep
 	 * @return The eigenvectors matrix, along with the eigenvalues at the last row
 	 */
 
-	public static Matrix eMatrix(Vector[] a) {
+	public static Matrix eMatrix(Vector[] a, int k) {
 		//Convert matrix A to format accepted by the SVD library
 		double[][] m = new double[a.length][];
 		for (int i = 0; i < m.length; i++)
@@ -48,6 +49,7 @@ public class PCA {
 		double[][] eVec = svd.getV().getData();
 		double[] eVal = svd.getSingularValues();
 		Vector[] res = new Vector[eVal.length];
+		//TODO take the k first eigenvectors and adapt the eigenvalues
 		for (int i = 0; i < res.length; i++) {
 			double[] vector = new double[eVec.length+1];
 			for (int j = 0; j < vector.length-1; j++)
@@ -59,8 +61,16 @@ public class PCA {
 		return new Matrix(res);
 	}
 
+	/**
+	 * Creates the weight matrix of a matrix and its associated eigenvector matrix
+	 *
+	 * @param eMatrix The eigenvector matrix
+	 * @param aMatrix The original matrix
+	 * @return The weight matrix
+	 */
+
 	public static Matrix gMatrix(Matrix eMatrix, Matrix aMatrix) {
-		return null;
+		return aMatrix.transpose().multiply(eMatrix);
 	}
 
 	public static void main(String[] args) {

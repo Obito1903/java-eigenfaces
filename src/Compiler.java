@@ -43,14 +43,21 @@ public class Compiler {
 		System.out.println("Average face generated.");
 		
 		System.out.println("Generating eigenface matrix.");
-		Matrix e = PCA.eMatrix(images);
+		Matrix e = PCA.eMatrix(images, k);
 		System.out.println("Eigenface matrix generated.");
 
-		ImageVector eig = new ImageVector(e.getColumn(6).getElements(), images[0].getHeight(), images[0].getWidth(), "EIGEN_0.jpg");
-		System.out.println(eig.centerReduce());
-		//TODO take the k first eigenvectors, maybe show the percentage of information lost
-		//TODO make the G matrix
-		//TODO write the E and G matrix in a file
+		/*
+		//Print eigenfaces
+		for (int i = 0; i < 23; i++) {
+			ImageVector eig = new ImageVector(e.getColumn(i).getElements(), images[0].getHeight(), images[0].getWidth(), "EIGEN_0.jpg");
+			System.out.println(eig.centerReduce());
+		}
+		*/
+
+		System.out.println("Generating weight matrix.");
+		Matrix g = PCA.gMatrix(e, new Matrix(images));
+		System.out.println("Dimensions: " + g.getNbRow() + "x" + g.getNbColumn());
+		//TODO write the E and G matrix in a (JSON?) file, along with corresponding names
 	}
 
 	public static void verifyValidity() {
