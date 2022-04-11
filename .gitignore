@@ -2,3 +2,6 @@ bin
 img
 *.jpg
 *.swp
+out/*
+.idea/*
+programme.iml
