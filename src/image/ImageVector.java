@@ -3,13 +3,15 @@ package image;
 import math.*;
 import java.awt.image.BufferedImage;
 import java.awt.color.ColorSpace;
+import java.awt.Color;
 import java.awt.image.ColorConvertOp;
 import java.awt.image.Raster;
 import java.io.File;
+import java.io.Serializable;
 
 import javax.imageio.ImageIO;
 
-public class ImageVector extends Vector {
+public class ImageVector extends Vector implements Serializable {
 	private final String fileName;
 	private final String name;
 	private final int height;
@@ -34,7 +36,7 @@ public class ImageVector extends Vector {
 
 			// Extract pixels data from the buffered image
 			Raster raster = image.getRaster();
-			//System.out.println(raster.getNumBands());
+			// System.out.println(raster.getNumBands());
 
 			// Create the vector which will contain the pixels data
 			double[] pixelVector = new double[image.getWidth() * image.getHeight()];
@@ -119,17 +121,20 @@ public class ImageVector extends Vector {
 		double[] elements = this.getElements();
 		for (int i = 0; i < this.getHeight(); i++) {
 			for (int j = 0; j < this.getWidth(); j++) {
-				int index = j*this.getHeight() + i;
-				res += "\033[38;2;"+(int)(elements[index]*255)+";"+(int)(elements[index]*255)+";"+(int)(elements[index]*255)+"m██";
+				int index = j * this.getHeight() + i;
+				res += "\033[38;2;" + (int) (elements[index] * 255) + ";" + (int) (elements[index] * 255) + ";"
+						+ (int) (elements[index] * 255) + "m██";
 			}
 			res += ("\n");
 		}
-		return(res);
+		return (res);
 	}
 
 	/**
 	 * Centers and reduces the vector
-	 * Transforms the vector so that its values' range goes from [min, max] to [0, 1]
+	 * Transforms the vector so that its values' range goes from [min, max] to [0,
+	 * 1]
+	 *
 	 * @return A new imageVector that is centered and reduced
 	 */
 
@@ -137,25 +142,43 @@ public class ImageVector extends Vector {
 		double min = this.elements[0];
 		double max = this.elements[0];
 		double[] values = new double[width * height];
-		
-		//Find the min and the max values of the vector
-		for	(int i = 1; i < values.length; i++) {
+
+		// Find the min and the max values of the vector
+		for (int i = 1; i < values.length; i++) {
 			if (this.elements[i] < min)
 				min = this.elements[i];
 			else if (this.elements[i] > max)
 				max = this.elements[i];
 		}
 
-		//For every value v of the original vector, apply (v-min)/(max-min) and store it in the new vector
+		// For every value v of the original vector, apply (v-min)/(max-min) and store
+		// it in the new vector
 		for (int i = 0; i < values.length; i++)
 			values[i] = (this.elements[i] - min) / (max - min);
 
-		return(new ImageVector(values, height, width, fileName));
+		return (new ImageVector(values, height, width, fileName));
+	}
+
+	public void saveToFile(String path) {
+		try {
+			BufferedImage image = new BufferedImage(this.width, this.height, BufferedImage.TYPE_BYTE_GRAY);
+			for (int i = 0; i < width; i++) {
+				for (int j = 0; j < height; j++) {
+					float gColor = (float) this.elements[j + (i * height)];
+					Color pixel = new Color(gColor, gColor, gColor);
+					image.setRGB(i, j, pixel.getRGB());
+				}
+			}
+			ImageIO.write(image, "png", new File(path));
+		} catch (Exception e) {
+			System.out.println(e);
+		}
 	}
 
 	public static void main(String[] args) {
 		System.out.println("testImgVector");
 		ImageVector imgV = imageToVector("img/reference/Samuel_Rodrigues_2.jpg");
+		imgV.saveToFile("img/Samuel_Rodrigues_2_reduced.png");
 		System.out.println(imgV);
 	}
 }
