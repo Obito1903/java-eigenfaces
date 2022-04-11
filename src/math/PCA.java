@@ -51,10 +51,10 @@ public class PCA {
 		Vector[] res = new Vector[eVal.length];
 		//TODO take the k first eigenvectors and adapt the eigenvalues
 		for (int i = 0; i < res.length; i++) {
-			double[] vector = new double[eVec.length+1];
-			for (int j = 0; j < vector.length-1; j++)
+			double[] vector = new double[eVec.length];
+			for (int j = 0; j < vector.length; j++)
 				vector[j] = eVec[j][i];
-			vector[vector.length-1] = eVal[i];
+			//vector[vector.length-1] = eVal[i];
 			res[i] = new Vector(vector);
 		}
 

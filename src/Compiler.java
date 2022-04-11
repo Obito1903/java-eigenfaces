@@ -58,6 +58,11 @@ public class Compiler {
 		Matrix g = PCA.gMatrix(e, new Matrix(images));
 		System.out.println("Dimensions: " + g.getNbRow() + "x" + g.getNbColumn());
 		//TODO write the E and G matrix in a (JSON?) file, along with corresponding names
+		//Code below is tests to be removed
+		ImageVector test = new ImageVector("img/reference/Mateo_Mongour_1.jpg");
+		Vector stuff = e.transpose().multiply(test);
+		for (int i = 0; i < g.getNbRow(); i++)
+			System.out.println("Distance to " + images[i].getName() + ": " + Vector.distance(stuff, g.getRow(i)));
 	}
 
 	public static void verifyValidity() {

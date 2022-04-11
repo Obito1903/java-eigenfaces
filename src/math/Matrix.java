@@ -113,6 +113,19 @@ public class Matrix {
 		return product;
 	}
 
+	public Vector multiply(Vector v) {
+		if (this.nbColumn != v.getLength())
+			throw new DimensionMismatchException("Incompatible dimensions between matrix and vector.");
+		double[] elements = v.getElements();
+		double[] product = new double[this.nbRow];
+		for (int i = 0; i < this.nbRow; i++) {
+			product[i] = 0;
+			for (int j = 0; j < this.nbColumn; j++)
+				product[i] += this.elements[i][j] * elements[j];
+		}
+		return(new Vector(product));
+	}
+
 
 	public Matrix subtract(Matrix m) {
 
@@ -128,7 +141,10 @@ public class Matrix {
 	}
 
 	public Matrix transpose() {
-		return null;
+		Vector[] res = new Vector[this.nbRow];
+		for (int i = 0; i < res.length; i++)
+			res[i] = this.getRow(i);
+		return new Matrix(res);
 	}
 
 	public int getLength() {
@@ -169,14 +185,20 @@ public class Matrix {
 		matB.fill();
 		System.out.println(matB);
 
-		try {
+		/*try {
 			
 		//if (this.nbColumn == m.nbRow) {
 			System.out.println(matA.multiply(matB));
 			System.out.println(matA.multiply(matC));
 		} catch (DimensionMismatchException e) {
 			System.out.println("An operation (multiplication) was attempted between 2 matrices but it was not possible due to dimensional incompatibility (the length of the first matrix was different from the height of the second one).");
-		}
+		}*/
+		double[] v1 = {1, 2};
+		double[] v2 = {3, 4};
+		Vector[] vmat = {new Vector(v1), new Vector(v2)};
+		Matrix mat = new Matrix(vmat);
+		System.out.println(mat);
+		System.out.println(mat.transpose());
 	}
 
 }
