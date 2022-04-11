@@ -55,7 +55,7 @@ public class Main {
 			HelpFormatter helper = new HelpFormatter();
 			helper.printHelp("java -jar <programme>", options);
 		}
-		// TODO : catch everything else
+		// TODO : catch everything else (IOException, negative k, etc.)
 		
 	}
 }
