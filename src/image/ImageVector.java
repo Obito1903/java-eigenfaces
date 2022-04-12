@@ -159,6 +159,17 @@ public class ImageVector extends Vector implements Serializable {
 		return (new ImageVector(values, height, width, fileName));
 	}
 
+	public ImageVector center(Vector meanVector) {
+		double[] values = new double[this.width * this.height];
+
+		// For every value v of the original vector, apply (v-mean) and store it in the
+		// new vector
+		for (int i = 0; i < values.length; i++)
+			values[i] = this.elements[i] - meanVector.getElement(i);
+
+		return (new ImageVector(values, this.height, this.width, this.fileName));
+	}
+
 	public void saveToFile(String path) {
 		try {
 			BufferedImage image = new BufferedImage(this.width, this.height, BufferedImage.TYPE_BYTE_GRAY);

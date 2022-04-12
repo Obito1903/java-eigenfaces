@@ -1,6 +1,8 @@
 package math;
 
-public class Vector {
+import java.io.Serializable;
+
+public class Vector implements Serializable {
 	protected double[] elements;
 
 	public Vector(Vector vector) {
@@ -15,6 +17,10 @@ public class Vector {
 		return (this.elements.length);
 	}
 
+	public double getElement(int index) {
+		return (this.elements[index]);
+	}
+
 	public double[] getElements() {
 		return (this.elements);
 	}
@@ -26,12 +32,12 @@ public class Vector {
 		return false;
 	}
 
-	public static double distance(Vector v1, Vector v2) throws DimensionMismatchException{
+	public static double distance(Vector v1, Vector v2) throws DimensionMismatchException {
 		double distance = 0;
 		try {
 			if (equalLength(v1, v2)) {
 				for (int i = 0; i < v1.getLength(); i++) {
-					distance +=  Math.pow((v1.getElements()[i] - v2.getElements()[i]), 2);
+					distance += Math.pow((v1.getElements()[i] - v2.getElements()[i]), 2);
 				}
 				distance = Math.sqrt(distance);
 
