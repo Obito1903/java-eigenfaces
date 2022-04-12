@@ -21,4 +21,18 @@ public class WeightMatrix extends Matrix {
         return names.length;
     }
 
+    /* Affichage de la matrice */
+    @Override
+    public String toString() {
+        String retour = "";
+        for (int i = 0; i < this.getNbRow(); i++) {
+            retour += names[i] + ": ";
+            for (int j = 0; j < this.getNbColumn(); j++) {
+                retour += String.format("%.2f | ", this.getXY(i, j));
+            }
+            retour += "\n";
+        }
+        return retour;
+    }
+
 }
