@@ -168,7 +168,7 @@ public class Matrix implements Serializable {
 		String retour = "";
 		for (int i = 0; i < nbRow; i++) {
 			for (int j = 0; j < nbColumn; j++) {
-				retour += elements[i][j] + "  ";
+				retour += String.format("%.3f | ", elements[i][j]);
 			}
 			retour += "\n";
 		}
@@ -189,7 +189,7 @@ public class Matrix implements Serializable {
 
 		/*
 		 * try {
-		 * 
+		 *
 		 * //if (this.nbColumn == m.nbRow) {
 		 * System.out.println(matA.multiply(matB));
 		 * System.out.println(matA.multiply(matC));
