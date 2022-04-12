@@ -50,40 +50,33 @@ public class Compiler {
 		Vector averageFace = PCA.averageFace(images);
 
 		// Save the average face
-		((ImageVector) averageFace).saveToFile("img/averageFace.png");
+		((ImageVector) averageFace).centerReduce().saveToFile("img/averageFace.png");
 		System.out.println("Average face generated.");
 
 		// Center the images
 		System.out.println("Centering images.");
 		ImageVector[] centeredImages = centerImages(images, averageFace);
 		System.out.println("Images Centered.");
+		// ImageVector[] centeredImages = images;
 
 		// Compute the eigenfaces
 		System.out.println("Generating eigenface matrix.");
 		Matrix e = PCA.eMatrix(centeredImages, k);
 		System.out.println("Eigenface matrix generated.");
 
-		/*
-		 * //Print eigenfaces
-		 * for (int i = 0; i < 23; i++) {
-		 * ImageVector eig = new ImageVector(e.getColumn(i).getElements(),
-		 * images[0].getHeight(), images[0].getWidth(), "EIGEN_0.jpg");
-		 * System.out.println(eig.centerReduce());
-		 * }
-		 */
+		// // Print eigenfaces
+		// for (int i = 0; i < e.getNbColumn(); i++) {
+		// ImageVector eig = new ImageVector(e.getColumn(i).getElements(),
+		// images[0].getHeight(), images[0].getWidth(), "EIGEN_0.png");
+		// eig.centerReduce().saveToFile("img/eigens/EIGEN_" + i + ".png");
+		// }
 
 		// Compute the weight matrix
 		System.out.println("Generating weight matrix.");
 		WeightMatrix g = new WeightMatrix(e, centeredImages);
-		System.out.println("Dimensions: " + g.getNbRow() + "x" + g.getNbColumn());
+		System.out.println("G dimensions: " + g.getNbRow() + "x" + g.getNbColumn());
+		System.out.println("E dimensions: " + e.getNbRow() + "x" + e.getNbColumn());
 		return new EigenFacesDB(averageFace, e, g);
-		// TODO Still need to write the corresponding names of G matrix
-		// Code below is tests to be removed
-		// ImageVector test = new ImageVector("img/reference/Mateo_Mongour_1.jpg");
-		// Vector stuff = e.transpose().multiply(test);
-		// for (int i = 0; i < g.getNbRow(); i++)
-		// System.out.println("Distance to " + images[i].getName() + ": " +
-		// Vector.distance(stuff, g.getRow(i)));
 	}
 
 	public static void verifyValidity() {
@@ -95,7 +88,6 @@ public class Compiler {
 
 	public static void main(String[] args) {
 		EigenFacesDB db = compileDB("img/reference", 3);
-		// System.out.println(db.g.toString());
 		db.saveToFile("test.egdb");
 	}
 }
