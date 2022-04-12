@@ -8,6 +8,8 @@ import java.awt.image.ColorConvertOp;
 import java.awt.image.Raster;
 import java.io.File;
 import java.io.Serializable;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import javax.imageio.ImageIO;
 
@@ -68,8 +70,9 @@ public class ImageVector extends Vector implements Serializable {
 	 */
 	public ImageVector(double[] vector, int height, int width, String imagePath) {
 		super(vector);
-		this.fileName = imagePath;
-		this.name = imagePath;
+		Path path = Paths.get(imagePath);
+		this.fileName = path.getFileName().toString();
+		this.name = path.getFileName().toString();
 		this.height = height;
 		this.width = width;
 	}
