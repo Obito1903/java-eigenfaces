@@ -4,9 +4,11 @@ import image.*;
 
 import org.apache.commons.math3.linear.SingularValueDecomposition;
 import org.apache.commons.math3.linear.RealMatrix;
+
 import org.apache.commons.math3.linear.MatrixUtils;
 
-public class PCA {
+public class PCA{
+
 
 	/**
 	 * Returns the average vector from a matrix

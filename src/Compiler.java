@@ -39,7 +39,7 @@ public class Compiler {
 		System.out.println("Generating average face.");
 		Vector averageFace = PCA.averageFace(images);
 		//System.out.println(averageFace);
-		//TODO generate average face as an image file
+		((ImageVector) averageFace).saveToFile("img/averageFace.png");
 		System.out.println("Average face generated.");
 		
 		System.out.println("Generating eigenface matrix.");
@@ -57,7 +57,8 @@ public class Compiler {
 		System.out.println("Generating weight matrix.");
 		Matrix g = PCA.gMatrix(e, new Matrix(images));
 		System.out.println("Dimensions: " + g.getNbRow() + "x" + g.getNbColumn());
-		//TODO write the E and G matrix in a (JSON?) file, along with corresponding names
+		Writer.matrixWriter(e, g);
+		//TODO Still need to write the corresponding names of G matrix
 		//Code below is tests to be removed
 		ImageVector test = new ImageVector("img/reference/Mateo_Mongour_1.jpg");
 		Vector stuff = e.transpose().multiply(test);

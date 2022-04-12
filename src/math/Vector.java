@@ -49,10 +49,6 @@ public class Vector {
 			elements[i] *= x;
 	}
 
-	public void multiply(Matrix matrix) {
-		//TODO
-	}
-
 	public void add(Vector v) {
 		for (int i = 0; i < elements.length; i++)
 			elements[i] += v.getElements()[i];

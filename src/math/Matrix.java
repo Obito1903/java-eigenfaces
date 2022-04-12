@@ -2,7 +2,9 @@ package math;
 
 import java.util.Random;
 
-public class Matrix {
+import java.io.Serializable;
+
+public class Matrix implements Serializable {
 	/**
 	 * The elements will be accessed with row first then column
 	 * elements[row][column]
