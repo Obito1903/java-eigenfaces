@@ -49,9 +49,16 @@ public class PCA {
 		// Convert it back to our format
 		double[][] eVec = svd.getV().getData();
 		double[] eVal = svd.getSingularValues();
-		Vector[] res = new Vector[eVal.length];
+
 		// TODO take the k first eigenvectors and adapt the eigenvalues
-		for (int i = 0; i < res.length; i++) {
+
+		k = Math.min(k, eVal.length);
+		if (k <= 0)
+			throw new KValueOutOfBoundsException("k must be positive or > 0");
+
+		Vector[] res = new Vector[k];
+
+		for (int i = 0; i < k; i++) {
 			double[] vector = new double[eVec.length];
 			for (int j = 0; j < vector.length; j++)
 				vector[j] = eVec[j][i];
