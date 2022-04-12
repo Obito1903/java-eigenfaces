@@ -7,6 +7,9 @@ import java.io.ObjectOutputStream;
 
 import math.*;
 
+/**
+ * A class to store the Eigen Face Database and restore it from disk
+ */
 public class EigenFacesDB implements Serializable {
     /**
      * Avergae face of the database

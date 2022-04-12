@@ -33,6 +33,13 @@ public class Compiler {
 		return (images);
 	}
 
+	/**
+	 * Center every images in the DB
+	 *
+	 * @param images     The images to center
+	 * @param meanVector The mean of all the images to center
+	 * @return A new Array with the centered images
+	 */
 	private static ImageVector[] centerImages(ImageVector[] images, Vector meanVector) {
 		ImageVector[] centeredImages = new ImageVector[images.length];
 		for (int i = 0; i < images.length; i++) {
@@ -41,6 +48,14 @@ public class Compiler {
 		return (centeredImages);
 	}
 
+	/**
+	 * Apply the eigenFace algorithm to the bank of images and store it
+	 *
+	 * @param dbPath The path to the reference images for the algo
+	 * @param k      The number of eigenFaces to keep
+	 * @return A Database with all the necesary informations to then serch a face
+	 *         inside it
+	 */
 	public static EigenFacesDB compileDB(final String dbPath, final int k) {
 		System.out.println("Reading reference database at " + dbPath);
 		ImageVector[] images = readImages(dbPath);
@@ -79,11 +94,8 @@ public class Compiler {
 		return new EigenFacesDB(averageFace, e, g);
 	}
 
+	// TODO
 	public static void verifyValidity() {
-	}
-
-	public static Matrix[] readCompiledMatrices() {
-		return null;
 	}
 
 	public static void main(String[] args) {

@@ -1,9 +1,18 @@
 import math.*;
 import image.ImageVector;
 
+/**
+ * A class to store The weight of each face and it's name
+ */
 public class WeightMatrix extends Matrix {
     private String[] names;
 
+    /**
+     * Construct a weighted matrix with it's associated image names
+     *
+     * @param eMatrix Eigen vectors
+     * @param images  Images
+     */
     public WeightMatrix(Matrix eMatrix, ImageVector[] images) {
         super(PCA.gMatrix(eMatrix, new Matrix(images)));
         names = new String[this.getNbRow()];

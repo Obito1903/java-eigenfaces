@@ -7,13 +7,12 @@ import java.awt.Color;
 import java.awt.image.ColorConvertOp;
 import java.awt.image.Raster;
 import java.io.File;
-import java.io.Serializable;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import javax.imageio.ImageIO;
 
-public class ImageVector extends Vector implements Serializable {
+public class ImageVector extends Vector {
 	private final String fileName;
 	private final String name;
 	private final int height;
@@ -135,12 +134,10 @@ public class ImageVector extends Vector implements Serializable {
 
 	/**
 	 * Centers and reduces the vector
-	 * Transforms the vector so that its values' range goes from [min, max] to [0,
-	 * 1]
+	 * Transforms the vector so that its values' range goes from [min, max] to [0,1]
 	 *
 	 * @return A new imageVector that is centered and reduced
 	 */
-
 	public ImageVector centerReduce() {
 		double min = this.elements[0];
 		double max = this.elements[0];
@@ -162,6 +159,12 @@ public class ImageVector extends Vector implements Serializable {
 		return (new ImageVector(values, height, width, fileName));
 	}
 
+	/**
+	 * Center the ImageVector based on the mean of the vector
+	 *
+	 * @param meanVector The mean vector of the dataset
+	 * @return A new ImageVector centered
+	 */
 	public ImageVector center(Vector meanVector) {
 		double[] values = new double[this.width * this.height];
 
@@ -173,6 +176,11 @@ public class ImageVector extends Vector implements Serializable {
 		return (new ImageVector(values, this.height, this.width, this.fileName));
 	}
 
+	/**
+	 * Save the image vector as a jpg image
+	 *
+	 * @param path Path to save the image
+	 */
 	public void saveToFile(String path) {
 		try {
 			BufferedImage image = new BufferedImage(this.width, this.height, BufferedImage.TYPE_BYTE_GRAY);

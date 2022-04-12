@@ -9,9 +9,22 @@ public class Matrix implements Serializable {
 	 * elements[row][column]
 	 */
 	private double[][] elements;
+
+	/**
+	 * The number of rows
+	 */
 	private int nbRow;
+
+	/**
+	 * The number of columns
+	 */
 	private int nbColumn;
 
+	/**
+	 * Construct the matrix with the given Array of vector
+	 *
+	 * @param vectors
+	 */
 	public Matrix(Vector[] vectors) {
 		// TODO lenght checks
 		this.nbColumn = vectors.length;
@@ -34,15 +47,25 @@ public class Matrix implements Serializable {
 		}
 	}
 
-	/* Method 'multiply(Matrix matrix)' dependent of the constructor */
-	/*
-	 * Constructor method - initiate empty matrix from dimensions taken through
-	 * parameters
+	/**
+	 * Initiate empty matrix from dimensions taken through parameters
+	 *
+	 * @param nbRow
+	 * @param nbColumn
 	 */
 	public Matrix(int nbRow, int nbColumn) {
 		this.nbRow = nbRow;
 		this.nbColumn = nbColumn;
 		this.elements = new double[nbRow][nbColumn];
+	}
+
+	/**
+	 * Constructor by copy
+	 *
+	 * @param matrix the Matrix to copy
+	 */
+	public Matrix(Matrix matrix) {
+		this(matrixToVectors(matrix));
 	}
 
 	/* TEMPORARY */
@@ -56,16 +79,18 @@ public class Matrix implements Serializable {
 		}
 	}
 
-	public static Vector[] matrixToVector(Matrix matrix) {
+	/**
+	 * Convert the matrix to a Array of vector
+	 *
+	 * @param matrix The matrix to convert
+	 * @return The array of vectors
+	 */
+	public static Vector[] matrixToVectors(Matrix matrix) {
 		Vector[] vector = new Vector[matrix.getNbRow()];
 		for (int row = 0; row < matrix.getNbRow(); row++) {
 			vector[row] = new Vector(matrix.getRow(row));
 		}
 		return vector;
-	}
-
-	public Matrix(Matrix matrix) {
-		this(matrixToVector(matrix));
 	}
 
 	public Vector getColumn(int index) {
@@ -85,21 +110,44 @@ public class Matrix implements Serializable {
 	}
 
 	public Vector[] getElements() {
-		return matrixToVector(this);
+		return matrixToVectors(this);
 	}
 
-	private double[][] getElementsAsArray() {
-		return elements;
+	// Never used
+	// private double[][] getElementsAsArray() {
+	// return elements;
+	// }
+
+	/**
+	 * Set the element at the given coodinate in the matrix
+	 *
+	 * @param column
+	 * @param row
+	 * @param value
+	 */
+	private void setXY(int column, int row, double value) {
+		this.elements[column][row] = value;
 	}
 
-	private void setXY(int x, int y, double value) {
-		this.elements[x][y] = value;
+	/**
+	 * Get the element at the given coodinate in the matrix
+	 *
+	 * @param column
+	 * @param row
+	 * @return
+	 */
+	public double getXY(int column, int row) {
+		return this.elements[column][row];
 	}
 
-	public double getXY(int x, int y) {
-		return this.elements[x][y];
-	}
-
+	/**
+	 * Multiply the matrix by another matrix
+	 *
+	 * @param m The matrix to pultiply with
+	 * @return A new matrix wich is the product of the current one by m
+	 * @throws DimensionMismatchException When the two matrix have incompatible
+	 *                                    dimensions
+	 */
 	public Matrix multiply(Matrix m) throws DimensionMismatchException {
 		/* Initialising a matrix */
 		Matrix product = new Matrix(this.nbRow, m.getNbColumn());
@@ -117,6 +165,12 @@ public class Matrix implements Serializable {
 		return product;
 	}
 
+	/**
+	 * Multiply the matrix be a vector
+	 *
+	 * @param v The vecotr to multiply with
+	 * @return The result of the product as a Vector
+	 */
 	public Vector multiply(Vector v) {
 		if (this.nbColumn != v.getLength())
 			throw new DimensionMismatchException("Incompatible dimensions between matrix and vector.");
@@ -130,6 +184,12 @@ public class Matrix implements Serializable {
 		return (new Vector(product));
 	}
 
+	/**
+	 * Make the difference between the current matrix and m
+	 *
+	 * @param m the matrix to substract to the current one
+	 * @return A new matrix which is the difference between the two
+	 */
 	public Matrix subtract(Matrix m) {
 
 		Matrix matrix = new Matrix(this);
@@ -143,6 +203,11 @@ public class Matrix implements Serializable {
 
 	}
 
+	/**
+	 * Transpose the matrix
+	 * 
+	 * @return the Transposed matrix
+	 */
 	public Matrix transpose() {
 		Vector[] res = new Vector[this.nbRow];
 		for (int i = 0; i < res.length; i++)

@@ -15,7 +15,6 @@ public class PCA {
 	 * @param faces Array of ImageVectors to calculate the average
 	 * @return The average vector as an ImageVector
 	 */
-
 	public static ImageVector averageFace(ImageVector[] faces) {
 		int w = faces[0].getWidth();
 		int h = faces[0].getHeight();
@@ -36,7 +35,6 @@ public class PCA {
 	 * @param k       How many eigenvectors we want to keep
 	 * @return The eigenvectors matrix, along with the eigenvalues at the last row
 	 */
-
 	public static Matrix eMatrix(Vector[] a, int k) {
 		// Convert matrix A to format accepted by the SVD library
 		double[][] m = new double[a.length][];
@@ -50,8 +48,7 @@ public class PCA {
 		double[][] eVec = svd.getV().getData();
 		double[] eVal = svd.getSingularValues();
 
-		// TODO take the k first eigenvectors and adapt the eigenvalues
-
+		// Check the validity of k
 		k = Math.min(k, eVal.length);
 		if (k <= 0)
 			throw new KValueOutOfBoundsException("k must be positive or > 0");
@@ -79,7 +76,6 @@ public class PCA {
 	 * @param aMatrix The original matrix
 	 * @return The weight matrix
 	 */
-
 	public static Matrix gMatrix(Matrix eMatrix, Matrix aMatrix) {
 		return eMatrix.transpose().multiply(aMatrix);
 	}
