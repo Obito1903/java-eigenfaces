@@ -65,10 +65,10 @@ public class Vector implements Serializable {
 			elements[i] -= v.getElements()[i];
 	}
 
-	public double norm(Vector v) {
+	public double norm() {
 		double res = 0;
-		for (int i = 0; i < v.getLength(); i++) {
-			res += Math.pow(v.getElements()[i], 2);
+		for (int i = 0; i < this.getLength(); i++) {
+			res += Math.pow(this.getElements()[i], 2);
 		}
 		res = Math.sqrt(res);
 		return res;
