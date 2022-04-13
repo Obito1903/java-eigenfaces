@@ -49,13 +49,18 @@ public class Test {
 	}
 
 	public static void main(String[] args) {
-		EigenFacesDB db = new EigenFacesDB("test.egdb");
-		// EigenFacesDB db = Compiler.compileDB("img/reference", 3);
-		ImageVector test = new ImageVector("img/test/Vincent_3.jpg");
-		double[] distances = calculateDistances(db, test);
-		for (int i = 0; i < distances.length; i++) {
-			System.out.println(db.g.getNameOf(i) + ": " + distances[i]);
+		try {
+			EigenFacesDB db = new EigenFacesDB("test.egdb");
+			// EigenFacesDB db = Compiler.compileDB("img/reference", 3);
+			ImageVector test = new ImageVector("img/test/Vincent_3.jpg");
+			double[] distances = calculateDistances(db, test);
+			for (int i = 0; i < distances.length; i++) {
+				System.out.println(db.g.getNameOf(i) + ": " + distances[i]);
+			}
+			System.out.println("Best match : " + findBestMatch(db, test));
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		System.out.println("Best match : " + findBestMatch(db, test));
+
 	}
 }
