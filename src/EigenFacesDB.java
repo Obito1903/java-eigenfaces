@@ -44,7 +44,7 @@ public class EigenFacesDB implements Serializable {
      *
      * @param file File to load from
      */
-    public EigenFacesDB(String fileName) {
+    public EigenFacesDB(String fileName) throws IOException, ClassNotFoundException {
         try {
             ObjectInputStream ois = new ObjectInputStream(new FileInputStream(fileName));
             this.averageFace = (Vector) ois.readObject();
@@ -52,9 +52,9 @@ public class EigenFacesDB implements Serializable {
             this.g = (WeightMatrix) ois.readObject();
             ois.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new IOException("Database");
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            throw new ClassNotFoundException(e.getMessage());
         }
     }
 
