@@ -72,7 +72,7 @@ public class Compiler {
 
 		// Compute the eigenfaces
 		System.out.println("Generating eigenface matrix.");
-		Matrix e = PCA.eMatrix(centeredImages, k);
+		Matrix e = PCA.eMatrix(centeredImages, k, debug);
 		System.out.println("Eigenface matrix generated.");
 
 		if (debug) {

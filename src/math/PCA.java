@@ -31,10 +31,12 @@ public class PCA {
 	/**
 	 * Calculates the eigenmatrix of the input matrix
 	 *
+	 * @param a	      The original images matrix
 	 * @param k       How many eigenvectors we want to keep
-	 * @return The eigenvectors matrix, along with the eigenvalues at the last row
+	 * @param debug   Whether or not to display information lost
+	 * @return The eigenvectors matrix
 	 */
-	public static Matrix eMatrix(Vector[] a, int k) {
+	public static Matrix eMatrix(Vector[] a, int k, boolean debug) {
 		// Convert matrix A to format accepted by the SVD library
 		double[][] m = new double[a.length][];
 		for (int i = 0; i < m.length; i++)
@@ -68,6 +70,17 @@ public class PCA {
 			// Normalize the vector
 			vec.multiply(1 / vec.norm());
 			res[i] = vec;
+		}
+
+		//If debug flag is on, show amount of information lost
+		if (debug && k != eVal.length) {
+			double kEvSum = 0;
+			for (int i = 0; i < k; i++)
+				kEvSum += eVal[i];
+			double evSum = kEvSum;
+			for (int i = k; i < eVal.length; i++)
+				evSum += eVal[i];
+			System.out.println(k + " eigenvectors conserved, for a " + (100*(1-(kEvSum/evSum))) + "% information loss.");
 		}
 
 		return new Matrix(res);
