@@ -37,10 +37,27 @@
 		<echo message="Project compiled."/>
 	</target>
 
+	<pathconvert property="manifest.classpath" pathsep=" ">
+		<path refid="project.classpath"/>
+		<mapper>
+			<chainedmapper>
+				 <flattenmapper/>
+				 <globmapper from="*.jar" to="lib/*.jar"/>
+			</chainedmapper>
+		</mapper>
+	</pathconvert>
+
+	<path id="jar.classpath">
+		<fileset dir="${BIN}"/>
+		<pathelement location="${LIB}"/>
+	</path>
+
 	<target name="jar" description="Creating executable jar file" depends="compile">
-		<jar destfile="${PROG}.jar" basedir="${BIN}">
+		<jar destfile="${PROG}.jar">
+			<path refid="jar.classpath"/>
 			<manifest>
 				<attribute name="Main-Class" value="${PROG}"/>
+				<attribute name="Class-Path" value="${manifest.classpath}"/>
 			</manifest>
 		</jar>
 	</target>
