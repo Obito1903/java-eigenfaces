@@ -79,23 +79,22 @@ public class Compiler {
 
 			// Create eigenfaces images folder
 			String directory = new File(dbPath).getAbsolutePath();
-			directory += "/eigenfaces/";
-
-			if (!(new File(directory).isDirectory())) {
-				new File(directory).mkdir();
-			}
+			directory += "/../";
 
 			// Save the average face
 			((ImageVector) averageFace).centerReduce().saveToFile(directory + "averageFace.png");
 			System.out.println("Average face generated and saved : " + directory + "averageFace.png");
 
+			directory += "eigens/";
+
+			if (!(new File(directory).isDirectory())) {
+				new File(directory).mkdir();
+			}
+
 			// Print eigenfaces
 			for (int i = 0; i < e.getNbColumn(); i++) {
-				String name = images[i].getFileName();
-				name = name.substring(0, name.lastIndexOf('.'));
-
 				ImageVector eig = new ImageVector(e.getColumn(i).getElements(),
-						images[0].getHeight(), images[0].getWidth(), "EIGEN_" + name + ".png");
+						images[0].getHeight(), images[0].getWidth(), "EIGEN_" + i + ".png");
 				eig.centerReduce().saveToFile(directory + eig.getFileName());
 
 			}
