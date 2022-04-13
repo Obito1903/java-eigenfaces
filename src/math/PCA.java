@@ -31,7 +31,6 @@ public class PCA {
 	/**
 	 * Calculates the eigenmatrix of the input matrix
 	 *
-	 * @param aMatrix The matrix (Vector array) we want to get the eigenvectors from
 	 * @param k       How many eigenvectors we want to keep
 	 * @return The eigenvectors matrix, along with the eigenvalues at the last row
 	 */
@@ -50,8 +49,13 @@ public class PCA {
 
 		// Check the validity of k
 		k = Math.min(k, eVal.length);
-		if (k <= 0)
-			throw new KValueOutOfBoundsException("k must be positive or > 0");
+
+		if (k == 0) {
+			k = eVal.length;
+		}
+
+		if (k < 0)
+			throw new KValueOutOfBoundsException("k must be positive");
 
 		Vector[] res = new Vector[k];
 
