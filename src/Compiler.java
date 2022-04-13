@@ -56,17 +56,13 @@ public class Compiler {
 	 * @return A Database with all the necesary informations to then serch a face
 	 *         inside it
 	 */
-	public static EigenFacesDB compileDB(final String dbPath, final int k) {
+	public static EigenFacesDB compileDB(final String dbPath, final int k, boolean debug) {
 		System.out.println("Reading reference database at " + dbPath);
 		ImageVector[] images = readImages(dbPath);
 
 		// Compute the mean image
 		System.out.println("Generating average face.");
 		Vector averageFace = PCA.averageFace(images);
-
-		// Save the average face
-		((ImageVector) averageFace).centerReduce().saveToFile("img/averageFace.png");
-		System.out.println("Average face generated.");
 
 		// Center the images
 		System.out.println("Centering images.");
@@ -79,12 +75,34 @@ public class Compiler {
 		Matrix e = PCA.eMatrix(centeredImages, k);
 		System.out.println("Eigenface matrix generated.");
 
-		// // Print eigenfaces
-		// for (int i = 0; i < e.getNbColumn(); i++) {
-		// ImageVector eig = new ImageVector(e.getColumn(i).getElements(),
-		// images[0].getHeight(), images[0].getWidth(), "EIGEN_0.png");
-		// eig.centerReduce().saveToFile("img/eigens/EIGEN_" + i + ".png");
-		// }
+		if (debug) {
+
+			// Create eigenfaces images folder
+			String directory = new File(dbPath).getAbsolutePath();
+			directory += "/eigenfaces/";
+
+			if (!(new File(directory).isDirectory())) {
+				new File(directory).mkdir();
+			}
+
+			// Save the average face
+			((ImageVector) averageFace).centerReduce().saveToFile(directory + "averageFace.png");
+			System.out.println("Average face generated and saved : " + directory + "averageFace.png");
+
+			// Print eigenfaces
+			for (int i = 0; i < e.getNbColumn(); i++) {
+				String name = images[i].getFileName();
+				name = name.substring(0, name.lastIndexOf('.'));
+
+				ImageVector eig = new ImageVector(e.getColumn(i).getElements(),
+						images[0].getHeight(), images[0].getWidth(), "EIGEN_" + name + ".png");
+				eig.centerReduce().saveToFile(directory + eig.getFileName());
+
+			}
+			System.out.println("Eigenfaces generated and saved : " + directory);
+		}
+
+
 
 		// Compute the weight matrix
 		System.out.println("Generating weight matrix.");
@@ -99,7 +117,7 @@ public class Compiler {
 	}
 
 	public static void main(String[] args) {
-		EigenFacesDB db = compileDB("img/reference", 3);
+		EigenFacesDB db = compileDB("img/reference", 3, true);
 		db.saveToFile("test.egdb");
 	}
 }
