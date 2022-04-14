@@ -78,7 +78,6 @@ public class Compiler {
 
 			// Create eigenfaces images folder
 			String directory = new File(dbPath).getAbsolutePath();
-			directory += "/../";
 
 			// Save the average face
 			((ImageVector) averageFace).centerReduce().saveToFile(directory + "averageFace.png");
