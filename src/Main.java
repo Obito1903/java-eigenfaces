@@ -34,6 +34,8 @@ public class Main {
 		Option debug = Option.builder("d")
 				.desc("Debug mode, optional\n")
 				.longOpt("debug")
+				.hasArg()
+				.argName("output folder")
 				.required(false)
 				.build();
 
@@ -49,7 +51,7 @@ public class Main {
 			cmd = parser.parse(options, args);
 			if (cmd.hasOption("c") && cmd.getOptionValues("c").length == 2) {
 				String[] argsCompile = cmd.getOptionValues("c");
-				EigenFacesDB db = Compiler.compileDB(argsCompile[0], cmd.hasOption("k") ? Integer.parseInt(cmd.getOptionValue("k")) : 0, cmd.hasOption("d"));
+				EigenFacesDB db = Compiler.compileDB(argsCompile[0], cmd.hasOption("k") ? Integer.parseInt(cmd.getOptionValue("k")) : 0, cmd.hasOption("d") ? cmd.getOptionValue("d") : null);
 				db.saveToFile(argsCompile[1]);
 
 

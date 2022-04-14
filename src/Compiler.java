@@ -55,7 +55,7 @@ public class Compiler {
 	 * @return A Database with all the necesary informations to then serch a face
 	 *         inside it
 	 */
-	public static EigenFacesDB compileDB(final String dbPath, final int k, boolean debug) {
+	public static EigenFacesDB compileDB(final String dbPath, final int k, String debug) {
 		System.out.println("Reading reference database at " + dbPath);
 		ImageVector[] images = readImages(dbPath);
 
@@ -71,23 +71,21 @@ public class Compiler {
 
 		// Compute the eigenfaces
 		System.out.println("Generating eigenface matrix.");
-		Matrix e = PCA.eMatrix(centeredImages, k, debug);
+		Matrix e = PCA.eMatrix(centeredImages, k, debug != null);
 		System.out.println("Eigenface matrix generated.");
 
-		if (debug) {
+		if (debug != null) {
 
 			// Create eigenfaces images folder
-			String directory = new File(dbPath).getAbsolutePath();
-
-			// Save the average face
-			((ImageVector) averageFace).centerReduce().saveToFile(directory + "averageFace.png");
-			System.out.println("Average face generated and saved : " + directory + "averageFace.png");
-
-			directory += "eigens/";
+			String directory = new File(debug).getAbsolutePath() + "/";
 
 			if (!(new File(directory).isDirectory())) {
 				new File(directory).mkdir();
 			}
+
+			// Save the average face
+			((ImageVector) averageFace).centerReduce().saveToFile(directory + "averageFace.png");
+			System.out.println("Average face generated and saved : " + directory + "averageFace.png");
 
 			// Print eigenfaces
 			for (int i = 0; i < e.getNbColumn(); i++) {
