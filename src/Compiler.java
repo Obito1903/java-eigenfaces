@@ -109,8 +109,4 @@ public class Compiler {
 		System.out.println("E dimensions: " + e.getNbRow() + "x" + e.getNbColumn());
 		return new EigenFacesDB(averageFace, e, g);
 	}
-
-	// TODO
-	public static void verifyValidity() {
-	}
 }

@@ -113,11 +113,6 @@ public class Matrix implements Serializable {
 		return matrixToVectors(this);
 	}
 
-	// Never used
-	// private double[][] getElementsAsArray() {
-	// return elements;
-	// }
-
 	/**
 	 * Set the element at the given coodinate in the matrix
 	 *

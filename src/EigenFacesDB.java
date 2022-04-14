@@ -76,8 +76,4 @@ public class EigenFacesDB implements Serializable {
         }
     }
 
-    
-	/*public void getAverageFace(){
-		return this.
-	}*/
 }
