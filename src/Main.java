@@ -57,10 +57,6 @@ public class Main {
 				String[] argsTest = cmd.getOptionValues("t");
 
 				EigenFacesDB db = new EigenFacesDB(argsTest[1]);
-				// TODO : test image against database
-				// if (argsTest.length == 2 && Compiler.verifyValidity(argsTest[1])) {
-				//	   Test.test(argsTest[0], argsTest[1]);
-				// }
 
 				System.out.println("Best match against database : " + Test.findBestMatch(db, new ImageVector(argsTest[0]), cmd.hasOption("d")));
 				

@@ -240,36 +240,4 @@ public class Matrix implements Serializable {
 		return retour;
 	}
 
-	// Verification de la méthode
-	public static void main(String[] args) {
-		Matrix matA = new Matrix(2, 4);
-		Matrix matB = new Matrix(4, 3);
-		Matrix matC = new Matrix(3, 3);
-
-		/* donner valeur aux matrices */
-		matA.fill();
-		System.out.println(matA);
-		matB.fill();
-		System.out.println(matB);
-
-		/*
-		 * try {
-		 *
-		 * //if (this.nbColumn == m.nbRow) {
-		 * System.out.println(matA.multiply(matB));
-		 * System.out.println(matA.multiply(matC));
-		 * } catch (DimensionMismatchException e) {
-		 * System.out.
-		 * println("An operation (multiplication) was attempted between 2 matrices but it was not possible due to dimensional incompatibility (the length of the first matrix was different from the height of the second one)."
-		 * );
-		 * }
-		 */
-		double[] v1 = { 1, 2 };
-		double[] v2 = { 3, 4 };
-		Vector[] vmat = { new Vector(v1), new Vector(v2) };
-		Matrix mat = new Matrix(vmat);
-		System.out.println(mat);
-		System.out.println(mat.transpose());
-	}
-
 }

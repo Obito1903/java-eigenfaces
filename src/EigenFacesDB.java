@@ -75,4 +75,9 @@ public class EigenFacesDB implements Serializable {
             e.printStackTrace();
         }
     }
+
+    
+	/*public void getAverageFace(){
+		return this.
+	}*/
 }
