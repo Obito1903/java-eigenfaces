@@ -10,7 +10,7 @@ public class Test {
 	 * @param test The test image
 	 * @return An array of distances (doubles)
 	 */
-	public static double[] calculateDistances(EigenFacesDB db, ImageVector test) {
+	public static double[] calculateDistances(EigenFacesDB db, ImageVector test, boolean debug) {
 		// Compute the projection of the test image
 		Vector testProjection = db.e.transpose().multiply(test);
 
@@ -18,6 +18,11 @@ public class Test {
 		double[] distances = new double[db.g.getNbImages()];
 		for (int i = 0; i < db.g.getNbImages(); i++) {
 			distances[i] = Vector.distance(testProjection, db.g.getRow(i));
+
+
+			if (debug) {
+				System.out.println("Distance to " + db.g.getNameOf(i) + ": " + distances[i]);
+			}
 		}
 
 		return distances;
@@ -31,9 +36,9 @@ public class Test {
 	 * @param test The test image
 	 * @return The name of the closest image
 	 */
-	public static String findBestMatch(EigenFacesDB db, ImageVector test) {
+	public static String findBestMatch(EigenFacesDB db, ImageVector test, boolean debug) {
 
-		double[] distances = calculateDistances(db, test);
+		double[] distances = calculateDistances(db, test, debug);
 
 		// Find the best match
 		double bestDistance = Double.MAX_VALUE;
@@ -46,21 +51,5 @@ public class Test {
 		}
 
 		return bestMatch;
-	}
-
-	public static void main(String[] args) {
-		try {
-			EigenFacesDB db = new EigenFacesDB("test.egdb");
-			// EigenFacesDB db = Compiler.compileDB("img/reference", 3);
-			ImageVector test = new ImageVector("img/test/Vincent_3.jpg");
-			double[] distances = calculateDistances(db, test);
-			for (int i = 0; i < distances.length; i++) {
-				System.out.println(db.g.getNameOf(i) + ": " + distances[i]);
-			}
-			System.out.println("Best match : " + findBestMatch(db, test));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
 	}
 }

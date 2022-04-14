@@ -62,7 +62,7 @@ public class Main {
 				//	   Test.test(argsTest[0], argsTest[1]);
 				// }
 
-				System.out.println("Best match against database : " + Test.findBestMatch(db, new ImageVector(argsTest[0])));
+				System.out.println("Best match against database : " + Test.findBestMatch(db, new ImageVector(argsTest[0]), cmd.hasOption("d")));
 				
 			} else {
 				throw new ParseException("No command specified");

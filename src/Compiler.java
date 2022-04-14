@@ -114,9 +114,4 @@ public class Compiler {
 	// TODO
 	public static void verifyValidity() {
 	}
-
-	public static void main(String[] args) {
-		EigenFacesDB db = compileDB("img/reference", 3, true);
-		db.saveToFile("test.egdb");
-	}
 }

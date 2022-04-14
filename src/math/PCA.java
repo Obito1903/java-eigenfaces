@@ -3,7 +3,6 @@ package math;
 import image.*;
 
 import org.apache.commons.math3.linear.SingularValueDecomposition;
-import org.apache.commons.math3.linear.RealMatrix;
 
 import org.apache.commons.math3.linear.MatrixUtils;
 
@@ -97,44 +96,4 @@ public class PCA {
 		return eMatrix.transpose().multiply(aMatrix);
 	}
 
-	public static void main(String[] args) {
-
-		double[][] stuff = {
-				{ 1, 0, 1, 1 },
-				{ 0, 1, 0, 1 },
-				{ 0, 0, 1, 1 },
-				{ 0, 1, 0, 1 },
-				{ 1, 0, 1, 0 },
-				{ 0, 1, 0, 1 },
-				{ 0, 0, 1, 1 },
-				{ 0, 1, 0, 1 },
-				{ 1, 0, 1, 1 }
-		};
-		double[][] stuff2 = {
-				{ 1, 0, 0, 0, 1, 0, 0, 0, 1 },
-				{ 0, 1, 0, 1, 0, 1, 0, 1, 0 },
-				{ 1, 0, 1, 0, 1, 0, 1, 0, 1 },
-				{ 1, 1, 1, 1, 0, 1, 1, 1, 1 }
-		};
-		double[][] stuff3 = {
-				{ 3, 1, 2, 1, 2, 1, 2, 1, 3 },
-				{ 1, 2, 1, 2, 0, 2, 1, 2, 1 },
-				{ 2, 1, 2, 1, 1, 1, 2, 1, 2 },
-				{ 1, 2, 1, 2, 0, 2, 1, 2, 1 },
-				{ 2, 0, 1, 0, 2, 0, 1, 0, 2 },
-				{ 1, 2, 1, 2, 0, 2, 1, 2, 1 },
-				{ 2, 1, 2, 1, 1, 1, 2, 1, 2 },
-				{ 1, 2, 1, 2, 0, 2, 1, 2, 1 },
-				{ 3, 1, 2, 1, 2, 1, 2, 1, 3 }
-		};
-		double[][] stuff4 = {
-				{ 3, 0, 3, 2 },
-				{ 0, 4, 0, 4 },
-				{ 3, 0, 5, 4 },
-				{ 2, 4, 4, 8 }
-		};
-
-		SingularValueDecomposition svd = new SingularValueDecomposition(MatrixUtils.createRealMatrix(stuff2));
-		System.out.println(svd.getVT());
-	}
 }
