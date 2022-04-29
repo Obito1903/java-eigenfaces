@@ -1,14 +1,30 @@
 import image.ImageSizeMismatchException;
 import image.ImageVector;
 import math.KValueOutOfBoundsException;
+
 import org.apache.commons.cli.*;
+
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import javafx.event.*;
 
 import java.io.IOException;
 
-public class Main {
+public class Main extends Application {
+
+	@Override
+	public void start(Stage primaryStage) {
+		Scene scene = new Scene(null/*What layout are we using*/, 1280, 720);
+		primaryStage.setScene(scene);
+		primaryStage.show();
+	}
+
 	public static void main(String[] args) {
 
-		Options options = new Options();
+		launch(args);
+
+		/*Options options = new Options();
 
 		Option compile = Option.builder("c")
 				.desc("Compile database from images folder\n")
@@ -76,7 +92,7 @@ public class Main {
 			System.out.println("Error while loading database file : " + e.getMessage());
 		} catch (ImageSizeMismatchException e) {
 			System.out.println("Error while loading image : " + e.getMessage());
-		}
+		}*/
 		
 	}
 }
