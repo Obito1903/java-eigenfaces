@@ -6,6 +6,7 @@ import org.apache.commons.cli.*;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.TilePane;
@@ -16,19 +17,26 @@ import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.event.*;
 import javafx.geometry.Orientation;
 
+import java.io.File;
 import java.io.IOException;
 
 public class Main extends Application {
 
 	/*Class attributes of the different sources in the scene*/
+	//top left fileChooser
 	FileChooser egdbFileChooser = new FileChooser();
 	FileChooser outputFileChooser = new FileChooser();
+	//button associated to the fileChooser
+	Button egdbbutton = new Button("Select egdb");
+	Button outputbutton = new Button("Select output");
 
+	/*Create the egbd file chooser*/
 	public void createEgdbFileChooser(){
 		egdbFileChooser.setTitle("Open egdb file");
 		egdbFileChooser.getExtensionFilters().addAll(new ExtensionFilter("Egdb Files", "*.egdb"));
 	}
 
+	/*Create the output file chooser*/
 	public void createOutputFileChooser(){
 		egdbFileChooser.setTitle("Choose the final location");
 		//egdbFileChooser.getExtensionFilters().addAll(new ExtensionFilter("Egdb Files", "*.egdb"));
@@ -55,7 +63,23 @@ public class Main extends Application {
 		/*Top Left*/
 		createEgdbFileChooser();
 		createOutputFileChooser();
-		topLeft.getChildren().addAll(new Label("Test"), egdbFileChooser, outputFileChooser);
+		//Create a label
+        Label label = new Label("no files selected");
+		//Create an Event Handler
+        EventHandler<ActionEvent> event =
+        new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent e)
+            {
+                File file = egdbFileChooser.showOpenDialog(primaryStage);
+                if (file != null) {
+                    label.setText(file.getAbsolutePath() + "  selected");
+                }
+            }
+        };
+		//Setting up the file chooser button
+        egdbbutton.setOnAction(event);
+		topLeft.getChildren().add(egdbbutton);
+		//TO DO : output filechoose
 
 		/**/
         TilePane root = new TilePane(Orientation.HORIZONTAL);
