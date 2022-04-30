@@ -6,8 +6,13 @@ import org.apache.commons.cli.*;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.TilePane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.event.*;
+import javafx.geometry.Orientation;
 
 import java.io.IOException;
 
@@ -15,7 +20,33 @@ public class Main extends Application {
 
 	@Override
 	public void start(Stage primaryStage) {
-		Scene scene = new Scene(null/*What layout are we using*/, 1280, 720);
+
+		/*Title of the scene*/
+		primaryStage.setTitle("Facial Recognition");
+
+		/**/
+		VBox topLeft = new VBox();
+		BorderPane topRight = new BorderPane();
+		BorderPane bottomLeft = new BorderPane();
+		BorderPane bottomRight = new BorderPane();
+
+		/*Test*/
+		topLeft.getChildren().add(new Label("1"));
+		topRight.getChildren().add(new Label("2"));
+		bottomLeft.getChildren().add(new Label("3"));
+		bottomRight.getChildren().add(new Label("4"));
+
+		/**/
+        TilePane root = new TilePane(Orientation.HORIZONTAL);
+		root.setPrefColumns(2);
+		root.setPrefTileWidth(640);
+		root.setPrefTileHeight(360);
+
+		/**/
+		root.getChildren().addAll(topLeft, topRight, bottomLeft, bottomRight);
+
+		/**/
+		Scene scene = new Scene(root, 1280, 720);
 		primaryStage.setScene(scene);
 		primaryStage.show();
 	}
