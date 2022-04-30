@@ -10,13 +10,29 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.event.*;
 import javafx.geometry.Orientation;
 
 import java.io.IOException;
 
 public class Main extends Application {
+
+	/*Class attributes of the different sources in the scene*/
+	FileChooser egdbFileChooser = new FileChooser();
+	FileChooser outputFileChooser = new FileChooser();
+
+	public void createEgdbFileChooser(){
+		egdbFileChooser.setTitle("Open egdb file");
+		egdbFileChooser.getExtensionFilters().addAll(new ExtensionFilter("Egdb Files", "*.egdb"));
+	}
+
+	public void createOutputFileChooser(){
+		egdbFileChooser.setTitle("Choose the final location");
+		//egdbFileChooser.getExtensionFilters().addAll(new ExtensionFilter("Egdb Files", "*.egdb"));
+	}
 
 	@Override
 	public void start(Stage primaryStage) {
@@ -31,10 +47,15 @@ public class Main extends Application {
 		BorderPane bottomRight = new BorderPane();
 
 		/*Test*/
-		topLeft.getChildren().add(new Label("1"));
-		topRight.getChildren().add(new Label("2"));
-		bottomLeft.getChildren().add(new Label("3"));
-		bottomRight.getChildren().add(new Label("4"));
+		//topLeft.getChildren().add(new Label("1"));
+		topRight.setCenter(new Label("2"));
+        bottomLeft.setCenter(new Label("3"));
+        bottomRight.setCenter(new Label("4"));
+
+		/*Top Left*/
+		createEgdbFileChooser();
+		createOutputFileChooser();
+		topLeft.getChildren().addAll(new Label("Test"), egdbFileChooser, outputFileChooser);
 
 		/**/
         TilePane root = new TilePane(Orientation.HORIZONTAL);
