@@ -15,35 +15,51 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
+import javafx.stage.DirectoryChooser;
 
 import javafx.event.*;
 
 import javafx.geometry.Orientation;
 import javafx.geometry.Insets;
 
+import java.io.File;
 import java.io.IOException;
 
 public class Main extends Application {
 
 	/*Class attributes of the different sources in the scene*/
 	FileChooser egdbFileChooser = new FileChooser();
-	FileChooser outputFileChooser = new FileChooser();
+	DirectoryChooser refDirChooser = new DirectoryChooser();
+	DirectoryChooser outputDirChooser = new DirectoryChooser();
 
+	FileChooser testFileChooser = new FileChooser();
+
+	String refDir;
 	EigenFacesDB db;
+	String testImg;
 
-	public void createEgdbFileChooser(){
-		egdbFileChooser.setTitle("Open egdb file");
-		egdbFileChooser.getExtensionFilters().addAll(new ExtensionFilter("Egdb Files", "*.egdb"));
+	private void createEgdbFileChooser() {
+		egdbFileChooser.setTitle("Select Eigenface database file");
+		egdbFileChooser.getExtensionFilters().addAll(new ExtensionFilter("Eigenface Databases (.egdb)", "*.egdb"));
 	}
 
-	public void createOutputFileChooser(){
-		egdbFileChooser.setTitle("Choose the final location");
-		//egdbFileChooser.getExtensionFilters().addAll(new ExtensionFilter("Egdb Files", "*.egdb"));
+	private void createRefDirChooser() {
+		refDirChooser.setTitle("Select the reference image directory");
+	}
+
+	private void createOutputFileChooser() {
+		outputDirChooser.setTitle("Select the final location");
+	}
+
+	private void createTestFileChooser() {
+		testFileChooser.setTitle("Select image to test");
+		testFileChooser.getExtensionFilters().addAll(new ExtensionFilter("Image", "*.png", "*.jpg", "*.jpeg"));
 	}
 
 	@Override
@@ -63,7 +79,7 @@ public class Main extends Application {
 
 	/*Scene1*/
 		/*Left window*/
-		ImageView displayTestIMG = new ImageView(/*img url selected*/);
+		ImageView testImgDisplay = new ImageView(/*img url selected*/);
 		HBox hb_match = new HBox();
 		hb_match.setPadding(new Insets(50,300,100,300));
 		
@@ -90,26 +106,30 @@ public class Main extends Application {
 		});
 
 		Button btn_imgFile = new Button("Image file"); 
+		createTestFileChooser();
 		btn_imgFile.setPrefSize(200,35);
 		btn_imgFile.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
 				/*filechooser - image the user wants to test*/
+				File f = testFileChooser.showOpenDialog(primaryStage);
+				testImg = f.getAbsolutePath();
+				testImgDisplay.setImage(new Image(f.toURI().toString()));
 			}
 		});
 
 		hb_config.getChildren().addAll(btn_configEGDB, btn_imgFile);
 
 		leftTest.setTop(hb_config);
-		leftTest.setCenter(displayTestIMG);
+		leftTest.setCenter(testImgDisplay);
 		leftTest.setBottom(hb_match);
 
 		/*Right*/
 		//TODO displayEGDB
-		ImageView displayMatchedIMG = new ImageView(/*selected img from album*/);
+		ImageView matchedImgDisplay = new ImageView(/*selected img from album*/);
 		//TODO distance
 		
 		//rightTest.setTop(displayEGDB); ---> TD3 JavaFx
-		rightTest.setCenter(displayMatchedIMG);
+		rightTest.setCenter(matchedImgDisplay);
 		//rightTest.setBottom(distance);
 
 		recognitionTest.setRight(rightTest);
@@ -124,7 +144,7 @@ public class Main extends Application {
 		btn_back.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
 				primaryStage.setScene(scene1);
-				//TODO (perhaps use windows instead of scene changes - to be discussed)
+				//(perhaps use windows instead of scene changes - to be discussed)
 			}
 		});
 		hb_back.getChildren().add(btn_back);
@@ -161,13 +181,19 @@ public class Main extends Application {
 		hb_compileEGDB.setStyle("-fx-background-color: #336699;");
 		
 		Button btn_compRef = new Button("Select reference folder");
+		createRefDirChooser();
 		btn_compRef.setPrefSize(220,50);
 		btn_compRef.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
 				/*Select image references folder*/
-				//TODO
+				try {
+					refDir = refDirChooser.showDialog(primaryStage).getAbsolutePath();
+				} catch (NullPointerException e) {
+					//No directory was selected: do nothing
+				}
 			}
 		});
+
 		Button btn_compOutput = new Button("Select Output folder");
 		btn_compOutput.setPrefSize(220,50);
 		btn_compOutput.setOnAction(new EventHandler<ActionEvent>() {
@@ -176,12 +202,17 @@ public class Main extends Application {
 				//TODO
 			}
 		});
+
+		//TODO create a slider for value of k, make it in function of number of files in refDir
+
 		Button btn_compile = new Button("Compile");
 		btn_compile.setPrefSize(220,50);
 		btn_compile.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
-				/*Feet compilation*/
-				//TODO (not selectable unless folders chosen)
+				/*Feet compilation*/ //Mateo says: what
+				db = Compiler.compileDB(refDir, 0, null);
+				db.saveToFile("db.egdb");
+				//TODO (not selectable unless folders chosen) //Mateo says: just try catch lol
 			}
 		});
 		hb_compileEGDB.getChildren().addAll(btn_compRef, btn_compOutput, btn_compile);
