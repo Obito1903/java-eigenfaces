@@ -11,6 +11,8 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.Button;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
@@ -40,9 +42,9 @@ public class Main extends Application {
 
 	FileChooser testFileChooser = new FileChooser();
 
-	String refDir;
-	EigenFacesDB db;
-	String testImg;
+	String refDir = null;
+	EigenFacesDB db = null;
+	String testImg = null;
 
 	private void createEgdbFileChooser() {
 		egdbFileChooser.setTitle("Select Eigenface database file");
@@ -67,11 +69,12 @@ public class Main extends Application {
 		/*Title of the scene*/
 		primaryStage.setTitle("Facial Recognition");
 
-		/*Scene 1 panes & layout*/
+		/*Scene 1 layout, panes & labels*/
 		BorderPane recognitionTest = new BorderPane();
 		BorderPane leftTest = new BorderPane();
 		BorderPane rightTest = new BorderPane();
 		Scene scene1 = new Scene(recognitionTest, 1080, 720);
+		Label dbStatusLabel = new Label("No database loaded");
 
 		/*Scene 2 panes & layout*/
 		VBox configEGDB = new VBox();
@@ -88,6 +91,17 @@ public class Main extends Application {
 		btn_imgTest.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
 				/*scene change to configEGDB*/
+				try {
+					if (db == null)
+						new Alert(AlertType.INFORMATION, "No database is loaded.").showAndWait();
+					else if (testImg == null)
+						new Alert(AlertType.INFORMATION, "No test image is selected.").showAndWait();
+					else
+						Test.findBestMatch(db, new ImageVector(testImg), false);
+					//TODO change up Test class to get all images with a distance below 40
+				} catch (Exception e) {
+					new Alert(AlertType.ERROR, e.toString()).showAndWait();
+				}
 			}
 		});
 		
@@ -97,7 +111,7 @@ public class Main extends Application {
 		hb_config.setSpacing(50);
 		hb_config.setPadding(new Insets(15,200,15,200));
 
-		Button btn_configEGDB = new Button("EGDB settings");
+		Button btn_configEGDB = new Button("Databases\n(Compile/Load/View)");
 		btn_configEGDB.setPrefSize(200, 35);
 		btn_configEGDB.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
@@ -105,7 +119,7 @@ public class Main extends Application {
 			}
 		});
 
-		Button btn_imgFile = new Button("Image file"); 
+		Button btn_imgFile = new Button("Image to test"); 
 		createTestFileChooser();
 		btn_imgFile.setPrefSize(200,35);
 		btn_imgFile.setOnAction(new EventHandler<ActionEvent>() {
@@ -117,7 +131,7 @@ public class Main extends Application {
 			}
 		});
 
-		hb_config.getChildren().addAll(btn_configEGDB, btn_imgFile);
+		hb_config.getChildren().addAll(dbStatusLabel, btn_configEGDB, btn_imgFile);
 
 		leftTest.setTop(hb_config);
 		leftTest.setCenter(testImgDisplay);
@@ -159,11 +173,11 @@ public class Main extends Application {
 				/*Select EGDB folder*/
 				try {
 					db = new EigenFacesDB(egdbFileChooser.showOpenDialog(primaryStage).getAbsolutePath());
+					dbStatusLabel.setText("Database loaded (" + db.g.getNbRow() + " images)");
 				} catch (NullPointerException e) {
 					//Do nothing
 				} catch (Exception e) {
-					System.err.println(e);
-					//Probably make an alert box?
+					new Alert(AlertType.ERROR, e.toString()).showAndWait();
 				}
 			}
 		});
@@ -210,9 +224,13 @@ public class Main extends Application {
 		btn_compile.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
 				/*Feet compilation*/ //Mateo says: what
-				db = Compiler.compileDB(refDir, 0, null);
-				db.saveToFile("db.egdb");
-				//TODO (not selectable unless folders chosen) //Mateo says: just try catch lol
+				try {
+					db = Compiler.compileDB(refDir, 0/*Get k*/, null);
+				} catch (NullPointerException e) {
+					new Alert(AlertType.INFORMATION, "No reference image directory is selected.").showAndWait();
+				} catch (Exception e) {
+					new Alert(AlertType.ERROR, e.toString()).showAndWait();
+				}
 			}
 		});
 		hb_compileEGDB.getChildren().addAll(btn_compRef, btn_compOutput, btn_compile);
