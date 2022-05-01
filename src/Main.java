@@ -34,6 +34,8 @@ public class Main extends Application {
 	FileChooser egdbFileChooser = new FileChooser();
 	FileChooser outputFileChooser = new FileChooser();
 
+	EigenFacesDB db;
+
 	public void createEgdbFileChooser(){
 		egdbFileChooser.setTitle("Open egdb file");
 		egdbFileChooser.getExtensionFilters().addAll(new ExtensionFilter("Egdb Files", "*.egdb"));
@@ -46,14 +48,20 @@ public class Main extends Application {
 
 	@Override
 	public void start(Stage primaryStage) {
-
 		/*Title of the scene*/
 		primaryStage.setTitle("Facial Recognition");
-	/*Scene1*/
+
+		/*Scene 1 panes & layout*/
 		BorderPane recognitionTest = new BorderPane();
 		BorderPane leftTest = new BorderPane();
 		BorderPane rightTest = new BorderPane();
+		Scene scene1 = new Scene(recognitionTest, 1080, 720);
 
+		/*Scene 2 panes & layout*/
+		VBox configEGDB = new VBox();
+		Scene scene2 = new Scene(configEGDB, 1080, 720);
+
+	/*Scene1*/
 		/*Left window*/
 		ImageView displayTestIMG = new ImageView(/*img url selected*/);
 		HBox hb_match = new HBox();
@@ -77,7 +85,7 @@ public class Main extends Application {
 		btn_configEGDB.setPrefSize(200, 35);
 		btn_configEGDB.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
-				/*scene change to configEGDB*/
+				primaryStage.setScene(scene2);
 			}
 		});
 
@@ -108,7 +116,6 @@ public class Main extends Application {
 		recognitionTest.setLeft(leftTest);
 		
 	/*Scene2*/
-		VBox configEGDB = new VBox();
 		/*Return button*/	
 		HBox hb_back = new HBox();
 		hb_back.setPadding(new Insets(15,0,15,25));
@@ -116,7 +123,7 @@ public class Main extends Application {
 		btn_back.setPrefSize(70,60);
 		btn_back.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
-				/*Swap back to the 'test' scene*/
+				primaryStage.setScene(scene1);
 				//TODO (perhaps use windows instead of scene changes - to be discussed)
 			}
 		});
@@ -126,10 +133,18 @@ public class Main extends Application {
 		hb_loadEGDB.setPadding(new Insets(20,0,20,410));
 		Button btn_loadEGDB = new Button("Load eigenfaces database");
 		btn_loadEGDB.setPrefSize(250,30);
+		createEgdbFileChooser();
 		btn_loadEGDB.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
 				/*Select EGDB folder*/
-				//TODO
+				try {
+					db = new EigenFacesDB(egdbFileChooser.showOpenDialog(primaryStage).getAbsolutePath());
+				} catch (NullPointerException e) {
+					//Do nothing
+				} catch (Exception e) {
+					System.err.println(e);
+					//Probably make an alert box?
+				}
 			}
 		});
 		hb_loadEGDB.getChildren().add(btn_loadEGDB);
@@ -173,8 +188,6 @@ public class Main extends Application {
 
 		configEGDB.getChildren().addAll(hb_back, hb_loadEGDB, vb_eigenfaces, hb_compileEGDB);
 
-		Scene scene1 = new Scene(recognitionTest, 1080, 720);
-		Scene scene2 = new Scene(configEGDB, 1080, 720);
 
 		primaryStage.setScene(scene1);
 		primaryStage.show();
