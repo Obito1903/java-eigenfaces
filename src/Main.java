@@ -15,6 +15,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
+import javafx.scene.image.ImageView;
 
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -50,9 +51,65 @@ public class Main extends Application {
 		primaryStage.setTitle("Facial Recognition");
 	/*Scene1*/
 		BorderPane recognitionTest = new BorderPane();
+		BorderPane leftTest = new BorderPane();
+		BorderPane rightTest = new BorderPane();
+
+		/*Left window*/
+		ImageView displayTestIMG = new ImageView(/*img url selected*/);
+		HBox hb_match = new HBox();
+		hb_match.setPadding(new Insets(50,300,100,300));
+		
+		Button btn_imgTest = new Button("TEST");
+		btn_imgTest.setPrefSize(150,100);
+		btn_imgTest.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent event) {
+				/*scene change to configEGDB*/
+			}
+		});
+		
+		hb_match.getChildren().add(btn_imgTest);
+
+		HBox hb_config = new HBox();
+		hb_config.setSpacing(50);
+		hb_config.setPadding(new Insets(15,200,15,200));
+
+		Button btn_configEGDB = new Button("EGDB settings");
+		btn_configEGDB.setPrefSize(200, 35);
+		btn_configEGDB.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent event) {
+				/*scene change to configEGDB*/
+			}
+		});
+
+		Button btn_imgFile = new Button("Image file"); 
+		btn_imgFile.setPrefSize(200,35);
+		btn_imgFile.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent event) {
+				/*filechooser - image the user wants to test*/
+			}
+		});
+
+		hb_config.getChildren().addAll(btn_configEGDB, btn_imgFile);
+
+		leftTest.setTop(hb_config);
+		leftTest.setCenter(displayTestIMG);
+		leftTest.setBottom(hb_match);
+
+		/*Right*/
+		//TODO displayEGDB
+		ImageView displayMatchedIMG = new ImageView(/*selected img from album*/);
+		//TODO distance
+		
+		//rightTest.setTop(displayEGDB); ---> TD3 JavaFx
+		rightTest.setCenter(displayMatchedIMG);
+		//rightTest.setBottom(distance);
+
+		recognitionTest.setRight(rightTest);
+		recognitionTest.setLeft(leftTest);
+		
 	/*Scene2*/
 		VBox configEGDB = new VBox();
-	/*Return button*/	
+		/*Return button*/	
 		HBox hb_back = new HBox();
 		hb_back.setPadding(new Insets(15,0,15,25));
 		Button btn_back = new Button("Back");
@@ -64,7 +121,7 @@ public class Main extends Application {
 			}
 		});
 		hb_back.getChildren().add(btn_back);
-	/*EGDB loading button*/
+		/*EGDB loading button*/
 		HBox hb_loadEGDB = new HBox();
 		hb_loadEGDB.setPadding(new Insets(20,0,20,410));
 		Button btn_loadEGDB = new Button("Load eigenfaces database");
@@ -76,17 +133,20 @@ public class Main extends Application {
 			}
 		});
 		hb_loadEGDB.getChildren().add(btn_loadEGDB);
-	/*EGDB table*/
+		/*EGDB table*/
 		VBox vb_eigenfaces = new VBox();
 		vb_eigenfaces.setPadding(new Insets(50,200,500,200));
 		/*Table of all of the eigenfaces from the loaded database - ImageView*/
 		//TODO
-	/*EGDB compilation menu*/
+		
+		/*EGDB compilation menu*/
 		HBox hb_compileEGDB = new HBox();
-		hb_compileEGDB.setPadding(new Insets(15,50,15,320));
-		hb_compileEGDB.setSpacing(20);
+		hb_compileEGDB.setPadding(new Insets(15,150,15,150));
+		hb_compileEGDB.setSpacing(120);
 		hb_compileEGDB.setStyle("-fx-background-color: #336699;");
+		
 		Button btn_compRef = new Button("Select reference folder");
+		btn_compRef.setPrefSize(220,50);
 		btn_compRef.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
 				/*Select image references folder*/
@@ -94,6 +154,7 @@ public class Main extends Application {
 			}
 		});
 		Button btn_compOutput = new Button("Select Output folder");
+		btn_compOutput.setPrefSize(220,50);
 		btn_compOutput.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
 				/*Select Output folder*/
@@ -101,6 +162,7 @@ public class Main extends Application {
 			}
 		});
 		Button btn_compile = new Button("Compile");
+		btn_compile.setPrefSize(220,50);
 		btn_compile.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
 				/*Feet compilation*/
@@ -114,7 +176,7 @@ public class Main extends Application {
 		Scene scene1 = new Scene(recognitionTest, 1080, 720);
 		Scene scene2 = new Scene(configEGDB, 1080, 720);
 
-		primaryStage.setScene(scene2);
+		primaryStage.setScene(scene1);
 		primaryStage.show();
 	}
 }	
