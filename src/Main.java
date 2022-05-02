@@ -106,7 +106,10 @@ public class Main extends Application {
 						Test.findBestMatch(db, new ImageVector(testImg), false);
 					//TODO change up Test class to get all images with a distance below 40
 				} catch (Exception e) {
-					new Alert(AlertType.ERROR, e.toString()).showAndWait();
+					Alert error = new Alert(AlertType.ERROR, e.toString());
+					error.setHeight(300);
+					error.setWidth(533);
+					error.showAndWait();
 				}
 			}
 		});
@@ -183,7 +186,10 @@ public class Main extends Application {
 				} catch (NullPointerException e) {
 					//Do nothing
 				} catch (Exception e) {
-					new Alert(AlertType.ERROR, e.toString()).showAndWait();
+					Alert error = new Alert(AlertType.ERROR, e.toString());
+					error.setHeight(300);
+					error.setWidth(533);
+					error.showAndWait();
 				}
 			}
 		});
@@ -229,7 +235,10 @@ public class Main extends Application {
 				} catch (NullPointerException e) {
 					new Alert(AlertType.INFORMATION, "No reference image directory is selected.").showAndWait();
 				} catch (Exception e) {
-					new Alert(AlertType.ERROR, e.toString()).showAndWait();
+					Alert error = new Alert(AlertType.ERROR, e.toString());
+					error.setHeight(300);
+					error.setWidth(533);
+					error.showAndWait();
 				}
 			}
 		});
