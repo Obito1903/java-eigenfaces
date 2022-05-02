@@ -26,17 +26,31 @@ public class EigenFacesDB implements Serializable {
      */
     protected WeightMatrix g;
 
+	/**
+	 * Image width
+	 */
+	protected Integer width;
+
+	/**
+	 * Image height
+	 */
+	protected Integer height;
+
     /**
      * Constructor
      *
      * @param averageFace Average face of the database
      * @param e           Eigenfaces
      * @param g           Weight matrix
+	 * @param w           Image width
+	 * @param h           Image height
      */
-    public EigenFacesDB(Vector averageFace, Matrix e, WeightMatrix g) {
+    public EigenFacesDB(Vector averageFace, Matrix e, WeightMatrix g, int w, int h) {
         this.averageFace = averageFace;
         this.e = e;
         this.g = g;
+		this.width = w;
+		this.height = h;
     }
 
     /**
@@ -50,6 +64,8 @@ public class EigenFacesDB implements Serializable {
             this.averageFace = (Vector) ois.readObject();
             this.e = (Matrix) ois.readObject();
             this.g = (WeightMatrix) ois.readObject();
+			this.width = (Integer) ois.readObject();
+			this.height = (Integer) ois.readObject();
             ois.close();
         } catch (IOException e) {
             throw new IOException("Database");
@@ -69,6 +85,8 @@ public class EigenFacesDB implements Serializable {
             oos.writeObject(this.averageFace);
             oos.writeObject(this.e);
             oos.writeObject(this.g);
+			oos.writeObject(this.width);
+			oos.writeObject(this.height);
             oos.close();
             System.out.println("Saved to " + fileName);
         } catch (IOException e) {

@@ -1,5 +1,8 @@
 import java.io.File;
 
+import javafx.scene.control.Label;
+import javafx.stage.Stage;
+
 import math.*;
 import image.*;
 
@@ -55,55 +58,60 @@ public class Compiler {
 	 * @return A Database with all the necesary informations to then serch a face
 	 *         inside it
 	 */
-	public static EigenFacesDB compileDB(final String dbPath, final int k, String debug) {
-		System.out.println("Reading reference database at " + dbPath);
+	public static EigenFacesDB compileDB(final String dbPath, final int k, Label status, Stage s) {
+		status.setText("Reading reference database at " + dbPath);
+		s.show();
 		ImageVector[] images = readImages(dbPath);
 
 		// Compute the mean image
-		System.out.println("Generating average face.");
+		status.setText("Generating average face.");
+		s.show();
 		Vector averageFace = PCA.averageFace(images);
 
 		// Center the images
-		System.out.println("Centering images.");
+		status.setText("Centering images.");
+		s.show();
 		ImageVector[] centeredImages = centerImages(images, averageFace);
-		System.out.println("Images Centered.");
+		status.setText("Images Centered.");
+		s.show();
 		// ImageVector[] centeredImages = images;
 
 		// Compute the eigenfaces
-		System.out.println("Generating eigenface matrix.");
-		Matrix e = PCA.eMatrix(centeredImages, k, debug != null);
-		System.out.println("Eigenface matrix generated.");
-
-		if (debug != null) {
-
-			// Create eigenfaces images folder
-			String directory = new File(debug).getAbsolutePath() + "/";
-
-			if (!(new File(directory).isDirectory())) {
-				new File(directory).mkdir();
-			}
-
-			// Save the average face
-			((ImageVector) averageFace).centerReduce().saveToFile(directory + "averageFace.png");
-			System.out.println("Average face generated and saved : " + directory + "averageFace.png");
-
-			// Print eigenfaces
-			for (int i = 0; i < e.getNbColumn(); i++) {
-				ImageVector eig = new ImageVector(e.getColumn(i).getElements(),
-						images[0].getHeight(), images[0].getWidth(), "EIGEN_" + i + ".png");
-				eig.centerReduce().saveToFile(directory + eig.getFileName());
-
-			}
-			System.out.println("Eigenfaces generated and saved : " + directory);
-		}
-
+		status.setText("Generating eigenface matrix.");
+		s.show();
+		Matrix e = PCA.eMatrix(centeredImages, k, false);
+		status.setText("Eigenface matrix generated.");
+		s.show();
 
 
 		// Compute the weight matrix
-		System.out.println("Generating weight matrix.");
+		status.setText("Generating weight matrix.");
+		s.show();
 		WeightMatrix g = new WeightMatrix(e, centeredImages);
-		System.out.println("G dimensions: " + g.getNbRow() + "x" + g.getNbColumn());
-		System.out.println("E dimensions: " + e.getNbRow() + "x" + e.getNbColumn());
-		return new EigenFacesDB(averageFace, e, g);
+		//Is it really worthwhile to show those?
+		//status.setText("G dimensions: " + g.getNbRow() + "x" + g.getNbColumn());
+		//status.setText("E dimensions: " + e.getNbRow() + "x" + e.getNbColumn());
+		status.setText("Database compiled successfully");
+		return new EigenFacesDB(averageFace, e, g, images[0].getWidth(), images[0].getHeight());
+	}
+
+	public static void saveImages(EigenFacesDB db, String path) {
+		// Create eigenfaces images folder
+		String directory = new File(path).getAbsolutePath() + "/";
+
+		if (!(new File(directory).isDirectory())) {
+			new File(directory).mkdir();
+		}
+
+		// Save the average face
+		((ImageVector) (db.averageFace)).centerReduce().saveToFile(directory + "averageFace.png");
+
+		// Print eigenfaces
+		for (int i = 0; i < db.e.getNbColumn(); i++) {
+			ImageVector eig = new ImageVector(db.e.getColumn(i).getElements(),
+					db.height, db.width, "EIGEN_" + i + ".png");
+			eig.centerReduce().saveToFile(directory + eig.getFileName());
+
+		}
 	}
 }

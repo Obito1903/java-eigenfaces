@@ -39,6 +39,7 @@ public class Main extends Application {
 	FileChooser egdbFileChooser = new FileChooser();
 	DirectoryChooser refDirChooser = new DirectoryChooser();
 	DirectoryChooser outputDirChooser = new DirectoryChooser();
+	FileChooser outputFileChooser = new FileChooser();
 
 	FileChooser testFileChooser = new FileChooser();
 
@@ -55,8 +56,13 @@ public class Main extends Application {
 		refDirChooser.setTitle("Select the reference image directory");
 	}
 
+	private void createOutputDirChooser() {
+		outputDirChooser.setTitle("Select directory to export to");
+	}
+
 	private void createOutputFileChooser() {
-		outputDirChooser.setTitle("Select the final location");
+		egdbFileChooser.setTitle("Select file to export to");
+		egdbFileChooser.getExtensionFilters().addAll(new ExtensionFilter("Eigenface Databases (.egdb)", "*.egdb"));
 	}
 
 	private void createTestFileChooser() {
@@ -208,14 +214,7 @@ public class Main extends Application {
 			}
 		});
 
-		Button btn_compOutput = new Button("Select Output folder");
-		btn_compOutput.setPrefSize(220,50);
-		btn_compOutput.setOnAction(new EventHandler<ActionEvent>() {
-			public void handle(ActionEvent event) {
-				/*Select Output folder*/
-				//TODO
-			}
-		});
+		Label compileStatusLabel = new Label("");
 
 		//TODO create a slider for value of k, make it in function of number of files in refDir
 
@@ -225,7 +224,8 @@ public class Main extends Application {
 			public void handle(ActionEvent event) {
 				/*Feet compilation*/ //Mateo says: what
 				try {
-					db = Compiler.compileDB(refDir, 0/*Get k*/, null);
+					db = Compiler.compileDB(refDir, 0/*Get k*/, compileStatusLabel, primaryStage);
+					dbStatusLabel.setText("Database loaded (" + db.g.getNbRow() + " images)");
 				} catch (NullPointerException e) {
 					new Alert(AlertType.INFORMATION, "No reference image directory is selected.").showAndWait();
 				} catch (Exception e) {
@@ -233,7 +233,43 @@ public class Main extends Application {
 				}
 			}
 		});
-		hb_compileEGDB.getChildren().addAll(btn_compRef, btn_compOutput, btn_compile);
+
+		Button btn_imgOutput = new Button("Export images");
+		createOutputDirChooser();
+		btn_imgOutput.setPrefSize(220,50);
+		btn_imgOutput.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent event) {
+				/*Select Output folder*/
+				try {
+					Compiler.saveImages(db, outputDirChooser.showDialog(primaryStage).getAbsolutePath());
+					//Maybe also do reconstitutions?
+					new Alert(AlertType.INFORMATION, "Average face and eigenfaces saved.").showAndWait();
+				} catch (NullPointerException e) {
+					//No directory was selected: do nothing
+				}
+			}
+		});
+
+		Button btn_dbOutput = new Button("Save as EGDB");
+		createOutputFileChooser();
+		btn_dbOutput.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent event) {
+				/*Select Output folder*/
+				try {
+					if (db == null)
+						new Alert(AlertType.INFORMATION, "No database is loaded.").showAndWait();
+					else {
+						db.saveToFile(outputFileChooser.showSaveDialog(primaryStage).getAbsolutePath());
+						new Alert(AlertType.INFORMATION, "Database exported successfully.").showAndWait();
+					}
+				} catch (NullPointerException e) {
+					//No directory was selected: do nothing
+				}
+			}
+		});
+
+
+		hb_compileEGDB.getChildren().addAll(btn_compRef, btn_compile, btn_imgOutput, btn_dbOutput, compileStatusLabel);
 
 		configEGDB.getChildren().addAll(hb_back, hb_loadEGDB, vb_eigenfaces, hb_compileEGDB);
 
