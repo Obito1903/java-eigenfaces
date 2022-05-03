@@ -80,11 +80,13 @@ public class Main extends Application {
 		BorderPane leftTest = new BorderPane();
 		BorderPane rightTest = new BorderPane();
 		Scene scene1 = new Scene(recognitionTest, 1080, 720);
+		scene1.getStylesheets().add("../css/recognition.css");
 		Label dbStatusLabel = new Label("No database loaded");
 
 		/*Scene 2 panes & layout*/
 		VBox configEGDB = new VBox();
 		Scene scene2 = new Scene(configEGDB, 1080, 720);
+		scene2.getStylesheets().add("../css/configEGDB.css");
 
 	/*Scene1*/
 		/*Left window*/
@@ -117,6 +119,7 @@ public class Main extends Application {
 		hb_match.getChildren().add(btn_imgTest);
 
 		HBox hb_config = new HBox();
+		hb_config.getStyleClass().add("hb_config");
 		hb_config.setSpacing(50);
 		hb_config.setPadding(new Insets(15,200,15,200));
 
@@ -161,9 +164,9 @@ public class Main extends Application {
 	/*Scene2*/
 		/*Return button*/	
 		HBox hb_back = new HBox();
-		hb_back.setPadding(new Insets(15,0,15,25));
+		hb_back.getStyleClass().add("hb_back");
 		Button btn_back = new Button("Back");
-		btn_back.setPrefSize(70,60);
+		btn_back.getStyleClass().add("btn_back");
 		btn_back.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
 				primaryStage.setScene(scene1);
@@ -171,11 +174,12 @@ public class Main extends Application {
 			}
 		});
 		hb_back.getChildren().add(btn_back);
+		
 		/*EGDB loading button*/
 		HBox hb_loadEGDB = new HBox();
-		hb_loadEGDB.setPadding(new Insets(20,0,20,410));
+		hb_loadEGDB.getStyleClass().add("hb_loadEGDB");
 		Button btn_loadEGDB = new Button("Load eigenfaces database");
-		btn_loadEGDB.setPrefSize(250,30);
+		btn_loadEGDB.getStyleClass().add("btn_loadEGDB");
 		createEgdbFileChooser();
 		btn_loadEGDB.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
@@ -196,19 +200,18 @@ public class Main extends Application {
 		hb_loadEGDB.getChildren().add(btn_loadEGDB);
 		/*EGDB table*/
 		VBox vb_eigenfaces = new VBox();
-		vb_eigenfaces.setPadding(new Insets(50,200,500,200));
+		vb_eigenfaces.getStyleClass().add("vb_eigenfaces");
 		/*Table of all of the eigenfaces from the loaded database - ImageView*/
 		//TODO
 		
 		/*EGDB compilation menu*/
 		HBox hb_compileEGDB = new HBox();
-		hb_compileEGDB.setPadding(new Insets(15,150,15,150));
+		hb_compileEGDB.getStyleClass().add("hb_compEGDB");
 		hb_compileEGDB.setSpacing(120);
-		hb_compileEGDB.setStyle("-fx-background-color: #336699;");
 		
 		Button btn_compRef = new Button("Select reference folder");
 		createRefDirChooser();
-		btn_compRef.setPrefSize(220,50);
+		btn_compRef.getStyleClass().add("btn_comp");
 		btn_compRef.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
 				/*Select image references folder*/
@@ -225,7 +228,7 @@ public class Main extends Application {
 		//TODO create a slider for value of k, make it in function of number of files in refDir
 
 		Button btn_compile = new Button("Compile");
-		btn_compile.setPrefSize(220,50);
+		btn_compile.getStyleClass().add("btn_comp");
 		btn_compile.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
 				/*Feet compilation*/ //Mateo says: what
@@ -245,7 +248,7 @@ public class Main extends Application {
 
 		Button btn_imgOutput = new Button("Export images");
 		createOutputDirChooser();
-		btn_imgOutput.setPrefSize(220,50);
+		btn_imgOutput.getStyleClass().add("btn_comp");
 		btn_imgOutput.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
 				/*Select Output folder*/
@@ -261,6 +264,7 @@ public class Main extends Application {
 
 		Button btn_dbOutput = new Button("Save as EGDB");
 		createOutputFileChooser();
+		btn_dbOutput.getStyleClass().add("btn_comp");
 		btn_dbOutput.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
 				/*Select Output folder*/
