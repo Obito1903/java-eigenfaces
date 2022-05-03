@@ -1,0 +1,23 @@
+.hb_match {
+	-fx-padding: 50 300 100 300;
+}
+
+.btn_imgTest {	
+	-fx-height:100;
+	-fx-width:150;
+	-fx-font-size:38px;
+}
+
+.hb_config {	
+	-fx-padding:15 200 15 200;
+}
+
+.btn_configEGDB {
+	-fx-height:35;
+	-fx-width:200;
+}
+
+.btn_imgFile {	
+	-fx-height:35;
+	-fx-width:200;
+}

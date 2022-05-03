@@ -74,7 +74,7 @@ public class Main extends Application {
 	public void start(Stage primaryStage) {
 		/*Title of the scene*/
 		primaryStage.setTitle("Facial Recognition");
-
+		primaryStage.setFullScreen(true);
 		/*Scene 1 layout, panes & labels*/
 		BorderPane recognitionTest = new BorderPane();
 		BorderPane leftTest = new BorderPane();
@@ -91,11 +91,12 @@ public class Main extends Application {
 	/*Scene1*/
 		/*Left window*/
 		ImageView testImgDisplay = new ImageView(/*img url selected*/);
+		
 		HBox hb_match = new HBox();
-		hb_match.setPadding(new Insets(50,300,100,300));
+		hb_match.getStyleClass().add("hb_match");
 		
 		Button btn_imgTest = new Button("TEST");
-		btn_imgTest.setPrefSize(150,100);
+		btn_imgTest.getStyleClass().add("btn_imgTest");
 		btn_imgTest.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
 				/*scene change to configEGDB*/
@@ -121,10 +122,9 @@ public class Main extends Application {
 		HBox hb_config = new HBox();
 		hb_config.getStyleClass().add("hb_config");
 		hb_config.setSpacing(50);
-		hb_config.setPadding(new Insets(15,200,15,200));
 
 		Button btn_configEGDB = new Button("Databases\n(Compile/Load/View)");
-		btn_configEGDB.setPrefSize(200, 35);
+		btn_configEGDB.getStyleClass().add("btn_configEGDB");
 		btn_configEGDB.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
 				primaryStage.setScene(scene2);
@@ -133,7 +133,7 @@ public class Main extends Application {
 
 		Button btn_imgFile = new Button("Image to test"); 
 		createTestFileChooser();
-		btn_imgFile.setPrefSize(200,35);
+		btn_imgFile.getStyleClass().add("btn_imgFile");
 		btn_imgFile.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
 				/*filechooser - image the user wants to test*/
