@@ -1,23 +1,45 @@
-.hb_match {
-	-fx-padding: 50 300 100 300;
+.recognitionTest{
+	-fx-background-color :   #32353b;
+	-fx-color :  #fdfefe;
 }
 
-.btn_imgTest {	
-	-fx-height:100;
-	-fx-width:150;
-	-fx-font-size:38px;
+.dbStatusLabel{
+	-fx-color : #fdfefe; /*Not working*/
+	-fx-background-color :   #fdfefe;
+	-fx-font-size : 15px;
+}
+
+.hb_match {
+	-fx-padding: 50px 300px 100px 300px;
+}
+
+.btn_imgTest {
+	-fx-height: 100px;
+	-fx-width: 150px;
+	-fx-font-size: 15px;
 }
 
 .hb_config {	
-	-fx-padding:15 200 15 200;
+	-fx-padding: 15px 200px 15px 200px;
 }
 
 .btn_configEGDB {
-	-fx-height:35;
-	-fx-width:200;
+	-fx-text-align : center;
+	-fx-height: 35px;
+	-fx-width: 200px;
+	-fx-font-size : 15px;
 }
 
 .btn_imgFile {	
-	-fx-height:35;
-	-fx-width:200;
+	-fx-height:35px;
+	-fx-width:200px;
+	-fx-font-size : 15px;
+}
+
+.matchedImgDisplay{
+	-fx-height: 35px;
+	-fx-width: 200px;
+	-fx-background-color : white;
+	-fx-padding : 20px;
+	-fx-border : white 2px;
 }

@@ -74,18 +74,21 @@ public class Main extends Application {
 	public void start(Stage primaryStage) {
 		/*Title of the scene*/
 		primaryStage.setTitle("Facial Recognition");
-		primaryStage.setFullScreen(true);
+		//primaryStage.setFullScreen(true); //Benjamin say : C'est horrrible le fullscreen
+
 		/*Scene 1 layout, panes & labels*/
 		BorderPane recognitionTest = new BorderPane();
 		BorderPane leftTest = new BorderPane();
 		BorderPane rightTest = new BorderPane();
-		Scene scene1 = new Scene(recognitionTest, 1080, 720);
+		Scene scene1 = new Scene(recognitionTest, 1280, 720);
 		scene1.getStylesheets().add("../css/recognition.css");
+		recognitionTest.getStyleClass().add("recognitionTest");
 		Label dbStatusLabel = new Label("No database loaded");
+		dbStatusLabel.getStyleClass().add("dbStatusLabel");
 
 		/*Scene 2 panes & layout*/
 		VBox configEGDB = new VBox();
-		Scene scene2 = new Scene(configEGDB, 1080, 720);
+		Scene scene2 = new Scene(configEGDB, 1280, 720);
 		scene2.getStylesheets().add("../css/configEGDB.css");
 
 	/*Scene1*/
@@ -95,7 +98,7 @@ public class Main extends Application {
 		HBox hb_match = new HBox();
 		hb_match.getStyleClass().add("hb_match");
 		
-		Button btn_imgTest = new Button("TEST");
+		Button btn_imgTest = new Button("Test");
 		btn_imgTest.getStyleClass().add("btn_imgTest");
 		btn_imgTest.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
@@ -152,6 +155,7 @@ public class Main extends Application {
 		/*Right*/
 		//TODO displayEGDB
 		ImageView matchedImgDisplay = new ImageView(/*selected img from album*/);
+		matchedImgDisplay.getStyleClass().add("matchedImgDisplay");
 		//TODO distance
 		
 		//rightTest.setTop(displayEGDB); ---> TD3 JavaFx
