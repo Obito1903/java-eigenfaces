@@ -1,4 +1,4 @@
-package math;
+package eigenfaces.math;
 
 import java.io.Serializable;
 
@@ -102,7 +102,7 @@ public class Vector implements Serializable {
 
 	/**
 	 * Substract a double
-	 * 
+	 *
 	 * @param v
 	 */
 	public void subtract(Vector v) {
@@ -112,7 +112,7 @@ public class Vector implements Serializable {
 
 	/**
 	 * Calculate the norm of the vector
-	 * 
+	 *
 	 * @return the norm
 	 */
 	public double norm() {

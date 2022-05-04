@@ -1,4 +1,4 @@
-package math;
+package eigenfaces.math;
 
 import java.util.Random;
 import java.io.Serializable;
@@ -200,7 +200,7 @@ public class Matrix implements Serializable {
 
 	/**
 	 * Transpose the matrix
-	 * 
+	 *
 	 * @return the Transposed matrix
 	 */
 	public Matrix transpose() {

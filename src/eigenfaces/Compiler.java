@@ -1,10 +1,11 @@
+package eigenfaces;
+
 import java.io.File;
 
+import eigenfaces.image.*;
+import eigenfaces.math.*;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
-
-import math.*;
-import image.*;
 
 public class Compiler {
 
@@ -83,14 +84,13 @@ public class Compiler {
 		status.setText("Eigenface matrix generated.");
 		s.show();
 
-
 		// Compute the weight matrix
 		status.setText("Generating weight matrix.");
 		s.show();
 		WeightMatrix g = new WeightMatrix(e, centeredImages);
-		//Is it really worthwhile to show those?
-		//status.setText("G dimensions: " + g.getNbRow() + "x" + g.getNbColumn());
-		//status.setText("E dimensions: " + e.getNbRow() + "x" + e.getNbColumn());
+		// Is it really worthwhile to show those?
+		// status.setText("G dimensions: " + g.getNbRow() + "x" + g.getNbColumn());
+		// status.setText("E dimensions: " + e.getNbRow() + "x" + e.getNbColumn());
 		status.setText("Database compiled successfully");
 		return new EigenFacesDB(averageFace, e, g, images[0].getWidth(), images[0].getHeight());
 	}

@@ -1,4 +1,4 @@
-package math;
+package eigenfaces.math;
 
 /**
  * Exception thrown when k is outside the bounds of the matrix it's assiciated

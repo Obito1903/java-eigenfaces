@@ -1,6 +1,5 @@
-package image;
+package eigenfaces.image;
 
-import math.*;
 import java.awt.image.BufferedImage;
 import java.awt.color.ColorSpace;
 import java.awt.Color;
@@ -11,6 +10,12 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import javax.imageio.ImageIO;
+
+import eigenfaces.math.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.image.PixelWriter;
+import javafx.scene.image.WritableImage;
 
 public class ImageVector extends Vector {
 	private final String fileName;
@@ -177,21 +182,52 @@ public class ImageVector extends Vector {
 	}
 
 	/**
+	 * Convert the image vector to a buffered image
+	 *
+	 * @return The buffered image representation
+	 */
+	public BufferedImage getBufferedImage() {
+		BufferedImage image = new BufferedImage(this.width, this.height, BufferedImage.TYPE_BYTE_GRAY);
+		for (int i = 0; i < width; i++) {
+			for (int j = 0; j < height; j++) {
+				float gColor = (float) this.elements[j + (i * height)];
+				Color pixel = new Color(gColor, gColor, gColor);
+				image.setRGB(i, j, pixel.getRGB());
+			}
+		}
+
+		return image;
+	}
+
+	/**
+	 * Convert the image vector to a JavaFX image
+	 *
+	 * @return the JavaFX Image representation
+	 */
+	public Image getFXImage() {
+		BufferedImage image = this.getBufferedImage();
+		WritableImage wr = null;
+		if (image != null) {
+			wr = new WritableImage(image.getWidth(), image.getHeight());
+			PixelWriter pw = wr.getPixelWriter();
+			for (int x = 0; x < image.getWidth(); x++) {
+				for (int y = 0; y < image.getHeight(); y++) {
+					pw.setArgb(x, y, image.getRGB(x, y));
+				}
+			}
+		}
+
+		return new ImageView(wr).getImage();
+	}
+
+	/**
 	 * Save the image vector as a jpg image
 	 *
 	 * @param path Path to save the image
 	 */
 	public void saveToFile(String path) {
 		try {
-			BufferedImage image = new BufferedImage(this.width, this.height, BufferedImage.TYPE_BYTE_GRAY);
-			for (int i = 0; i < width; i++) {
-				for (int j = 0; j < height; j++) {
-					float gColor = (float) this.elements[j + (i * height)];
-					Color pixel = new Color(gColor, gColor, gColor);
-					image.setRGB(i, j, pixel.getRGB());
-				}
-			}
-			ImageIO.write(image, "png", new File(path));
+			ImageIO.write(this.getBufferedImage(), "png", new File(path));
 		} catch (Exception e) {
 			System.out.println(e);
 		}

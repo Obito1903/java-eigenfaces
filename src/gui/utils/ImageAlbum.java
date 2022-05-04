@@ -1,8 +1,10 @@
-package abstraction;
+package gui.utils;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Observable;
+
+import eigenfaces.image.ImageVector;
 
 @SuppressWarnings("deprecation")
 public class ImageDatabase extends Observable {
@@ -26,7 +28,7 @@ public class ImageDatabase extends Observable {
 
 	public ImageDatabase() {
 		this.imageSet = new ArrayList<Picture>();
-		for(int i=0; i<5; i++) {
+		for (int i = 0; i < 5; i++) {
 			this.addPicture("file:gaspard_le_fantome.jpg");
 		}
 		this.currentIndex = 0;
@@ -38,6 +40,12 @@ public class ImageDatabase extends Observable {
 
 	public void addPicture(String fullpathname) {
 		this.imageSet.add(new Picture(fullpathname));
+		this.setChanged(); // PAC
+		this.notifyObservers(NEW_IMG); // PAC
+	}
+
+	public void addPicture(ImageVector imageVector) {
+		this.imageSet.add(new Picture(imageVector));
 		this.setChanged(); // PAC
 		this.notifyObservers(NEW_IMG); // PAC
 	}

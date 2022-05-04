@@ -1,5 +1,7 @@
-import math.*;
-import image.ImageVector;
+package eigenfaces;
+
+import eigenfaces.image.ImageVector;
+import eigenfaces.math.*;
 
 /**
  * A class to store The weight of each face and it's name
