@@ -4,16 +4,17 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Observable;
 
+@SuppressWarnings("deprecation")
 public class ImageDatabase extends Observable {
 
 	public static final Integer CHANGING_CURRENT_IMG = new Integer(0); // PAC
 	public static final Integer CHANGING_SIZE = new Integer(1); // PAC
 	public static final Integer NEW_IMG = new Integer(2); // PAC
-	
+
 	private ArrayList<Picture> imageSet;
 	private int currentIndex; // index de l'image courante
 
-	/*Constructor*/
+	/* Constructor */
 	public ImageDatabase(String directory) {
 		this.imageSet = new ArrayList<Picture>();
 		File dirImages = new File(directory);
