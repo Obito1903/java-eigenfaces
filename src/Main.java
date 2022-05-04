@@ -38,10 +38,10 @@ import java.io.IOException;
 
 public class Main extends Application {
 
+	/*Class attributes of the different sources in the scene*/
 	private ImageDatabase eigenfaces;
 	private ImageDatabase references;
 	
-	/*Class attributes of the different sources in the scene*/
 	FileChooser egdbFileChooser = new FileChooser();
 	DirectoryChooser refDirChooser = new DirectoryChooser();
 	DirectoryChooser outputDirChooser = new DirectoryChooser();
@@ -77,12 +77,8 @@ public class Main extends Application {
 		testFileChooser.setTitle("Select image to test");
 		testFileChooser.getExtensionFilters().addAll(new ExtensionFilter("Image", "*.png", "*.jpg", "*.jpeg"));
 	}
-	
-	public HBox createCompilationMenu(Stage primaryStage) {
-		HBox hb_compileEGDB = new HBox();
-		hb_compileEGDB.getStyleClass().add("hb_compEGDB");
-		hb_compileEGDB.setSpacing(120);
-		
+
+	public Button createBtnRefFolder(Stage primaryStage) {
 		Button btn_compRef = new Button("Select reference folder");
 		createRefDirChooser();
 		btn_compRef.getStyleClass().add("btn_comp");
@@ -97,16 +93,16 @@ public class Main extends Application {
 				}
 			}
 		});
+		return btn_compRef;
+	}
 
-		Label compileStatusLabel = new Label("");
-		//TODO create a slider for value of k, make it in function of number of files in refDir
-
+	public Button createBtnCompile(Stage primaryStage) {
 		Button btn_compile = new Button("Compile");
 		btn_compile.getStyleClass().add("btn_comp");
 		btn_compile.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
 				try {
-					db = Compiler.compileDB(refDir, 0/*Get k*/, compileStatusLabel, primaryStage);
+					//db = Compiler.compileDB(refDir, 0/*Get k*/, compileStatusLabel, primaryStage);
 					//dbStatusLabel.setText("Database loaded (" + db.g.getNbRow() + " images)");
 				} catch (NullPointerException e) {
 					new Alert(AlertType.INFORMATION, "No reference image directory is selected.").showAndWait();
@@ -118,7 +114,10 @@ public class Main extends Application {
 				}
 			}
 		});
+		return btn_compile;
+	}
 
+	public Button createBtnIMGOutput(Stage primaryStage) {
 		Button btn_imgOutput = new Button("Export images");
 		createOutputDirChooser();
 		btn_imgOutput.getStyleClass().add("btn_comp");
@@ -134,7 +133,10 @@ public class Main extends Application {
 				}
 			}
 		});
+		return btn_imgOutput;
+	}
 
+	public Button createBtnDBOutput(Stage primaryStage) {
 		Button btn_dbOutput = new Button("Save as EGDB");
 		createOutputFileChooser();
 		btn_dbOutput.getStyleClass().add("btn_comp");
@@ -153,6 +155,20 @@ public class Main extends Application {
 				}
 			}
 		});
+		return btn_dbOutput;
+	}
+	
+	public HBox createCompilationMenu(Stage primaryStage) {
+		HBox hb_compileEGDB = new HBox();
+		hb_compileEGDB.getStyleClass().add("hb_compEGDB");
+		hb_compileEGDB.setSpacing(120);
+		
+		Button btn_compRef = createBtnRefFolder(primaryStage);
+		Label compileStatusLabel = new Label("");
+		//TODO create a slider for value of k, make it in function of number of files in refDir
+		Button btn_compile = createBtnCompile(primaryStage); 
+		Button btn_imgOutput = createBtnIMGOutput(primaryStage);	
+		Button btn_dbOutput = createBtnDBOutput(primaryStage);
 
 		hb_compileEGDB.getChildren().addAll(btn_compRef, btn_compile, btn_imgOutput, btn_dbOutput, compileStatusLabel);
 		return hb_compileEGDB;
