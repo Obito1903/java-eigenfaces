@@ -82,8 +82,8 @@ public class Main extends Application {
 		testFileChooser.getExtensionFilters().addAll(new ExtensionFilter("Image", "*.png", "*.jpg", "*.jpeg"));
 	}
 
-	public Button createBtnRefFolder(Stage primaryStage) {
-		Button btn_compRef = new Button("Select reference folder");
+	public Button createRefDirButton(Stage primaryStage) {
+		Button btn_compRef = new Button("Select reference image directory");
 		createRefDirChooser();
 		btn_compRef.getStyleClass().add("btn_comp");
 		btn_compRef.setOnAction(new EventHandler<ActionEvent>() {
@@ -92,6 +92,7 @@ public class Main extends Application {
 				try {
 					refDir = refDirChooser.showDialog(primaryStage).getAbsolutePath();
 					references = new ImageDatabase(refDir);
+					createEgdbDisplay();
 				} catch (NullPointerException e) {
 					//No directory was selected: do nothing
 				}
@@ -100,14 +101,14 @@ public class Main extends Application {
 		return btn_compRef;
 	}
 
-	public Button createBtnCompile(Stage primaryStage) {
+	public Button createCompileButton(Stage primaryStage, Label compileStatusLabel, Label dbStatusLabel) {
 		Button btn_compile = new Button("Compile");
 		btn_compile.getStyleClass().add("btn_comp");
 		btn_compile.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
 				try {
-					//db = Compiler.compileDB(refDir, 0/*Get k*/, compileStatusLabel, primaryStage);
-					//dbStatusLabel.setText("Database loaded (" + db.g.getNbRow() + " images)");
+					db = Compiler.compileDB(refDir, 0/*Get k*/, compileStatusLabel, primaryStage);
+					dbStatusLabel.setText("Database loaded (" + db.g.getNbRow() + " images)");
 				} catch (NullPointerException e) {
 					new Alert(AlertType.INFORMATION, "No reference image directory is selected.").showAndWait();
 				} catch (Exception e) {
@@ -121,7 +122,7 @@ public class Main extends Application {
 		return btn_compile;
 	}
 
-	public Button createBtnIMGOutput(Stage primaryStage) {
+	public Button createImgOutputButton(Stage primaryStage) {
 		Button btn_imgOutput = new Button("Export images");
 		createOutputDirChooser();
 		btn_imgOutput.getStyleClass().add("btn_comp");
@@ -140,7 +141,7 @@ public class Main extends Application {
 		return btn_imgOutput;
 	}
 
-	public Button createBtnDBOutput(Stage primaryStage) {
+	public Button createDbOutputButton(Stage primaryStage) {
 		Button btn_dbOutput = new Button("Save as EGDB");
 		createOutputFileChooser();
 		btn_dbOutput.getStyleClass().add("btn_comp");
@@ -162,17 +163,17 @@ public class Main extends Application {
 		return btn_dbOutput;
 	}
 	
-	public HBox createCompilationMenu(Stage primaryStage) {
+	public HBox createCompilationMenu(Stage primaryStage, Label dbStatusLabel) {
 		HBox hb_compileEGDB = new HBox();
 		hb_compileEGDB.getStyleClass().add("hb_compEGDB");
 		hb_compileEGDB.setSpacing(120);
 		
-		Button btn_compRef = createBtnRefFolder(primaryStage);
+		Button btn_compRef = createRefDirButton(primaryStage);
 		Label compileStatusLabel = new Label("");
 		//TODO create a slider for value of k, make it in function of number of files in refDir
-		Button btn_compile = createBtnCompile(primaryStage); 
-		Button btn_imgOutput = createBtnIMGOutput(primaryStage);	
-		Button btn_dbOutput = createBtnDBOutput(primaryStage);
+		Button btn_compile = createCompileButton(primaryStage, compileStatusLabel, dbStatusLabel); 
+		Button btn_imgOutput = createImgOutputButton(primaryStage);	
+		Button btn_dbOutput = createDbOutputButton(primaryStage);
 
 		hb_compileEGDB.getChildren().addAll(btn_compRef, btn_compile, btn_imgOutput, btn_dbOutput, compileStatusLabel);
 		return hb_compileEGDB;
@@ -186,15 +187,17 @@ public class Main extends Application {
 		return vb_eigenfaces;
 	}
 
-	public FlowPane createDisplayEGDB() {
+	public FlowPane createEgdbDisplay() {
 		FlowPane display = new FlowPane(10,10);
 		display.setAlignment(Pos.CENTER);
-		for(int i = 0; i < references.getSize(); i++) {
-			Button btn = new Button();
-			btn.setGraphic(new ImageView(references.getPicture(i).getIcon()));
-			btn.setPadding(Insets.EMPTY);
-			displayRef.add(btn);
-			display.getChildren().add(btn);
+		if (references != null) {
+			for(int i = 0; i < references.getSize(); i++) {
+				Button btn = new Button();
+				btn.setGraphic(new ImageView(references.getPicture(i).getIcon()));
+				btn.setPadding(Insets.EMPTY);
+				displayRef.add(btn);
+				display.getChildren().add(btn);
+			}
 		}
 		return display;
 	}
@@ -214,8 +217,8 @@ public class Main extends Application {
 		scene1.getStylesheets().add("../css/recognition.css");
 		recognitionTest.getStyleClass().add("recognitionTest");
 		
-		//Label dbStatusLabel = new Label("No database loaded");
-		//dbStatusLabel.getStyleClass().add("dbStatusLabel");
+		Label dbStatusLabel = new Label("No database loaded");
+		dbStatusLabel.getStyleClass().add("dbStatusLabel");
 
 		/*Scene 2 panes & layout*/
 		VBox configEGDB = new VBox();
@@ -277,21 +280,21 @@ public class Main extends Application {
 			}
 		});
 
-		hb_config.getChildren().addAll(/*dbStatusLabel,*/ btn_configEGDB, btn_imgFile);
+		hb_config.getChildren().addAll(dbStatusLabel, btn_configEGDB, btn_imgFile);
 
 		leftTest.setTop(hb_config);
 		leftTest.setCenter(testImgDisplay);
 		leftTest.setBottom(hb_match);
 
 		/*Right*/
-		FlowPane displayEGDB = createDisplayEGDB();
+		FlowPane egdbDisplay = createEgdbDisplay();
 		
 		ImageView matchedImgDisplay = new ImageView(/*selected img from album*/);
 
 		matchedImgDisplay.getStyleClass().add("matchedImgDisplay");
 		//TODO distance
 		
-		//rightTest.setTop(displayEGDB); ---> TD3 JavaFx
+		//rightTest.setTop(egdbDisplay); ---> TD3 JavaFx
 		rightTest.setCenter(matchedImgDisplay);
 		//rightTest.setBottom(distance);
 
@@ -323,7 +326,7 @@ public class Main extends Application {
 				/*Select EGDB folder*/
 				try {
 					db = new EigenFacesDB(egdbFileChooser.showOpenDialog(primaryStage).getAbsolutePath());
-					//dbStatusLabel.setText("Database loaded (" + db.g.getNbRow() + " images)");
+					dbStatusLabel.setText("Database loaded (" + db.g.getNbRow() + " images)");
 				} catch (NullPointerException e) {
 					//Do nothing
 				} catch (Exception e) {
@@ -338,7 +341,7 @@ public class Main extends Application {
 		
 		/*EGDB table*/
 		VBox vb_eigenfaces = createEigenfacesTable();
-		HBox hb_compileEGDB = createCompilationMenu(primaryStage);
+		HBox hb_compileEGDB = createCompilationMenu(primaryStage, dbStatusLabel);
 		configEGDB.getChildren().addAll(hb_back, hb_loadEGDB, vb_eigenfaces, hb_compileEGDB);
 
 
