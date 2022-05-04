@@ -7,7 +7,7 @@ import java.util.Observable;
 import eigenfaces.image.ImageVector;
 
 @SuppressWarnings("deprecation")
-public class ImageDatabase extends Observable {
+public class ImageAlbum extends Observable {
 
 	public static final Integer CHANGING_CURRENT_IMG = new Integer(0); // PAC
 	public static final Integer CHANGING_SIZE = new Integer(1); // PAC
@@ -17,7 +17,7 @@ public class ImageDatabase extends Observable {
 	private int currentIndex; // index de l'image courante
 
 	/* Constructor */
-	public ImageDatabase(String directory) {
+	public ImageAlbum(String directory) {
 		this.imageSet = new ArrayList<Picture>();
 		File dirImages = new File(directory);
 		for (String string : dirImages.list()) {
@@ -26,7 +26,7 @@ public class ImageDatabase extends Observable {
 		this.currentIndex = 0;
 	}
 
-	public ImageDatabase() {
+	public ImageAlbum() {
 		this.imageSet = new ArrayList<Picture>();
 		for (int i = 0; i < 5; i++) {
 			this.addPicture("file:gaspard_le_fantome.jpg");
