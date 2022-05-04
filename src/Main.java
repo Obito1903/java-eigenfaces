@@ -358,7 +358,7 @@ public class Main extends Application {
 				/*Select EGDB folder*/
 				try {
 					db = new EigenFacesDB(egdbFileChooser.showOpenDialog(primaryStage).getAbsolutePath());
-					dbStatusLabel.setText("Database loaded (" + db.g.getNbRow() + " images)");
+					dbStatusLabel.setText("Database loaded (" + db.g.getNbRow() + " images)"); //Add k value (characteristics)
 				} catch (NullPointerException e) {
 					//Do nothing
 				} catch (Exception e) {
