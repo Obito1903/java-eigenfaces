@@ -17,6 +17,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Button;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.FlowPane;
@@ -232,37 +233,82 @@ public class Main extends Application {
 	public void start(Stage primaryStage) {
 		/*Title of the scene*/
 		primaryStage.setTitle("Facial Recognition");
-		primaryStage.setFullScreen(true); 
+		//primaryStage.setFullScreen(true); 
 		//Benjamin say : C'est horrrible le fullscreen
 		//Opinion rejected
+		//I don't care
 		defaultDB = new ImageDatabase();
 		imgRef = new ImageView(defaultDB.getCurrentPicture().getImage());
 		displayRef = new ArrayList<Button>();
 		
 		/*Scene 1 layout, panes & labels*/
-		BorderPane recognitionTest = new BorderPane();
-		BorderPane leftTest = new BorderPane();
-		BorderPane rightTest = new BorderPane();
+		HBox recognitionTest = new HBox();
+		BorderPane leftSide = new BorderPane();
+		BorderPane center = new BorderPane();
+		BorderPane rightSide = new BorderPane();
 		
 		Scene scene1 = new Scene(recognitionTest, 1280, 720);
-		scene1.getStylesheets().add("../css/recognition.css");
+		scene1.getStylesheets().add("../css/style.css");
 		recognitionTest.getStyleClass().add("recognitionTest");
-		
-		Label dbStatusLabel = new Label("No database loaded");
-		dbStatusLabel.getStyleClass().add("dbStatusLabel");
+		leftSide.getStyleClass().add("leftSide");
+		center.getStyleClass().add("center");
+		rightSide.getStyleClass().add("rightSide");
+
+		recognitionTest.setAlignment(Pos.CENTER);
 
 		/*Scene 2 panes & layout*/
 		VBox configEGDB = new VBox();
 		Scene scene2 = new Scene(configEGDB, 1280, 720);
-		scene2.getStylesheets().add("../css/configEGDB.css");
+		scene2.getStylesheets().add("../css/style.css");
 
 	/*Scene1*/
-		/*Left window*/
+
+		/*Left Side*/
+
+		/*Center Image view of test image*/
 		ImageView testImgDisplay = new ImageView(/*img url selected*/);
-		
-		HBox hb_match = new HBox();
-		hb_match.getStyleClass().add("hb_match");
-		
+		testImgDisplay.getStyleClass().add("testImgDisplay");
+		//testImgDisplay.fitWidthProperty().bind(leftTest.widthProperty());
+
+		/*Horizontal top box for each config button*/
+		HBox hb_top = new HBox();
+		hb_top.getStyleClass().add("hb_top");
+		hb_top.setSpacing(10);
+
+		/*Replace on top if not working*/
+		Label dbStatusLabel = new Label("No database loaded");
+		dbStatusLabel.getStyleClass().add("dbStatusLabel");
+
+		/*Button to choose the egdb file*/
+		Button btn_configEGDB = new Button("Databases\n(Compile/Load/View)");
+		btn_configEGDB.getStyleClass().add("btn_configEGDB");
+		btn_configEGDB.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent event) {
+				primaryStage.setScene(scene2);
+			}
+		});
+
+		/*Button to choose the test image*/
+		Button btn_imgFile = new Button("Select test image"); 
+		createTestFileChooser();
+		btn_imgFile.getStyleClass().add("btn_imgFile");
+		btn_imgFile.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent event) {
+				/*filechooser - image the user wants to test*/
+				File f = testFileChooser.showOpenDialog(primaryStage);
+				testImg = f.getAbsolutePath();
+				testImgDisplay.setImage(new Image(f.toURI().toString()));
+			}
+		});
+
+		hb_top.getChildren().addAll(dbStatusLabel, btn_configEGDB, btn_imgFile);	//Adding each button to the top hbox
+
+		leftSide.setTop(hb_top);
+		leftSide.setCenter(testImgDisplay);
+
+		/*Center*/
+
+		/*Test button*/
 		Button btn_imgTest = new Button("Test");
 		btn_imgTest.getStyleClass().add("btn_imgTest");
 		btn_imgTest.setOnAction(new EventHandler<ActionEvent>() {
@@ -284,54 +330,30 @@ public class Main extends Application {
 				}
 			}
 		});
-		
-		hb_match.getChildren().add(btn_imgTest);
 
-		HBox hb_config = new HBox();
-		hb_config.getStyleClass().add("hb_config");
-		hb_config.setSpacing(50);
+		center.setCenter(btn_imgTest);
 
-		Button btn_configEGDB = new Button("Databases\n(Compile/Load/View)");
-		btn_configEGDB.getStyleClass().add("btn_configEGDB");
-		btn_configEGDB.setOnAction(new EventHandler<ActionEvent>() {
-			public void handle(ActionEvent event) {
-				primaryStage.setScene(scene2);
-			}
-		});
+		/*Right side*/
 
-		Button btn_imgFile = new Button("Image to test"); 
-		createTestFileChooser();
-		btn_imgFile.getStyleClass().add("btn_imgFile");
-		btn_imgFile.setOnAction(new EventHandler<ActionEvent>() {
-			public void handle(ActionEvent event) {
-				/*filechooser - image the user wants to test*/
-				File f = testFileChooser.showOpenDialog(primaryStage);
-				testImg = f.getAbsolutePath();
-				testImgDisplay.setImage(new Image(f.toURI().toString()));
-			}
-		});
-
-		hb_config.getChildren().addAll(dbStatusLabel, btn_configEGDB, btn_imgFile);
-
-		leftTest.setTop(hb_config);
-		leftTest.setCenter(testImgDisplay);
-		leftTest.setBottom(hb_match);
-
-		/*Right*/
-		FlowPane egdbDisplay = createEgdbDisplay();
+		/*Top flow pane use to preview the better matches*/
+		FlowPane egdbDisplay = createEgdbDisplay(); 
 		egdbDisplay.getStyleClass().add("egdbDisplay");
 
-		FlowPane matchedImgDisplay = createImgDisplay();
+		/*Center Image view of the matched image*/
+		ImageView matchedImgDisplay = new ImageView(/*img url selected*/);
 		matchedImgDisplay.getStyleClass().add("matchedImgDisplay");
 		
+		/*Bottom label to display the distance of the best match*/
 		//TODO distance
-		
-		rightTest.setTop(egdbDisplay);
-		rightTest.setCenter(matchedImgDisplay);
-		//rightTest.setBottom(distance);
 
-		recognitionTest.setRight(rightTest);
-		recognitionTest.setLeft(leftTest);
+		rightSide.setTop(egdbDisplay);
+		rightSide.setCenter(matchedImgDisplay);
+		//rightSide.setBottom(distance);
+
+
+		/*Adding the two side part to the main scene*/
+		recognitionTest.getChildren().addAll(leftSide, center, rightSide);
+
 		
 	/*Scene2*/
 		/*Return button*/	
@@ -377,7 +399,7 @@ public class Main extends Application {
 		configEGDB.getChildren().addAll(hb_back, hb_loadEGDB, vb_eigenfaces, hb_compileEGDB);
 
 
-		primaryStage.setScene(scene1);
+		primaryStage.setScene(scene2);
 		primaryStage.show();
 	}
 }	
