@@ -6,6 +6,7 @@ import abstraction.ImageDatabase;
 import abstraction.Picture;
 
 import java.util.List;
+import java.util.ArrayList;
 
 import org.apache.commons.cli.*;
 
@@ -18,6 +19,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.TilePane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
 import javafx.scene.image.Image;
@@ -32,6 +34,7 @@ import javafx.event.*;
 
 import javafx.geometry.Orientation;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 
 import java.io.File;
 import java.io.IOException;
@@ -41,6 +44,7 @@ public class Main extends Application {
 	/*Class attributes of the different sources in the scene*/
 	private ImageDatabase eigenfaces;
 	private ImageDatabase references;
+	private ArrayList<Button> displayRef;
 	
 	FileChooser egdbFileChooser = new FileChooser();
 	DirectoryChooser refDirChooser = new DirectoryChooser();
@@ -182,6 +186,19 @@ public class Main extends Application {
 		return vb_eigenfaces;
 	}
 
+	public FlowPane createDisplayEGDB() {
+		FlowPane display = new FlowPane(10,10);
+		display.setAlignment(Pos.CENTER);
+		for(int i = 0; i < references.getSize(); i++) {
+			Button btn = new Button();
+			btn.setGraphic(new ImageView(references.getPicture(i).getIcon()));
+			btn.setPadding(Insets.EMPTY);
+			displayRef.add(btn);
+			display.getChildren().add(btn);
+		}
+		return display;
+	}
+
 	@Override
 	public void start(Stage primaryStage) {
 		/*Title of the scene*/
@@ -267,8 +284,10 @@ public class Main extends Application {
 		leftTest.setBottom(hb_match);
 
 		/*Right*/
-		//TODO displayEGDB
+		FlowPane displayEGDB = createDisplayEGDB();
+		
 		ImageView matchedImgDisplay = new ImageView(/*selected img from album*/);
+
 		matchedImgDisplay.getStyleClass().add("matchedImgDisplay");
 		//TODO distance
 		
