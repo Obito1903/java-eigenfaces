@@ -44,7 +44,10 @@ public class Main extends Application {
 	/*Class attributes of the different sources in the scene*/
 	private ImageDatabase eigenfaces;
 	private ImageDatabase references;
+	private ImageDatabase defaultDB;
 	private ArrayList<Button> displayRef;
+	private ImageView imgTest;
+	private ImageView imgRef;
 	
 	FileChooser egdbFileChooser = new FileChooser();
 	DirectoryChooser refDirChooser = new DirectoryChooser();
@@ -58,6 +61,7 @@ public class Main extends Application {
 	String testImg = null;
 
 	
+	Picture defaultImg = new Picture("file:gaspard_le_fantome.jpg");
 	
 	private void createEgdbFileChooser() {
 		egdbFileChooser.setTitle("Select Eigenface database file");
@@ -198,16 +202,43 @@ public class Main extends Application {
 				displayRef.add(btn);
 				display.getChildren().add(btn);
 			}
+		} else {
+			for(int i = 0; i< defaultDB.getSize(); i++) {
+				Button btn =  new Button();
+				btn.setGraphic(new ImageView(defaultDB.getPicture(i).getIcon()));
+				btn.setPadding(Insets.EMPTY);
+				if (i==0) {
+					btn.setStyle("-fx-border-color:blue; -fx-border-width:4px;");
+				}
+				displayRef.add(btn);
+				display.getChildren().add(btn);
+			}
 		}
 		return display;
+	}
+
+	public FlowPane createImgDisplay() {
+		FlowPane paneDisplay = new FlowPane(10,10);
+		paneDisplay.setAlignment(Pos.BASELINE_LEFT);
+		paneDisplay.setPrefSize(177,250);
+		//TODO
+		//if references != null then display current image in 'references' ImageDatabase object
+		//control + observer
+		paneDisplay.getChildren().add(imgRef);
+		return paneDisplay;
 	}
 
 	@Override
 	public void start(Stage primaryStage) {
 		/*Title of the scene*/
 		primaryStage.setTitle("Facial Recognition");
-		//primaryStage.setFullScreen(true); //Benjamin say : C'est horrrible le fullscreen
-
+		primaryStage.setFullScreen(true); 
+		//Benjamin say : C'est horrrible le fullscreen
+		//Opinion rejected
+		defaultDB = new ImageDatabase();
+		imgRef = new ImageView(defaultDB.getCurrentPicture().getImage());
+		displayRef = new ArrayList<Button>();
+		
 		/*Scene 1 layout, panes & labels*/
 		BorderPane recognitionTest = new BorderPane();
 		BorderPane leftTest = new BorderPane();
@@ -288,13 +319,14 @@ public class Main extends Application {
 
 		/*Right*/
 		FlowPane egdbDisplay = createEgdbDisplay();
-		
-		ImageView matchedImgDisplay = new ImageView(/*selected img from album*/);
+		egdbDisplay.getStyleClass().add("egdbDisplay");
 
+		FlowPane matchedImgDisplay = createImgDisplay();
 		matchedImgDisplay.getStyleClass().add("matchedImgDisplay");
+		
 		//TODO distance
 		
-		//rightTest.setTop(egdbDisplay); ---> TD3 JavaFx
+		rightTest.setTop(egdbDisplay);
 		rightTest.setCenter(matchedImgDisplay);
 		//rightTest.setBottom(distance);
 

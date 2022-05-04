@@ -23,6 +23,14 @@ public class ImageDatabase extends Observable {
 		this.currentIndex = 0;
 	}
 
+	public ImageDatabase() {
+		this.imageSet = new ArrayList<Picture>();
+		for(int i=0; i<5; i++) {
+			this.addPicture("file:gaspard_le_fantome.jpg");
+		}
+		this.currentIndex = 0;
+	}
+
 	public int getSize() {
 		return this.imageSet.size();
 	}
