@@ -1,7 +1,7 @@
 /*Scene 1*/
 
 .recognitionTest{
-	-fx-background-color :   #32353b;
+	/*-fx-background-color :   #32353b;*/
 	-fx-color :  #fdfefe;
 	-fx-text-align : center;
 }

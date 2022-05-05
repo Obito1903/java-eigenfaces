@@ -282,16 +282,10 @@ public class Main extends Application {
 		return btn_imgTest;
 	}
 
+	/*
 	public Button createBtnConfigEgdb(Stage primaryStage, Scene scene) {
-		Button btn_configEGDB = new Button("Databases\n(Compile/Load/View)");
-		btn_configEGDB.getStyleClass().add("btn_configEGDB");
-		btn_configEGDB.setOnAction(new EventHandler<ActionEvent>() {
-			public void handle(ActionEvent event) {
-				primaryStage.setScene(scene);
-			}
-		});
 		return btn_configEGDB;
-	}
+	}*/
 
 	public Button createBtnImgFile(Stage primaryStage) {
 		/* Button to choose the test image */
@@ -345,7 +339,16 @@ public class Main extends Application {
 		HBox hb_config = new HBox();
 		hb_config.getStyleClass().add("hb_config");
 		hb_config.setSpacing(50);
-		Button btn_configEGDB = createBtnConfigEgdb(primaryStage,scene2);
+		
+		Button btn_configEGDB = new Button("Databases\n(Compile/Load/View)");
+		btn_configEGDB.getStyleClass().add("btn_configEGDB");
+		btn_configEGDB.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent event) {
+				primaryStage.setScene(scene2);
+			}
+		});
+		//Button btn_configEGDB = createBtnConfigEgdb(primaryStage,scene2);
+		
 		Button btn_imgFile = createBtnImgFile(primaryStage);
 		hb_config.getChildren().addAll(dbStatusLabel, btn_configEGDB, btn_imgFile);
 		
