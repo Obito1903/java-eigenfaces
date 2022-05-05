@@ -1,8 +1,8 @@
-package math;
-
-import image.*;
+package eigenfaces.math;
 
 import org.apache.commons.math3.linear.SingularValueDecomposition;
+
+import eigenfaces.image.*;
 
 import org.apache.commons.math3.linear.MatrixUtils;
 
@@ -30,9 +30,9 @@ public class PCA {
 	/**
 	 * Calculates the eigenmatrix of the input matrix
 	 *
-	 * @param a	      The original images matrix
-	 * @param k       How many eigenvectors we want to keep
-	 * @param debug   Whether or not to display information lost
+	 * @param a     The original images matrix
+	 * @param k     How many eigenvectors we want to keep
+	 * @param debug Whether or not to display information lost
 	 * @return The eigenvectors matrix
 	 */
 	public static Matrix eMatrix(Vector[] a, int k, boolean debug) {
@@ -71,7 +71,7 @@ public class PCA {
 			res[i] = vec;
 		}
 
-		//If debug flag is on, show amount of information lost
+		// If debug flag is on, show amount of information lost
 		if (debug && k != eVal.length) {
 			double kEvSum = 0;
 			for (int i = 0; i < k; i++)
@@ -79,7 +79,8 @@ public class PCA {
 			double evSum = kEvSum;
 			for (int i = k; i < eVal.length; i++)
 				evSum += eVal[i];
-			System.out.println(k + " eigenvectors conserved, for a " + (100*(1-(kEvSum/evSum))) + "% information loss.");
+			System.out.println(
+					k + " eigenvectors conserved, for a " + (100 * (1 - (kEvSum / evSum))) + "% information loss.");
 		}
 
 		return new Matrix(res);

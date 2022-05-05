@@ -1,9 +1,13 @@
-import image.ImageSizeMismatchException;
-import image.ImageVector;
-import math.KValueOutOfBoundsException;
+package main;
 
-import abstraction.ImageDatabase;
-import abstraction.Picture;
+import eigenfaces.Compiler;
+import eigenfaces.EigenFacesDB;
+import eigenfaces.Test;
+import eigenfaces.image.ImageSizeMismatchException;
+import eigenfaces.image.ImageVector;
+import eigenfaces.math.KValueOutOfBoundsException;
+import gui.utils.ImageAlbum;
+import gui.utils.Picture;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -17,6 +21,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Button;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.FlowPane;
@@ -46,9 +51,9 @@ public class Main extends Application {
 	private Scene scene1;
 	private Scene scene2;
 
-	private ImageDatabase eigenfaces;
-	private ImageDatabase references;
-	private ImageDatabase defaultDB;	//Temporary
+	private ImageAlbum eigenfaces;
+	private ImageAlbum references;
+	private ImageAlbum defaultDB;	//Temporary
 	
 	private ImageView imgTest;
 	private ImageView imgRef;
@@ -65,9 +70,8 @@ public class Main extends Application {
 	EigenFacesDB db = null;
 	String testImg = null;
 
-	
 	Picture defaultImg = new Picture("file:gaspard_le_fantome.jpg");
-	
+
 	private void createEgdbFileChooser() {
 		egdbFileChooser.setTitle("Select Eigenface database file");
 		egdbFileChooser.getExtensionFilters().addAll(new ExtensionFilter("Eigenface Databases (.egdb)", "*.egdb"));
@@ -99,13 +103,13 @@ public class Main extends Application {
 		btn_compRef.getStyleClass().add("btn_comp");
 		btn_compRef.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
-				/*Select image references folder*/
+				/* Select image references folder */
 				try {
 					refDir = refDirChooser.showDialog(primaryStage).getAbsolutePath();
-					references = new ImageDatabase(refDir);
+					references = new ImageAlbum(refDir);
 					createEgdbDisplay();
 				} catch (NullPointerException e) {
-					//No directory was selected: do nothing
+					// No directory was selected: do nothing
 				}
 			}
 		});
@@ -118,8 +122,8 @@ public class Main extends Application {
 		btn_compile.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
 				try {
-					db = Compiler.compileDB(refDir, 0/*Get k*/, compileStatusLabel, primaryStage);
-					dbStatusLabel.setText("Database loaded (" + db.g.getNbRow() + " images)");
+					db = Compiler.compileDB(refDir, 0/* Get k */, compileStatusLabel, primaryStage);
+					dbStatusLabel.setText("Database loaded (" + db.getG().getNbRow() + " images)");
 				} catch (NullPointerException e) {
 					new Alert(AlertType.INFORMATION, "No reference image directory is selected.").showAndWait();
 				} catch (Exception e) {
@@ -139,13 +143,13 @@ public class Main extends Application {
 		btn_imgOutput.getStyleClass().add("btn_comp");
 		btn_imgOutput.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
-				/*Select Output folder*/
+				/* Select Output folder */
 				try {
 					Compiler.saveImages(db, outputDirChooser.showDialog(primaryStage).getAbsolutePath());
-					//Maybe also do reconstitutions?
+					// Maybe also do reconstitutions?
 					new Alert(AlertType.INFORMATION, "Average face and eigenfaces saved.").showAndWait();
 				} catch (NullPointerException e) {
-					//No directory was selected: do nothing
+					// No directory was selected: do nothing
 				}
 			}
 		});
@@ -158,7 +162,7 @@ public class Main extends Application {
 		btn_dbOutput.getStyleClass().add("btn_comp");
 		btn_dbOutput.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
-				/*Select Output folder*/
+				/* Select Output folder */
 				try {
 					if (db == null)
 						new Alert(AlertType.INFORMATION, "No database is loaded.").showAndWait();
@@ -167,7 +171,7 @@ public class Main extends Application {
 						new Alert(AlertType.INFORMATION, "Database exported successfully.").showAndWait();
 					}
 				} catch (NullPointerException e) {
-					//No directory was selected: do nothing
+					// No directory was selected: do nothing
 				}
 			}
 		});
@@ -210,7 +214,8 @@ public class Main extends Application {
 				/*Select EGDB folder*/
 				try {
 					db = new EigenFacesDB(egdbFileChooser.showOpenDialog(primaryStage).getAbsolutePath());
-					dbStatusLabel.setText("Database loaded (" + db.g.getNbRow() + " images)");
+					//db.g -> protected access
+					//dbStatusLabel.setText("Database loaded (" + db.g.getNbRow() + " images)");
 				} catch (NullPointerException e) {
 					//Do nothing
 				} catch (Exception e) {
@@ -230,7 +235,7 @@ public class Main extends Application {
 		//display.
 		display.setAlignment(Pos.CENTER);
 		if (references != null) {
-			for(int i = 0; i < references.getSize(); i++) {
+			for (int i = 0; i < references.getSize(); i++) {
 				Button btn = new Button();
 				btn.setGraphic(new ImageView(references.getPicture(i).getIcon()));
 				btn.setPadding(Insets.EMPTY);
@@ -238,11 +243,11 @@ public class Main extends Application {
 				display.getChildren().add(btn);
 			}
 		} else {
-			for(int i = 0; i< defaultDB.getSize(); i++) {
-				Button btn =  new Button();
+			for (int i = 0; i < defaultDB.getSize(); i++) {
+				Button btn = new Button();
 				btn.setGraphic(new ImageView(defaultDB.getPicture(i).getIcon()));
 				btn.setPadding(Insets.EMPTY);
-				if (i==0) {
+				if (i == 0) {
 					btn.setStyle("-fx-border-color:blue; -fx-border-width:4px;");
 				}
 				displayRef.add(btn);
@@ -289,12 +294,12 @@ public class Main extends Application {
 	}
 
 	public Button createBtnImgFile(Stage primaryStage) {
-		Button btn_imgFile = new Button("Image to test"); 
-		createTestFileChooser();
+		/* Button to choose the test image */
+		Button btn_imgFile = new Button("Select test image");
 		btn_imgFile.getStyleClass().add("btn_imgFile");
 		btn_imgFile.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
-				/*filechooser - image the user wants to test*/
+				/* filechooser - image the user wants to test */
 				File f = testFileChooser.showOpenDialog(primaryStage);
 				//testImg = f.getAbsolutePath();
 				imgTest.setImage(new Image(f.toURI().toString()));
@@ -309,7 +314,7 @@ public class Main extends Application {
 		paneDisplay.setAlignment(Pos.CENTER);
 		paneDisplay.setPrefSize(177,250);
 		//TODO
-		//if references != null then display current image in 'references' ImageDatabase object
+		//if references != null then display current image in 'references' ImageAlbum object
 		//control + observer
 		if (display!=null) {
 			paneDisplay.getChildren().add(display);
@@ -317,13 +322,12 @@ public class Main extends Application {
 		return paneDisplay;
 	}
 
-	@Override
 	public void start(Stage primaryStage) {
 		/*Title of the scene*/
 		primaryStage.setTitle("Facial Recognition"); 	 
 		
 		//Default value
-		defaultDB = new ImageDatabase();
+		defaultDB = new ImageAlbum();
 		imgRef = new ImageView(defaultDB.getCurrentPicture().getImage());
 		
 		BorderPane recognitionTest = new BorderPane();
@@ -373,7 +377,6 @@ public class Main extends Application {
 		recognitionTest.setLeft(leftTest);
 		
 	/*Scene2*/
-		/*Return button - temporary -> scene1 accessible through compilation*/	
 		HBox hb_back = new HBox();
 		hb_back.getStyleClass().add("hb_back");
 		Button btn_back = new Button("Back");
@@ -381,7 +384,7 @@ public class Main extends Application {
 		btn_back.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
 				primaryStage.setScene(scene1);
-				//(perhaps use windows instead of scene changes - to be discussed)
+				// (perhaps use windows instead of scene changes - to be discussed)
 			}
 		});
 		hb_back.getChildren().add(btn_back);

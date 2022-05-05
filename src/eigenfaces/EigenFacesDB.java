@@ -1,11 +1,14 @@
+package eigenfaces;
+
 import java.io.Serializable;
+
+import eigenfaces.math.*;
+
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-
-import math.*;
 
 /**
  * A class to store the Eigen Face Database and restore it from disk
@@ -26,15 +29,15 @@ public class EigenFacesDB implements Serializable {
      */
     protected WeightMatrix g;
 
-	/**
-	 * Image width
-	 */
-	protected Integer width;
+    /**
+     * Image width
+     */
+    protected Integer width;
 
-	/**
-	 * Image height
-	 */
-	protected Integer height;
+    /**
+     * Image height
+     */
+    protected Integer height;
 
     /**
      * Constructor
@@ -42,15 +45,15 @@ public class EigenFacesDB implements Serializable {
      * @param averageFace Average face of the database
      * @param e           Eigenfaces
      * @param g           Weight matrix
-	 * @param w           Image width
-	 * @param h           Image height
+     * @param w           Image width
+     * @param h           Image height
      */
     public EigenFacesDB(Vector averageFace, Matrix e, WeightMatrix g, int w, int h) {
         this.averageFace = averageFace;
         this.e = e;
         this.g = g;
-		this.width = w;
-		this.height = h;
+        this.width = w;
+        this.height = h;
     }
 
     /**
@@ -64,14 +67,34 @@ public class EigenFacesDB implements Serializable {
             this.averageFace = (Vector) ois.readObject();
             this.e = (Matrix) ois.readObject();
             this.g = (WeightMatrix) ois.readObject();
-			this.width = (Integer) ois.readObject();
-			this.height = (Integer) ois.readObject();
+            this.width = (Integer) ois.readObject();
+            this.height = (Integer) ois.readObject();
             ois.close();
         } catch (IOException e) {
             throw new IOException("Database");
         } catch (ClassNotFoundException e) {
             throw new ClassNotFoundException(e.getMessage());
         }
+    }
+
+    public Vector getAverageFace() {
+        return averageFace;
+    }
+
+    public Matrix getE() {
+        return e;
+    }
+
+    public WeightMatrix getG() {
+        return g;
+    }
+
+    public Integer getWidth() {
+        return width;
+    }
+
+    public Integer getHeight() {
+        return height;
     }
 
     /**
@@ -85,8 +108,8 @@ public class EigenFacesDB implements Serializable {
             oos.writeObject(this.averageFace);
             oos.writeObject(this.e);
             oos.writeObject(this.g);
-			oos.writeObject(this.width);
-			oos.writeObject(this.height);
+            oos.writeObject(this.width);
+            oos.writeObject(this.height);
             oos.close();
             System.out.println("Saved to " + fileName);
         } catch (IOException e) {

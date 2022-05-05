@@ -1,5 +1,7 @@
-import image.ImageVector;
-import math.*;
+package eigenfaces;
+
+import eigenfaces.image.ImageVector;
+import eigenfaces.math.*;
 
 public class Test {
 
@@ -12,18 +14,17 @@ public class Test {
 	 */
 	public static double[] calculateDistances(EigenFacesDB db, ImageVector test, boolean debug) {
 		// Compute the projection of the test image
-		Vector testProjection = db.e.transpose().multiply(test);
+		Vector testProjection = db.getE().transpose().multiply(test);
 
 		// Compute the distance to each image
 		double[] distances = new double[db.g.getNbImages()];
-		for (int i = 0; i < db.g.getNbImages(); i++) {
-			distances[i] = Vector.distance(testProjection, db.g.getRow(i));
-
+		for (int i = 0; i < db.getG().getNbImages(); i++) {
+			distances[i] = Vector.distance(testProjection, db.getG().getRow(i));
 
 			if (debug) {
 
-				//Print the distance between the test image from each Face in the db 
-				System.out.println("Distance to " + db.g.getNameOf(i) + ": " + distances[i]);
+				// Print the distance between the test image from each Face in the db
+				System.out.println("Distance to " + db.getG().getNameOf(i) + ": " + distances[i]);
 			}
 		}
 
@@ -39,7 +40,7 @@ public class Test {
 	 * @return The name of the closest image
 	 */
 	public static String findBestMatch(EigenFacesDB db, ImageVector test, boolean debug) {
-		//Subtract the average Face from the test image
+		// Subtract the average Face from the test image
 		test.subtract(db.averageFace);
 
 		double[] distances = calculateDistances(db, test, debug);
@@ -47,14 +48,14 @@ public class Test {
 		// Find the best match
 		double bestDistance = Double.MAX_VALUE;
 		String bestMatch = "";
-		for (int i = 0; i < db.g.getNbImages(); i++) {
+		for (int i = 0; i < db.getG().getNbImages(); i++) {
 			if (distances[i] < bestDistance) {
 				bestDistance = distances[i];
-				bestMatch = db.g.getNameOf(i);
+				bestMatch = db.getG().getNameOf(i);
 			}
 		}
 
-		//Verify if the best distance belongs to the db according to our threshold
+		// Verify if the best distance belongs to the db according to our threshold
 		if (bestDistance > 40) {
 			System.out.println("No face was recognized");
 		}

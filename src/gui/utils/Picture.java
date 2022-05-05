@@ -1,7 +1,8 @@
-package abstraction;
+package gui.utils;
 
 import java.io.File;
 
+import eigenfaces.image.ImageVector;
 import javafx.scene.image.Image;
 
 public class Picture {
@@ -13,6 +14,14 @@ public class Picture {
 	private int widthInit;
 	private int heightInit;
 	private String name;
+
+	public Picture(ImageVector imageVectors) {
+		this.filename = imageVectors.getFileName();
+		this.widthInit = imageVectors.getWidth();
+		this.heightInit = imageVectors.getHeight();
+		this.name = imageVectors.getName();
+		this.img = imageVectors.getFXImage();
+	}
 
 	public Picture(String filename) {
 		this.filename = filename;

@@ -1,4 +1,4 @@
-package math;
+package eigenfaces.math;
 
 /**
  * Exception thrown when a dimension mismatch occurs between vectors
