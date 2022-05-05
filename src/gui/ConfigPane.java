@@ -1,135 +1,130 @@
 package gui;
 
-import eigenfaces.EigenFacesDB;
+import gui.components.ConfigAlbumsPane;
+import gui.components.ConfigMenuPane;
+import gui.components.PictureListPane;
+import gui.control.CtrlOpenScene;
 import gui.utils.ImageAlbum;
 
 import java.util.ArrayList;
 
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.control.Button;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
 import javafx.scene.image.ImageView;
-import javafx.scene.paint.Color;
-
-import javafx.stage.FileChooser;
-import javafx.stage.FileChooser.ExtensionFilter;
-import javafx.stage.DirectoryChooser;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 
+public class ConfigPane extends BorderPane {
 
-public class ConfigPane extends VBox {
+	// FileChooser egdbFileChooser = new FileChooser();
 
-    FileChooser egdbFileChooser = new FileChooser();
+	private Gui app;
 
-    private ImageAlbum defaultDB;	//Temporary
+	private ImageAlbum defaultDB; // Temporary
+	private ImageAlbum references;
 
-    private ArrayList<Button> displayRef = new ArrayList<Button>();
+	private HBox titleBox;
+	private HBox loadBtnBox;
+	private ConfigAlbumsPane imageContainer;
+	private ConfigMenuPane actionMenu;
 
-    DirectoryChooser outputDirChooser = new DirectoryChooser();
-	FileChooser outputFileChooser = new FileChooser();
-    DirectoryChooser refDirChooser = new DirectoryChooser();
+	private Button backBtn;
 
-    private ImageAlbum references;
+	private Label errorLabel;
 
-    EigenFacesDB db = null;
-    String refDir = null;
+	private ArrayList<Button> displayRef = new ArrayList<Button>();
 
-    /**/
-    private void createOutputDirChooser() {
-		outputDirChooser.setTitle("Select directory to export to");
+	// DirectoryChooser outputDirChooser = new DirectoryChooser();
+	// FileChooser outputFileChooser = new FileChooser();
+	// DirectoryChooser refDirChooser = new DirectoryChooser();
+
+	// EigenFacesDB db = null;
+	// String refDir = null;
+
+	public ConfigPane(Gui app) {
+		super();
+		this.app = app;
+		// this.getStylesheets().add("../css/configEGDB.css");
+		this.getStylesheets().add(this.getClass().getResource("resources/configEGDB.css").toExternalForm());
+
+		/* Label used to show potential error on EigenPane */
+		this.errorLabel = new Label("No database loaded");
+		this.errorLabel.getStyleClass().add("dbStatusLabel");
+
+		this.titleBox = createTitleBox();
+
+		this.loadBtnBox = createLoadBtnBox();
+
+		VBox topPane = new VBox(this.titleBox, this.loadBtnBox);
+
+		this.imageContainer = new ConfigAlbumsPane(app);
+
+		this.actionMenu = new ConfigMenuPane(this.app);
+		this.backBtn = createBackButton();
+
+		VBox bottom = new VBox(this.actionMenu, this.backBtn);
+		bottom.setAlignment(Pos.CENTER);
+
+		this.setTop(topPane);
+		this.setCenter(this.imageContainer);
+		this.setBottom(bottom);
+
+		// this.getChildren().addAll(this.titleBox, this.loadBtnBox,
+		// this.imageContainer, this.actionMenu);
 	}
 
-	private void createOutputFileChooser() {
-		egdbFileChooser.setTitle("Select file to export to");
-		egdbFileChooser.getExtensionFilters().addAll(new ExtensionFilter("Eigenface Databases (.egdb)", "*.egdb"));
+	public HBox getTitleBox() {
+		return this.titleBox;
 	}
 
-    private void createEgdbFileChooser() {
-		egdbFileChooser.setTitle("Select Eigenface database file");
-		egdbFileChooser.getExtensionFilters().addAll(new ExtensionFilter("Eigenface Databases (.egdb)", "*.egdb"));
+	public Button getBackButton() {
+		return this.backBtn;
 	}
 
-    public HBox createLoadEgdb(Label dbStatusLabel) {
+	public ConfigAlbumsPane getImageList() {
+		return this.imageContainer;
+	}
+
+	public Gui getApp() {
+		return this.app;
+	}
+
+	/**/
+	// private void createOutputDirChooser() {
+	// outputDirChooser.setTitle("Select directory to export to");
+	// }
+
+	// private void createOutputFileChooser() {
+	// egdbFileChooser.setTitle("Select file to export to");
+	// egdbFileChooser.getExtensionFilters().addAll(new ExtensionFilter("Eigenface
+	// Databases (.egdb)", "*.egdb"));
+	// }
+
+	// private void createEgdbFileChooser() {
+	// egdbFileChooser.setTitle("Select Eigenface database file");
+	// egdbFileChooser.getExtensionFilters().addAll(new ExtensionFilter("Eigenface
+	// Databases (.egdb)", "*.egdb"));
+	// }
+
+	public HBox createLoadEgdb() {
 		HBox hb_loadEGDB = new HBox();
 		hb_loadEGDB.getStyleClass().add("hb_loadEGDB");
 		Button btn_loadEGDB = new Button("Load eigenfaces database");
 		btn_loadEGDB.getStyleClass().add("btn1");
-		createEgdbFileChooser();
+		// createEgdbFileChooser();
 		hb_loadEGDB.getChildren().add(btn_loadEGDB);
 		return hb_loadEGDB;
 	}
 
-    public Button createCompileButton(Label compileStatusLabel, Label dbStatusLabel) {
-		Button btn_compile = new Button("Compile");
-		btn_compile.getStyleClass().add("btn2");
-		return btn_compile;
-	}
-
-    public Button createImgOutputButton() {
-		Button btn_imgOutput = new Button("Export images");
-		createOutputDirChooser();
-		btn_imgOutput.getStyleClass().add("btn2");
-		return btn_imgOutput;
-	}
-
-	public Button createDbOutputButton() {
-		Button btn_dbOutput = new Button("Save as EGDB");
-		createOutputFileChooser();
-		btn_dbOutput.getStyleClass().add("btn2");
-		return btn_dbOutput;
-	}
-
-    private void createRefDirChooser() {
-		refDirChooser.setTitle("Select the reference image directory");
-	}
-
-    public Button createRefDirButton() {
-		Button btn_compRef = new Button("Select reference \n image directory");
-		createRefDirChooser();
-		btn_compRef.getStyleClass().add("btn2");
-		return btn_compRef;
-	}
-
-    public VBox createKValue() {
-		Label label = new Label("K value");
-		label.getStyleClass().add("label_kvalue");
-		label.setTextFill(Color.WHITE);
-		TextField tf = new TextField();
-		tf.setText("1");
-		tf.setPrefSize(30,20);
-
-		VBox vb = new VBox();
-		vb.getChildren().addAll(label, tf);
-		return vb;
-	}
-
-    public FlowPane createCompilationMenu(Label dbStatusLabel) {
-		
-		Button btn_compRef = createRefDirButton();
-		Label compileStatusLabel = new Label("");
-		//TODO Make the slider in function of number of files in refDir
-		VBox vb_kValue = createKValue(/*nbrOfFiles*/);
-		Button btn_compile = createCompileButton(compileStatusLabel,dbStatusLabel); 
-		Button btn_imgOutput = createImgOutputButton();
-		Button btn_dbOutput = createDbOutputButton();
-		
-		FlowPane fp_compileEGDB = new FlowPane();
-		fp_compileEGDB.setHgap(75);
-		fp_compileEGDB.setAlignment(Pos.CENTER);
-		fp_compileEGDB.getChildren().addAll(btn_compRef,vb_kValue,btn_compile,btn_imgOutput,btn_dbOutput,compileStatusLabel);
-		
-		return fp_compileEGDB;
-	}
-
-    public FlowPane createEgdbDisplay() {
-		FlowPane display = new FlowPane(10,10);
-		//display.
+	public FlowPane createEgdbDisplay() {
+		FlowPane display = new FlowPane(10, 10);
+		// display.
 		display.setAlignment(Pos.CENTER);
 		if (references != null) {
 			for (int i = 0; i < references.getSize(); i++) {
@@ -154,74 +149,57 @@ public class ConfigPane extends VBox {
 		return display;
 	}
 
-    public GridPane createEigenfacesTable() {
-		GridPane gp_eigenfaces = new GridPane();	
+	public GridPane createEigenfacesTable() {
+		GridPane gp_eigenfaces = new GridPane();
 		gp_eigenfaces.getStyleClass().add("eigenfacesTable");
-		gp_eigenfaces.setPrefSize(400,400);
-		//Background bg = new Background();
-		/*Table of all of the eigenfaces from the loaded database - ImageView*/
-		//TODO
+		gp_eigenfaces.setPrefSize(400, 400);
+		// Background bg = new Background();
+		/* Table of all of the eigenfaces from the loaded database - ImageView */
+		// TODO
 
 		return gp_eigenfaces;
-	} 
+	}
 
+	public Button createBackButton() {
+		Button btn_back = new Button("Go to test Menu");
+		return btn_back;
+	}
 
-    public void setFirstLine(){
-        /*Horizontal Box for the top borderpane*/
-        HBox hb_top = new HBox();
+	public HBox createTitleBox() {
+		/* Horizontal Box for the top borderpane */
+		HBox hb_top = new HBox();
 
-        /*Button to switch scene with Hbox to fit the button*/
-        HBox hb_back = new HBox();
-        hb_back.setSpacing(25);
-        hb_back.getStyleClass().add("hb_back");
-        Button btn_back = new Button("Back");
-
-        /*Title of the window*/
-        Label title = new Label("EIGENFACES DATABASE CONFIGURATION");
+		/* Title of the window */
+		Label title = new Label("EIGENFACES DATABASE CONFIGURATION");
 		title.getStyleClass().add("title");
 
-        /*Adding child to the hbox*/
-        hb_top.getChildren().addAll(btn_back, title);
+		/* Adding child to the hbox */
+		hb_top.getChildren().add(title);
 		hb_top.setAlignment(Pos.CENTER);
 
-        this.getChildren().add(hb_top);
-    }
+		// this.getChildren().add(hb_top);
+		return hb_top;
+	}
 
-    public void setSecondLine(Label dbStatusLabel){
-        /*EGDB loading button*/
-        HBox hb_loadEGDB = createLoadEgdb(dbStatusLabel);
+	public HBox createLoadBtnBox() {
+		/* EGDB loading button */
+		HBox hb_loadEGDB = createLoadEgdb();
 		hb_loadEGDB.setAlignment(Pos.CENTER);
 
-        this.getChildren().add(hb_loadEGDB);
-    }
+		return hb_loadEGDB;
+	}
 
-    public void setThirdLine(){
-        /*EGDB table*/
+	public GridPane createImagesContainer() {
+		/* EGDB table */
 		GridPane gp_eigenfaces = createEigenfacesTable();
-        this.getChildren().add(gp_eigenfaces);
-    }
+		return gp_eigenfaces;
+	}
 
-    public void setFourthLine(Label dbStatusLabel){
-        FlowPane fp_compileEGDB = createCompilationMenu(dbStatusLabel);
-		fp_compileEGDB.setAlignment(Pos.BASELINE_CENTER);
-		fp_compileEGDB.getStyleClass().add("fp_compileEGDB");
-		this.getChildren().add(fp_compileEGDB);
-    }
-
-    public ConfigPane(){
-        super();
-		this.getStylesheets().add("../css/configEGDB.css");
-
-        /*Label used to show potential error on EigenPane*/
-        Label dbStatusLabel = new Label("No database loaded");
-		dbStatusLabel.getStyleClass().add("dbStatusLabel");
-
-        setFirstLine();
-
-        setSecondLine(dbStatusLabel);
-
-        setThirdLine();
-
-        setFourthLine(dbStatusLabel);
-    }
+	public void setupCtrl() {
+		CtrlOpenScene CtrlOpenConfig = new CtrlOpenScene(this.app.getMainStage(),
+				this.getBackButton(),
+				this.app.getEigenScene());
+		this.getBackButton().setOnAction(CtrlOpenConfig);
+		this.actionMenu.setupCtrl();
+	}
 }
