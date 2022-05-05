@@ -1,67 +1,31 @@
 package gui;
 
-import eigenfaces.Compiler;
 import eigenfaces.EigenFacesDB;
-import eigenfaces.Test;
-import eigenfaces.image.ImageSizeMismatchException;
-import eigenfaces.image.ImageVector;
-import eigenfaces.math.KValueOutOfBoundsException;
 import gui.utils.ImageAlbum;
-import gui.utils.Picture;
 
-import java.util.List;
 import java.util.ArrayList;
 
-import org.apache.commons.cli.*;
-
-import javafx.application.Application;
-
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Button;
-import javafx.scene.control.Slider;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.TilePane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Background;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 
-import javafx.stage.Stage;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.DirectoryChooser;
 
-import javafx.event.*;
-import javafx.beans.value.ObservableValue;
-import javafx.beans.value.ChangeListener;
-
-import javafx.geometry.Orientation;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 
-import java.io.File;
-import java.io.IOException;
-
-import javafx.scene.layout.VBox;
 
 public class ConfigPane extends VBox {
-    private boolean isLoadDataBase;
-    private Scene configPane;
 
     FileChooser egdbFileChooser = new FileChooser();
-
-    private Integer kValue;
-	private Integer minKValue = new Integer(1);
-	private Integer maxKValue;
 
     private ImageAlbum defaultDB;	//Temporary
 
