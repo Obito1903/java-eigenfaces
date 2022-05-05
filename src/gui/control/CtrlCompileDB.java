@@ -28,7 +28,6 @@ public class CtrlCompileDB implements EventHandler<ActionEvent>, Observer {
 
     @Override
     public void handle(ActionEvent arg0) {
-        System.out.println("slaut");
         if (this.app.getRefAlbum().getDir() != "") {
             this.app.setEgdb(
                     Compiler.compileDB(this.app.getRefAlbum().getDir(), this.app.getConfigPane().getKValue(),

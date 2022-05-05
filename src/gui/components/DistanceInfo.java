@@ -36,7 +36,6 @@ public class DistanceInfo extends VBox {
             System.out.println(results.get(i).getName());
             System.out.println(pic.getName());
             if (results.get(i).getName().equals(pic.getName())) {
-                System.out.println("salur");
                 this.imageName.setText("Name : " + pic.getName());
                 this.distance.setText("Distance : " + results.get(i).getDistance());
                 break; // I know it's ugly
