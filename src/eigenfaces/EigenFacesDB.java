@@ -77,6 +77,26 @@ public class EigenFacesDB implements Serializable {
         }
     }
 
+    public Vector getAverageFace() {
+        return averageFace;
+    }
+
+    public Matrix getE() {
+        return e;
+    }
+
+    public WeightMatrix getG() {
+        return g;
+    }
+
+    public Integer getWidth() {
+        return width;
+    }
+
+    public Integer getHeight() {
+        return height;
+    }
+
     /**
      * Saves the database to a file
      *

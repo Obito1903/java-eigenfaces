@@ -4,7 +4,7 @@
 	<property name="SRC" value="src"/>
 	<property name="BIN" value="bin"/>
 	<property name="LIB" value="lib"/>
-	<property name="PROG" value="Main"/>
+	<property name="PROG" value="main.Main"/>
 
 	<!-- Defining project classpath -->
 	<path id="project.classpath">
@@ -24,13 +24,13 @@
 	<target name="bin" description="Making bin directory">
 		<mkdir dir="${BIN}"/>
 	</target>
- 
+
 	<target name="compile" description="Compiling classes" depends="bin">
 		<echo message="Compiling..."/>
-		<javac srcdir="${SRC}" 
-				destdir="${BIN}" 
-				debug="on" 
-				optimize="on" 
+		<javac srcdir="${SRC}"
+				destdir="${BIN}"
+				debug="on"
+				optimize="on"
 				deprecation="on"
 				includeAntRuntime="false">
 			<classpath refid="project.classpath"/>
@@ -66,7 +66,7 @@
 	<target name="run" description="Running the program" depends="compile">
 		<java classname="${PROG}" fork="true">
 			<classpath refid="project.classpath"/>
-			<jvmarg value="--module-path=lib"/>
+			<jvmarg value="--module-path=./lib"/>
 			<jvmarg value="--add-modules=javafx.base,javafx.controls,javafx.fxml,javafx.graphics,javafx.media,javafx.swing,javafx.web"/>
 		</java>
 	</target>

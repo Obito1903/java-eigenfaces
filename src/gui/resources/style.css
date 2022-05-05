@@ -1,0 +1,99 @@
+/*Scene 1*/
+
+.recognitionTest{
+	-fx-background-color :   #32353b;
+	-fx-color :  #fdfefe;
+	-fx-text-align : center;
+}
+
+/*Left part*/
+
+.dbStatusLabel{
+	-fx-color : #fdfefe; /*Not working*/
+	-fx-background-color :   #fdfefe;
+	-fx-font-size : 15px;
+}
+
+.hb_match {
+	-fx-padding: 50px 300px 100px 300px;
+}
+
+.testImgDisplay{
+}
+
+.btn_imgTest {
+	-fx-height: 100px;
+	-fx-width: 150px;
+	-fx-font-size: 15px;
+}
+
+.hb_config {	
+	-fx-padding: 15px 200px 15px 200px;
+}
+
+.btn_configEGDB {
+	-fx-text-align : center;
+	-fx-height: 35px;
+	-fx-width: 200px;
+	-fx-font-size : 15px;
+}
+
+.btn_imgFile {	
+	-fx-height:35px;
+	-fx-width:200px;
+	-fx-font-size : 15px;
+}
+
+/*Right part*/
+
+.matchedImgDisplay{
+	-fx-height: 35px;
+	-fx-width: 200px;
+	-fx-background-color : black;
+	-fx-padding : 20px;
+	-fx-border : solid white 2px;
+}
+
+.egdb_display{
+
+}
+
+
+/*Scene 2*/
+
+.hb_back {
+	-fx-padding: 15 0 15 25;
+}
+
+.btn_back {
+	-fx-height: 60;
+	-fx-width: 70;
+}
+
+
+.hb_loadEGDB {
+	-fx-padding: 20 0 20 410;
+}
+
+.btn_loadEGDB {
+	-fx-height: 30;
+	-fx-width: 250;
+}
+
+
+.vb_eigenfaces {
+	/*Temporary*/
+	-fx-padding: 50 200 500 200;
+}
+
+
+.hb_compileEGDB {
+	-fx-padding: 15 150 15 150;
+	-fx-background-color: #336699;
+}
+
+.btn_comp {
+	-fx-height: 50;
+	-fx-width: 220;
+}
+

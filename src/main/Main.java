@@ -1,5 +1,8 @@
+package main;
+
 import eigenfaces.Compiler;
 import eigenfaces.EigenFacesDB;
+import eigenfaces.Test;
 import eigenfaces.image.ImageSizeMismatchException;
 import eigenfaces.image.ImageVector;
 import eigenfaces.math.KValueOutOfBoundsException;

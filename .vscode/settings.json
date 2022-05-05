@@ -1,8 +1,12 @@
 {
-    "java.project.sourcePaths": ["src"],
+    "java.project.sourcePaths": [
+        "src"
+    ],
     "java.project.outputPath": "bin",
     "java.project.referencedLibraries": [
-        "lib/**/*.jar"
+        "lib/**/*.jar",
+        "lib/*.jar"
     ],
-    "svn.ignoreMissingSvnWarning": true
+    "svn.ignoreMissingSvnWarning": true,
+    "java.debug.settings.vmArgs": "--module-path=./lib --add-modules=javafx.base,javafx.controls,javafx.fxml,javafx.graphics,javafx.media,javafx.swing,javafx.web"
 }
