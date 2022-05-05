@@ -2,6 +2,8 @@ package gui.components;
 
 import gui.Gui;
 import gui.control.CtrlCompileDB;
+import gui.control.CtrlExportImages;
+import gui.control.CtrlSaveEgdb;
 import gui.control.CtrlSelectRefDir;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -131,6 +133,12 @@ public class ConfigMenuPane extends FlowPane {
         CtrlCompileDB ctrlCompileDB = new CtrlCompileDB(this.app, this.app.getEigenAlbum());
         this.app.getEigenAlbum().addObserver(ctrlCompileDB);
         this.compileBtn.setOnAction(ctrlCompileDB);
+
+        CtrlExportImages ctrlExportImages = new CtrlExportImages(this.app);
+        this.exportBtn.setOnAction(ctrlExportImages);
+
+        CtrlSaveEgdb ctrlSaveEgdb = new CtrlSaveEgdb(this.app);
+        this.saveEgdbBtn.setOnAction(ctrlSaveEgdb);
 
     }
 }

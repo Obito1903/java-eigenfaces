@@ -43,6 +43,10 @@ public class ImageAlbum extends Observable {
 		this.currentIndex = 0;
 	}
 
+	public void reset() {
+		this.imageSet = new ArrayList<Picture>();
+	}
+
 	public int getSize() {
 		return this.imageSet.size();
 	}
