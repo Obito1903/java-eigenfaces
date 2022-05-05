@@ -8,5 +8,5 @@
         "lib/*.jar"
     ],
     "svn.ignoreMissingSvnWarning": true,
-    "java.debug.settings.vmArgs": "--module-path=./lib --add-modules=javafx.base,javafx.controls,javafx.fxml,javafx.graphics,javafx.media,javafx.swing,javafx.web"
+    "java.debug.settings.vmArgs": "--module-path=./lib/javafx --add-modules=javafx.base,javafx.controls,javafx.fxml,javafx.graphics,javafx.media,javafx.swing,javafx.web"
 }
