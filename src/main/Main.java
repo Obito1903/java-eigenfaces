@@ -18,7 +18,9 @@ import javafx.application.Application;
 
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.control.Button;
+import javafx.scene.control.Slider;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.Border;
@@ -28,6 +30,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Background;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -37,6 +40,8 @@ import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.DirectoryChooser;
 
 import javafx.event.*;
+import javafx.beans.value.ObservableValue;
+import javafx.beans.value.ChangeListener;
 
 import javafx.geometry.Orientation;
 import javafx.geometry.Insets;
@@ -55,6 +60,10 @@ public class Main extends Application {
 	private ImageAlbum references;
 	private ImageAlbum defaultDB;	//Temporary
 	
+	private Integer kValue;
+	private Integer minKValue = new Integer(1);
+	private Integer maxKValue;
+
 	private ImageView imgTest;
 	private ImageView imgRef;
 	private ArrayList<Button> displayRef = new ArrayList<Button>();
@@ -100,7 +109,7 @@ public class Main extends Application {
 	public Button createRefDirButton(Stage primaryStage) {
 		Button btn_compRef = new Button("Select reference image directory");
 		createRefDirChooser();
-		btn_compRef.getStyleClass().add("btn_comp");
+		btn_compRef.getStyleClass().add("btn2");
 		btn_compRef.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
 				/* Select image references folder */
@@ -116,9 +125,30 @@ public class Main extends Application {
 		return btn_compRef;
 	}
 
+	public VBox createKValueSlider() {
+		Label label = new Label("K value");
+		TextField tf = new TextField();
+		tf.setText("1");
+		tf.textProperty().addListener(new ChangeListener<String>() {
+			public void changed(ObservableValue<? extends String> obs, String oldV, String newV) {
+				try {
+					kValue = Integer.parseInt(tf.getText());
+				} catch (Exception e) {
+					if((kValue<minKValue) || (kValue>maxKValue) /*nbr of kvalue max*/) {
+						kValue = minKValue;
+					}
+					System.out.println(e);
+				}
+			}
+		});
+		VBox vb = new VBox();
+		vb.getChildren().addAll(label, tf);
+		return vb;
+	}
+
 	public Button createCompileButton(Stage primaryStage, Label compileStatusLabel, Label dbStatusLabel) {
 		Button btn_compile = new Button("Compile");
-		btn_compile.getStyleClass().add("btn_comp");
+		btn_compile.getStyleClass().add("btn2");
 		btn_compile.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
 				try {
@@ -140,7 +170,7 @@ public class Main extends Application {
 	public Button createImgOutputButton(Stage primaryStage) {
 		Button btn_imgOutput = new Button("Export images");
 		createOutputDirChooser();
-		btn_imgOutput.getStyleClass().add("btn_comp");
+		btn_imgOutput.getStyleClass().add("btn2");
 		btn_imgOutput.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
 				/* Select Output folder */
@@ -159,7 +189,7 @@ public class Main extends Application {
 	public Button createDbOutputButton(Stage primaryStage) {
 		Button btn_dbOutput = new Button("Save as EGDB");
 		createOutputFileChooser();
-		btn_dbOutput.getStyleClass().add("btn_comp");
+		btn_dbOutput.getStyleClass().add("btn2");
 		btn_dbOutput.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
 				/* Select Output folder */
@@ -182,7 +212,8 @@ public class Main extends Application {
 		
 		Button btn_compRef = createRefDirButton(primaryStage);
 		Label compileStatusLabel = new Label("");
-		//TODO create a slider for value of k, make it in function of number of files in refDir
+		//TODO Make the slider in function of number of files in refDir
+		VBox vb_kValue = createKValueSlider(/*nbrOfFiles*/);
 		Button btn_compile = createCompileButton(primaryStage,compileStatusLabel,dbStatusLabel); 
 		Button btn_imgOutput = createImgOutputButton(primaryStage);
 		Button btn_dbOutput = createDbOutputButton(primaryStage);
@@ -191,15 +222,19 @@ public class Main extends Application {
 		fp_compileEGDB.setMargin(btn_compRef, new Insets(20,0,20,20));
 		fp_compileEGDB.setHgap(75);
 		fp_compileEGDB.setAlignment(Pos.CENTER);
-		fp_compileEGDB.getChildren().addAll(btn_compRef,/*slider,*/btn_compile,btn_imgOutput,btn_dbOutput,compileStatusLabel);
+		fp_compileEGDB.getChildren().addAll(btn_compRef,vb_kValue,btn_compile,btn_imgOutput,btn_dbOutput,compileStatusLabel);
 		
 		return fp_compileEGDB;
 	}
 
 	public GridPane createEigenfacesTable() {
 		GridPane gp_eigenfaces = new GridPane();	
+		gp_eigenfaces.getStyleClass().add("eigenfacesTable");
+		gp_eigenfaces.setPrefSize(400,400);
+		//Background bg = new Background();
 		/*Table of all of the eigenfaces from the loaded database - ImageView*/
 		//TODO
+
 		return gp_eigenfaces;
 	}
 
@@ -207,7 +242,7 @@ public class Main extends Application {
 		HBox hb_loadEGDB = new HBox();
 		hb_loadEGDB.getStyleClass().add("hb_loadEGDB");
 		Button btn_loadEGDB = new Button("Load eigenfaces database");
-		btn_loadEGDB.getStyleClass().add("btn_loadEGDB");
+		btn_loadEGDB.getStyleClass().add("btn1");
 		createEgdbFileChooser();
 		btn_loadEGDB.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
@@ -394,9 +429,9 @@ public class Main extends Application {
 		
 		/*EGDB loading button*/
 		HBox hb_loadEGDB = createLoadEgdb(primaryStage, dbStatusLabel);
-
 		/*EGDB table*/
 		GridPane gp_eigenfaces = createEigenfacesTable();
+		/*Compilation menu*/
 		FlowPane fp_compileEGDB = createCompilationMenu(primaryStage, dbStatusLabel);
 		
 		//configEGDB.setTop(hb_loadEGDB);

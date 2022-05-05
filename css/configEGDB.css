@@ -1,3 +1,20 @@
+.root {
+	-fx-font-family: 'JetBrains Mono';
+	-fx-font-size: 20px;
+	-fx-font-weight: bold;
+	-fx-background-color: lightblue;
+}
+
+.btn1 {
+	-fx-height:30;
+	-fx-width:70;
+}
+
+.btn2 {
+	-fx-height:20;
+	-fx-width:60;
+}
+
 .hb_back {
 	-fx-padding: 15 0 15 25;
 }
@@ -17,10 +34,12 @@
 	-fx-width: 250;
 }
 
-
-.vb_eigenfaces {
+.eigenfacesTable {
+	-fx-border-color: #0000;
+	-fx-border-radius: 5px;
+	/*-fx-background-color: #32353;*/
 	/*Temporary*/
-	-fx-padding: 50 200 500 200;
+	-fx-padding: 50 200 50 200;
 }
 
 
@@ -33,4 +52,3 @@
 	-fx-height: 50;
 	-fx-width: 220;
 }
-
