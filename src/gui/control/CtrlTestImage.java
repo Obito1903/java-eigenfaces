@@ -2,15 +2,11 @@ package gui.control;
 
 import java.util.List;
 
-import javax.swing.Action;
-
-import eigenfaces.EigenFacesDB;
 import eigenfaces.Test;
 import eigenfaces.image.ImageVector;
 import eigenfaces.image.VectorWithDistance;
 import gui.Gui;
 import gui.utils.ImageAlbum;
-import gui.utils.Picture;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 

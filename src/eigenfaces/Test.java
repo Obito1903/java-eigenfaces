@@ -46,7 +46,7 @@ public class Test {
 		double[] distances = calculateDistances(db, test);
 
 		// Find the best match
-		List<VectorWithDistance> matches = new ArrayList();
+		List<VectorWithDistance> matches = new ArrayList<VectorWithDistance>();
 		for (int i = 0; i < db.getG().getNbImages(); i++) {
 			if (distances[i] <= threshold) {
 				matches.add(new VectorWithDistance(db.getG().getRow(i), distances[i], db.getG().getNameOf(i)));

@@ -5,7 +5,6 @@ import java.io.File;
 import eigenfaces.image.*;
 import eigenfaces.math.*;
 import javafx.scene.control.Label;
-import javafx.stage.Stage;
 
 public class Compiler {
 

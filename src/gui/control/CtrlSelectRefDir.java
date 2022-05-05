@@ -8,9 +8,7 @@ import gui.Gui;
 import gui.utils.ImageAlbum;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.control.Button;
 import javafx.stage.DirectoryChooser;
-import javafx.stage.Stage;
 
 @SuppressWarnings("deprecation")
 public class CtrlSelectRefDir implements EventHandler<ActionEvent>, Observer {

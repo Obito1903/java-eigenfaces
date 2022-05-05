@@ -6,8 +6,6 @@ import javafx.scene.layout.HBox;
 
 public class ConfigAlbumsPane extends HBox {
 
-    private Gui app;
-
     private PictureListPane refList;
     private PictureListPane eigenList;
 
@@ -16,8 +14,8 @@ public class ConfigAlbumsPane extends HBox {
 
         this.setAlignment(Pos.CENTER);
 
-        this.refList = new PictureListPane(app, "Reference images");
-        this.eigenList = new PictureListPane(app, "Eigen Faces");
+        this.refList = new PictureListPane("Reference images");
+        this.eigenList = new PictureListPane("Eigen Faces");
 
         this.getChildren().addAll(this.refList, this.eigenList);
     }

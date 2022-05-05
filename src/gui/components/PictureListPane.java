@@ -1,6 +1,5 @@
 package gui.components;
 
-import gui.Gui;
 import gui.utils.ImageAlbum;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -10,13 +9,11 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 
 public class PictureListPane extends VBox {
-    private Gui app;
 
     private FlowPane imageList;
 
-    public PictureListPane(Gui app, String name) {
+    public PictureListPane(String name) {
         super();
-        this.app = app;
         this.setAlignment(Pos.CENTER);
 
         this.imageList = createImageList();

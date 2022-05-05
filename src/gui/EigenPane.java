@@ -3,7 +3,6 @@ package gui;
 import gui.components.ResultPane;
 import gui.components.TestFacePane;
 import gui.control.CtrlTestImage;
-import javafx.application.Application;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
