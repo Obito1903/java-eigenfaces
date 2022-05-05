@@ -33,6 +33,7 @@ public class ConfigPane extends BorderPane {
 	private HBox loadBtnBox;
 	private ConfigAlbumsPane imageContainer;
 	private ConfigMenuPane actionMenu;
+	private Label compileStatus;
 
 	private Button backBtn;
 
@@ -60,6 +61,7 @@ public class ConfigPane extends BorderPane {
 		this.titleBox = createTitleBox();
 
 		this.loadBtnBox = createLoadBtnBox();
+		this.compileStatus = new Label("");
 
 		VBox topPane = new VBox(this.titleBox, this.loadBtnBox);
 
@@ -68,7 +70,7 @@ public class ConfigPane extends BorderPane {
 		this.actionMenu = new ConfigMenuPane(this.app);
 		this.backBtn = createBackButton();
 
-		VBox bottom = new VBox(this.actionMenu, this.backBtn);
+		VBox bottom = new VBox(this.compileStatus, this.actionMenu, this.backBtn);
 		bottom.setAlignment(Pos.CENTER);
 
 		this.setTop(topPane);
@@ -89,6 +91,22 @@ public class ConfigPane extends BorderPane {
 
 	public ConfigAlbumsPane getImageList() {
 		return this.imageContainer;
+	}
+
+	public ConfigMenuPane getConfigMenuPane() {
+		return this.actionMenu;
+	}
+
+	public int getKValue() {
+		return this.actionMenu.getKValue();
+	}
+
+	public Label getStatusLabel() {
+		return this.compileStatus;
+	}
+
+	public void setCompileStatus(String value) {
+		this.compileStatus.setText(value);
 	}
 
 	public Gui getApp() {

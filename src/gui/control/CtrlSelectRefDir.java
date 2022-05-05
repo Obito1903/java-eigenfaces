@@ -18,12 +18,10 @@ public class CtrlSelectRefDir implements EventHandler<ActionEvent>, Observer {
     private DirectoryChooser dirChooser;
 
     private ImageAlbum refAlbum;
-    private Button button;
     private Gui app;
 
-    public CtrlSelectRefDir(Gui app, ImageAlbum refAlbum, Button btn) {
+    public CtrlSelectRefDir(Gui app, ImageAlbum refAlbum) {
         this.refAlbum = refAlbum;
-        this.button = btn;
         this.app = app;
         this.dirChooser = new DirectoryChooser();
     }
@@ -31,6 +29,7 @@ public class CtrlSelectRefDir implements EventHandler<ActionEvent>, Observer {
     @Override
     public void update(Observable arg0, Object arg1) {
         this.app.getConfigPane().getImageList().getRefListPane().reloadImageList(this.refAlbum);
+        this.app.getConfigPane().getConfigMenuPane().setMaxKValue(this.app.getRefAlbum().getSize());
     }
 
     @Override

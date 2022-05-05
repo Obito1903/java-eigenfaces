@@ -1,6 +1,7 @@
 package gui.components;
 
 import gui.Gui;
+import gui.control.CtrlCompileDB;
 import gui.control.CtrlSelectRefDir;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -18,7 +19,7 @@ public class ConfigMenuPane extends FlowPane {
 
     private Button refSelectBtn;
     private VBox kValueBox;
-    private Label compileStatus;
+    private Spinner<Integer> kValueSpinner;
     private Button compileBtn;
     private Button exportBtn;
     private Button saveEgdbBtn;
@@ -28,7 +29,6 @@ public class ConfigMenuPane extends FlowPane {
         this.app = app;
 
         this.refSelectBtn = createRefSelectButton();
-        this.compileStatus = new Label("");
         this.kValueBox = createKValue();
         this.compileBtn = createCompileButton();
         this.exportBtn = createImgExportButton();
@@ -47,14 +47,6 @@ public class ConfigMenuPane extends FlowPane {
         return this.refSelectBtn;
     }
 
-    public Label getCompileSatusLabel() {
-        return this.compileStatus;
-    }
-
-    public void setCompileStatus(String value) {
-        this.compileStatus.setText(value);
-    }
-
     public Button getCompileBtn() {
         return this.compileBtn;
     }
@@ -68,8 +60,12 @@ public class ConfigMenuPane extends FlowPane {
     }
 
     public int getKValue() {
-        // TODO
-        return 0;
+        this.kValueSpinner.commitValue();
+        return (Integer) this.kValueSpinner.getValue();
+    }
+
+    public void setMaxKValue(int max) {
+        this.kValueSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, max, 1));
     }
 
     public Gui getApp() {
@@ -85,7 +81,7 @@ public class ConfigMenuPane extends FlowPane {
         // TODO Link max with album size prop
         s.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, this.app.getRefAlbum().getSize(), 1));
         s.setPrefSize(200, 10);
-
+        this.kValueSpinner = s;
         vb.getChildren().addAll(label, s);
         return vb;
     }
@@ -128,8 +124,13 @@ public class ConfigMenuPane extends FlowPane {
     }
 
     public void setupCtrl() {
-        CtrlSelectRefDir ctrlSelectRefDir = new CtrlSelectRefDir(this.app, this.app.getRefAlbum(), this.refSelectBtn);
+        CtrlSelectRefDir ctrlSelectRefDir = new CtrlSelectRefDir(this.app, this.app.getRefAlbum());
         this.app.getRefAlbum().addObserver(ctrlSelectRefDir);
         this.refSelectBtn.setOnAction(ctrlSelectRefDir);
+
+        CtrlCompileDB ctrlCompileDB = new CtrlCompileDB(this.app, this.app.getEigenAlbum());
+        this.app.getEigenAlbum().addObserver(ctrlCompileDB);
+        this.compileBtn.setOnAction(ctrlCompileDB);
+
     }
 }

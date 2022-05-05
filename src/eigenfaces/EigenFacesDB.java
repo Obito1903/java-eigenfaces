@@ -118,12 +118,22 @@ public class EigenFacesDB implements Serializable {
         }
     }
 
-	public ImageVector reconstruct(Vector v, String name) {
-		return new ImageVector(e.multiply(v).getElements(), height, width, name);
-	}
+    public ImageVector reconstruct(Vector v, String name) {
+        return new ImageVector(e.multiply(v).getElements(), height, width, name);
+    }
 
-	public ImageVector reconstruct(int i) {
-		return reconstruct(g.getRow(i), g.getNameOf(i));
-	}
+    public ImageVector reconstruct(int i) {
+        return reconstruct(g.getRow(i), g.getNameOf(i));
+    }
+
+    public ImageVector[] eigenFacesToImageVectors() {
+        ImageVector[] imgList = new ImageVector[this.e.getNbColumn()];
+        for (int i = 0; i < this.e.getNbColumn(); i++) {
+            ImageVector eig = new ImageVector(this.e.getColumn(i).getElements(),
+                    this.height, this.width, "EIGEN_" + i + ".png");
+            imgList[i] = eig.centerReduce();
+        }
+        return imgList;
+    }
 
 }

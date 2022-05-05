@@ -14,10 +14,12 @@ public class ImageAlbum extends Observable {
 	public static final Integer NEW_IMG = new Integer(2); // PAC
 
 	private ArrayList<Picture> imageSet;
+	private String albumDir = "";
 	private int currentIndex; // index de l'image courante
 
 	/* Constructor */
 	public ImageAlbum(String directory) {
+		this.albumDir = directory;
 		this.imageSet = new ArrayList<Picture>();
 		File dirImages = new File(directory);
 		for (String string : dirImages.list()) {
@@ -32,6 +34,7 @@ public class ImageAlbum extends Observable {
 	}
 
 	public void loadDirectory(String directory) {
+		this.albumDir = directory;
 		this.imageSet = new ArrayList<Picture>();
 		File dirImages = new File(directory);
 		for (String string : dirImages.list()) {
@@ -42,6 +45,10 @@ public class ImageAlbum extends Observable {
 
 	public int getSize() {
 		return this.imageSet.size();
+	}
+
+	public String getDir() {
+		return this.albumDir;
 	}
 
 	public void addPicture(String fullpathname) {

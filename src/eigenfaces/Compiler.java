@@ -59,39 +59,45 @@ public class Compiler {
 	 * @return A Database with all the necesary informations to then serch a face
 	 *         inside it
 	 */
-	public static EigenFacesDB compileDB(final String dbPath, final int k, Label status, Stage s) {
+	public static EigenFacesDB compileDB(final String dbPath, final int k, Label status) {
 		status.setText("Reading reference database at " + dbPath);
-		s.show();
+		System.out.println("Reading reference database at " + dbPath);
 		ImageVector[] images = readImages(dbPath);
 
 		// Compute the mean image
 		status.setText("Generating average face.");
-		s.show();
+		System.out.println("Generating average face.");
 		Vector averageFace = PCA.averageFace(images);
 
 		// Center the images
 		status.setText("Centering images.");
-		s.show();
+		System.out.println("Centering images.");
+
 		ImageVector[] centeredImages = centerImages(images, averageFace);
 		status.setText("Images Centered.");
-		s.show();
+		System.out.println("Images Centered.");
+
 		// ImageVector[] centeredImages = images;
 
 		// Compute the eigenfaces
 		status.setText("Generating eigenface matrix.");
-		s.show();
+		System.out.println("Generating eigenface matrix.");
+
 		Matrix e = PCA.eMatrix(centeredImages, k, false);
 		status.setText("Eigenface matrix generated.");
-		s.show();
+		System.out.println("Eigenface matrix generated.");
 
 		// Compute the weight matrix
 		status.setText("Generating weight matrix.");
-		s.show();
+		System.out.println("Generating weight matrix.");
+
 		WeightMatrix g = new WeightMatrix(e, centeredImages);
 		// Is it really worthwhile to show those?
 		// status.setText("G dimensions: " + g.getNbRow() + "x" + g.getNbColumn());
 		// status.setText("E dimensions: " + e.getNbRow() + "x" + e.getNbColumn());
 		status.setText("Database compiled successfully");
+		System.out.println("Database compiled successfully");
+
 		return new EigenFacesDB(averageFace, e, g, images[0].getWidth(), images[0].getHeight());
 	}
 

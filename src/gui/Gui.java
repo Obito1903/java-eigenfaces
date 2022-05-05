@@ -2,6 +2,7 @@ package gui;
 
 import java.util.List;
 
+import eigenfaces.EigenFacesDB;
 import eigenfaces.image.VectorWithDistance;
 import gui.control.CtrlOpenScene;
 import gui.utils.ImageAlbum;
@@ -10,12 +11,14 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class Gui extends Application {
+
+    private List<VectorWithDistance> results;
+    private EigenFacesDB egdb;
+
     /**
      * Album of eigenfaces images
      */
     private ImageAlbum eigenfaces;
-
-    private List<VectorWithDistance> results;
 
     /**
      * Album of reference images
@@ -63,6 +66,10 @@ public class Gui extends Application {
         return this.references;
     }
 
+    public ImageAlbum getEigenAlbum() {
+        return this.eigenfaces;
+    }
+
     public Stage getMainStage() {
         return mainStage;
     }
@@ -85,6 +92,14 @@ public class Gui extends Application {
 
     public List<VectorWithDistance> getTestResults() {
         return this.results;
+    }
+
+    public EigenFacesDB getEgdb() {
+        return this.egdb;
+    }
+
+    public void setEgdb(EigenFacesDB egdb) {
+        this.egdb = egdb;
     }
 
     // TEST
