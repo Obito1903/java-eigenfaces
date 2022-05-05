@@ -33,6 +33,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Background;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
 
 import javafx.stage.Stage;
 import javafx.stage.FileChooser;
@@ -107,7 +108,7 @@ public class Main extends Application {
 
 
 	public Button createRefDirButton(Stage primaryStage) {
-		Button btn_compRef = new Button("Select reference image directory");
+		Button btn_compRef = new Button("Select reference \n image directory");
 		createRefDirChooser();
 		btn_compRef.getStyleClass().add("btn2");
 		btn_compRef.setOnAction(new EventHandler<ActionEvent>() {
@@ -125,10 +126,13 @@ public class Main extends Application {
 		return btn_compRef;
 	}
 
-	public VBox createKValueSlider() {
+	public VBox createKValue() {
 		Label label = new Label("K value");
+		label.getStyleClass().add("label_kvalue");
+		label.setTextFill(Color.WHITE);
 		TextField tf = new TextField();
 		tf.setText("1");
+		tf.setPrefSize(30,20);
 		tf.textProperty().addListener(new ChangeListener<String>() {
 			public void changed(ObservableValue<? extends String> obs, String oldV, String newV) {
 				try {
@@ -213,13 +217,12 @@ public class Main extends Application {
 		Button btn_compRef = createRefDirButton(primaryStage);
 		Label compileStatusLabel = new Label("");
 		//TODO Make the slider in function of number of files in refDir
-		VBox vb_kValue = createKValueSlider(/*nbrOfFiles*/);
+		VBox vb_kValue = createKValue(/*nbrOfFiles*/);
 		Button btn_compile = createCompileButton(primaryStage,compileStatusLabel,dbStatusLabel); 
 		Button btn_imgOutput = createImgOutputButton(primaryStage);
 		Button btn_dbOutput = createDbOutputButton(primaryStage);
 		
 		FlowPane fp_compileEGDB = new FlowPane();
-		fp_compileEGDB.setMargin(btn_compRef, new Insets(20,0,20,20));
 		fp_compileEGDB.setHgap(75);
 		fp_compileEGDB.setAlignment(Pos.CENTER);
 		fp_compileEGDB.getChildren().addAll(btn_compRef,vb_kValue,btn_compile,btn_imgOutput,btn_dbOutput,compileStatusLabel);
@@ -416,27 +419,29 @@ public class Main extends Application {
 		
 	/*Scene2*/
 		HBox hb_back = new HBox();
-		hb_back.getStyleClass().add("hb_back");
+		hb_back.setSpacing(25);
+		hb_back.getStyleClass().add("hb_top");
 		Button btn_back = new Button("Back");
-		btn_back.getStyleClass().add("btn_back");
 		btn_back.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
 				primaryStage.setScene(scene1);
 				// (perhaps use windows instead of scene changes - to be discussed)
 			}
 		});
-		hb_back.getChildren().add(btn_back);
+		Label title = new Label("EIGENFACES DATABASE CONFIGURATION");
+		title.getStyleClass().add("title");
+		hb_back.getChildren().addAll(btn_back, title);
+		hb_back.setAlignment(Pos.CENTER);
 		
 		/*EGDB loading button*/
 		HBox hb_loadEGDB = createLoadEgdb(primaryStage, dbStatusLabel);
+		hb_loadEGDB.setAlignment(Pos.CENTER);
 		/*EGDB table*/
 		GridPane gp_eigenfaces = createEigenfacesTable();
 		/*Compilation menu*/
 		FlowPane fp_compileEGDB = createCompilationMenu(primaryStage, dbStatusLabel);
-		
-		//configEGDB.setTop(hb_loadEGDB);
-		//configEGDB.setCenter(gp_eigenfaces);
-		//configEGDB.setBottom(fp_compileEGDB);
+		fp_compileEGDB.setAlignment(Pos.BASELINE_CENTER);
+		fp_compileEGDB.getStyleClass().add("fp_compileEGDB");
 		configEGDB.getChildren().addAll(hb_back, hb_loadEGDB, gp_eigenfaces, fp_compileEGDB);
 
 	/*Scenes*/

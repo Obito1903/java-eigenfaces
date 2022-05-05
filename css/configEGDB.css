@@ -5,6 +5,14 @@
 	-fx-background-color: lightblue;
 }
 
+.hb_top {
+	-fx-padding: 20 0 20 0;
+}
+
+.title {
+	-fx-font-size: 38px;
+}
+
 .btn1 {
 	-fx-height:30;
 	-fx-width:70;
@@ -15,25 +23,6 @@
 	-fx-width:60;
 }
 
-.hb_back {
-	-fx-padding: 15 0 15 25;
-}
-
-.btn_back {
-	-fx-height: 60;
-	-fx-width: 70;
-}
-
-
-.hb_loadEGDB {
-	-fx-padding: 20 0 20 410;
-}
-
-.btn_loadEGDB {
-	-fx-height: 30;
-	-fx-width: 250;
-}
-
 .eigenfacesTable {
 	-fx-border-color: #0000;
 	-fx-border-radius: 5px;
@@ -42,13 +31,12 @@
 	-fx-padding: 50 200 50 200;
 }
 
-
 .fp_compileEGDB {
-	-fx-padding: 15 150 15 150;
+	-fx-padding: 50 20 50 20;
 	-fx-background-color: #336699;
 }
 
-.btn_comp {
-	-fx-height: 50;
-	-fx-width: 220;
+.label_kvalue {
+	-fx-padding: 0 0 15 0;
+	-fx-color: white;
 }
