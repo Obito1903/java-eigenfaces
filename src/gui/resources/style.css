@@ -1,25 +1,24 @@
 /*Scene 1*/
 
-.recognitionTest{
-	-fx-background-color :   #32353b;
-	-fx-color :  #fdfefe;
-	-fx-text-align : center;
+.recognitionTest {
+	-fx-background-color: #32353b;
+	-fx-color: #fdfefe;
 }
 
 /*Left part*/
 
-.dbStatusLabel{
-	-fx-color : #fdfefe; /*Not working*/
-	-fx-background-color :   #fdfefe;
-	-fx-font-size : 15px;
+.dbStatusLabel {
+	-fx-color: #fdfefe;
+	/*Not working*/
+	-fx-background-color: #fdfefe;
+	-fx-font-size: 15px;
 }
 
 .hb_match {
 	-fx-padding: 50px 300px 100px 300px;
 }
 
-.testImgDisplay{
-}
+.testImgDisplay {}
 
 .btn_imgTest {
 	-fx-height: 100px;
@@ -27,43 +26,37 @@
 	-fx-font-size: 15px;
 }
 
-.hb_config {	
+.hb_config {
 	-fx-padding: 15px 200px 15px 200px;
 }
 
 .btn_configEGDB {
-	-fx-text-align : center;
+	-fx-text-align: center;
 	-fx-height: 35px;
 	-fx-width: 200px;
-	-fx-font-size : 15px;
+	-fx-font-size: 15px;
 }
 
-.btn_imgFile {	
-	-fx-height:35px;
-	-fx-width:200px;
-	-fx-font-size : 15px;
+.btn_imgFile {
+	-fx-height: 35px;
+	-fx-width: 200px;
+	-fx-font-size: 15px;
 }
 
 /*Right part*/
 
-.matchedImgDisplay{
+.matchedImgDisplay {
 	-fx-height: 35px;
 	-fx-width: 200px;
-	-fx-background-color : black;
-	-fx-padding : 20px;
-	-fx-border : solid white 2px;
+	-fx-background-color: black;
+	-fx-padding: 20px;
+	-fx-border: solid white 2px;
 }
 
-.egdb_display{
-
-}
+.egdb_display {}
 
 
 /*Scene 2*/
-
-.hb_back {
-	-fx-padding: 15 0 15 25;
-}
 
 .btn_back {
 	-fx-height: 60;
@@ -76,7 +69,7 @@
 }
 
 .btn_loadEGDB {
-	-fx-height: 30;
+	-fx-height: cock;
 	-fx-width: 250;
 }
 
@@ -84,6 +77,10 @@
 .vb_eigenfaces {
 	/*Temporary*/
 	-fx-padding: 50 200 500 200;
+}
+
+.quoi {
+	feur:  !important
 }
 
 
@@ -96,4 +93,3 @@
 	-fx-height: 50;
 	-fx-width: 220;
 }
-
