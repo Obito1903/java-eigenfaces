@@ -67,4 +67,8 @@ public class ResultPane extends BorderPane {
         this.imgView.setImage(pic.getImage());
     }
 
+    public void setupCtrl() {
+
+    }
+
 }

@@ -4,7 +4,6 @@ import java.util.Observable;
 import java.util.Observer;
 
 import eigenfaces.Compiler;
-import eigenfaces.EigenFacesDB;
 import eigenfaces.image.ImageVector;
 import gui.Gui;
 import gui.utils.ImageAlbum;

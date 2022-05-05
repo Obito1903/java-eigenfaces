@@ -1,5 +1,7 @@
 package gui.control;
 
+import java.nio.file.Path;
+
 import eigenfaces.Compiler;
 import gui.Gui;
 import javafx.event.ActionEvent;
@@ -14,12 +16,15 @@ public class CtrlExportImages implements EventHandler<ActionEvent> {
 
     public CtrlExportImages(Gui app) {
         this.app = app;
+        this.dirChooser = new DirectoryChooser();
     }
 
     @Override
     public void handle(ActionEvent event) {
-        Compiler.saveImages(this.app.getEgdb(), path);
-        ;
+        Path dirPath = this.dirChooser.showDialog(this.app.getMainStage()).toPath();
+
+        Compiler.saveImages(this.app.getEgdb(), dirPath.toString());
+
     }
 
 }

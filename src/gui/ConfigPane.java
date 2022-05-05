@@ -3,6 +3,7 @@ package gui;
 import gui.components.ConfigAlbumsPane;
 import gui.components.ConfigMenuPane;
 import gui.components.PictureListPane;
+import gui.control.CtrlOpenEgdb;
 import gui.control.CtrlOpenScene;
 import gui.utils.ImageAlbum;
 
@@ -36,6 +37,7 @@ public class ConfigPane extends BorderPane {
 	private Label compileStatus;
 
 	private Button backBtn;
+	private Button loadBtn;
 
 	private Label errorLabel;
 
@@ -135,6 +137,7 @@ public class ConfigPane extends BorderPane {
 		hb_loadEGDB.getStyleClass().add("hb_loadEGDB");
 		Button btn_loadEGDB = new Button("Load eigenfaces database");
 		btn_loadEGDB.getStyleClass().add("btn1");
+		this.loadBtn = btn_loadEGDB;
 		// createEgdbFileChooser();
 		hb_loadEGDB.getChildren().add(btn_loadEGDB);
 		return hb_loadEGDB;
@@ -219,5 +222,8 @@ public class ConfigPane extends BorderPane {
 				this.app.getEigenScene());
 		this.getBackButton().setOnAction(CtrlOpenConfig);
 		this.actionMenu.setupCtrl();
+
+		CtrlOpenEgdb ctrlOpenEgdb = new CtrlOpenEgdb(this.app);
+		this.loadBtn.setOnAction(ctrlOpenEgdb);
 	}
 }
