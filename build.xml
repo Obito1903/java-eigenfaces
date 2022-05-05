@@ -9,6 +9,7 @@
 	<!-- Defining project classpath -->
 	<path id="project.classpath">
 		<pathelement location="${BIN}"/>
+		<pathelement location="${SRC}"/>
 		<fileset dir="${LIB}">
 			<include name="**/*.jar"/>
 		</fileset>

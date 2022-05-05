@@ -53,7 +53,7 @@ public class Test {
 			}
 		}
 
-		Collections.sort(matches, Collections.reverseOrder());
+		Collections.sort(matches);
 
 		return matches;
 	}
