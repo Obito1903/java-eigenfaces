@@ -29,7 +29,7 @@ public class ImageAlbum extends Observable {
 	public ImageAlbum() {
 		this.imageSet = new ArrayList<Picture>();
 		for (int i = 0; i < 5; i++) {
-			this.addPicture("file:gaspard_le_fantome.jpg");
+			this.addPicture("file:Clement_Bertails_3.jpg");
 		}
 		this.currentIndex = 0;
 	}
