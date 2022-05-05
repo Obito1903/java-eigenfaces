@@ -1,20 +1,24 @@
 package gui.components;
 
+import gui.Gui;
+import gui.control.CtrlOpenScene;
 import gui.utils.Picture;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 
 public class TestFacePane extends BorderPane {
+
+    private Gui app;
 
     private HBox topButtons;
     private ImageView imgView;
 
-    public TestFacePane() {
+    public TestFacePane(Gui app) {
         super();
+        this.app = app;
         // Debug
         // this.setStyle("-fx-background-color: #FF0000;");
 
@@ -23,6 +27,13 @@ public class TestFacePane extends BorderPane {
 
         this.setTop(this.topButtons);
         this.setCenter(this.imgView);
+    }
+
+    public void setupCtrl() {
+        CtrlOpenScene CtrlOpenConfig = new CtrlOpenScene(this.app.getMainStage(),
+                this.getConfigBtn(),
+                this.app.getConfigScene());
+        this.getConfigBtn().setOnAction(CtrlOpenConfig);
     }
 
     private ImageView createImageView() {
@@ -52,5 +63,9 @@ public class TestFacePane extends BorderPane {
 
     public void setPicture(Picture pic) {
         this.imgView.setImage(pic.getImage());
+    }
+
+    public Button getConfigBtn() {
+        return (Button) this.topButtons.getChildren().get(0);
     }
 }

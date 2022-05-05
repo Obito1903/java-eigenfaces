@@ -28,8 +28,14 @@ public class ImageAlbum extends Observable {
 
 	public ImageAlbum() {
 		this.imageSet = new ArrayList<Picture>();
-		for (int i = 0; i < 5; i++) {
-			this.addPicture("file:Clement_Bertails_3.jpg");
+		this.currentIndex = 0;
+	}
+
+	public void loadDirectory(String directory) {
+		this.imageSet = new ArrayList<Picture>();
+		File dirImages = new File(directory);
+		for (String string : dirImages.list()) {
+			this.addPicture("file:" + directory + "/" + string);
 		}
 		this.currentIndex = 0;
 	}

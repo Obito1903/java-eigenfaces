@@ -1,5 +1,6 @@
 package gui.components;
 
+import gui.Gui;
 import gui.utils.ImageAlbum;
 import gui.utils.Picture;
 import javafx.geometry.Pos;
@@ -11,21 +12,27 @@ import javafx.scene.layout.HBox;
 
 public class ResultPane extends BorderPane {
 
+    private Gui app;
+
     private ScrollPane topIcons;
     private HBox btnList;
     private ImageView imgView;
+    private DistanceInfo distBox;
 
-    public ResultPane() {
+    public ResultPane(Gui app) {
         super();
+        this.app = app;
         // Debug
         // this.setStyle("-fx-background-color: #00FF00;");
 
         this.imgView = createImageView();
         this.btnList = createBtnBox();
         this.topIcons = new ScrollPane(this.btnList);
+        this.distBox = new DistanceInfo(this.app);
 
         this.setCenter(this.imgView);
         this.setTop(this.topIcons);
+        this.setBottom(this.distBox);
     }
 
     private ImageView createImageView() {
