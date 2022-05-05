@@ -17,13 +17,7 @@ public class Gui extends Application {
 
     @Override
     public void start(Stage mainStage) throws Exception {
-        // TODO Auto-generated method stub
-        mainStage.setTitle("Facial recognition");
-
-        ConfigScene configScene = new ConfigScene(1280, 720);
-
-        mainStage.setScene(configScene);
-        mainStage.show();
+        // TODO
     }
 
     // TEST
