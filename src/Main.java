@@ -20,6 +20,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
 import javafx.scene.image.Image;
@@ -42,13 +43,17 @@ import java.io.IOException;
 public class Main extends Application {
 
 	/*Class attributes of the different sources in the scene*/
+	private Scene scene1;
+	private Scene scene2;
+
 	private ImageDatabase eigenfaces;
 	private ImageDatabase references;
-	private ImageDatabase defaultDB;
-	private ArrayList<Button> displayRef;
+	private ImageDatabase defaultDB;	//Temporary
+	
 	private ImageView imgTest;
 	private ImageView imgRef;
-	
+	private ArrayList<Button> displayRef = new ArrayList<Button>();
+
 	FileChooser egdbFileChooser = new FileChooser();
 	DirectoryChooser refDirChooser = new DirectoryChooser();
 	DirectoryChooser outputDirChooser = new DirectoryChooser();
@@ -81,10 +86,12 @@ public class Main extends Application {
 		egdbFileChooser.getExtensionFilters().addAll(new ExtensionFilter("Eigenface Databases (.egdb)", "*.egdb"));
 	}
 
+
 	private void createTestFileChooser() {
 		testFileChooser.setTitle("Select image to test");
 		testFileChooser.getExtensionFilters().addAll(new ExtensionFilter("Image", "*.png", "*.jpg", "*.jpeg"));
 	}
+
 
 	public Button createRefDirButton(Stage primaryStage) {
 		Button btn_compRef = new Button("Select reference image directory");
@@ -167,32 +174,60 @@ public class Main extends Application {
 		return btn_dbOutput;
 	}
 	
-	public HBox createCompilationMenu(Stage primaryStage, Label dbStatusLabel) {
-		HBox hb_compileEGDB = new HBox();
-		hb_compileEGDB.getStyleClass().add("hb_compEGDB");
-		hb_compileEGDB.setSpacing(120);
+	public FlowPane createCompilationMenu(Stage primaryStage, Label dbStatusLabel) {
 		
 		Button btn_compRef = createRefDirButton(primaryStage);
 		Label compileStatusLabel = new Label("");
 		//TODO create a slider for value of k, make it in function of number of files in refDir
-		Button btn_compile = createCompileButton(primaryStage, compileStatusLabel, dbStatusLabel); 
-		Button btn_imgOutput = createImgOutputButton(primaryStage);	
+		Button btn_compile = createCompileButton(primaryStage,compileStatusLabel,dbStatusLabel); 
+		Button btn_imgOutput = createImgOutputButton(primaryStage);
 		Button btn_dbOutput = createDbOutputButton(primaryStage);
-
-		hb_compileEGDB.getChildren().addAll(btn_compRef, btn_compile, btn_imgOutput, btn_dbOutput, compileStatusLabel);
-		return hb_compileEGDB;
+		
+		FlowPane fp_compileEGDB = new FlowPane();
+		fp_compileEGDB.setMargin(btn_compRef, new Insets(20,0,20,20));
+		fp_compileEGDB.setHgap(75);
+		fp_compileEGDB.setAlignment(Pos.CENTER);
+		fp_compileEGDB.getChildren().addAll(btn_compRef,/*slider,*/btn_compile,btn_imgOutput,btn_dbOutput,compileStatusLabel);
+		
+		return fp_compileEGDB;
 	}
 
-	public VBox createEigenfacesTable() {
-		VBox vb_eigenfaces = new VBox();	
-		vb_eigenfaces.getStyleClass().add("vb_eigenfaces");
+	public GridPane createEigenfacesTable() {
+		GridPane gp_eigenfaces = new GridPane();	
 		/*Table of all of the eigenfaces from the loaded database - ImageView*/
 		//TODO
-		return vb_eigenfaces;
+		return gp_eigenfaces;
+	}
+
+	public HBox createLoadEgdb(Stage primaryStage, Label dbStatusLabel) {
+		HBox hb_loadEGDB = new HBox();
+		hb_loadEGDB.getStyleClass().add("hb_loadEGDB");
+		Button btn_loadEGDB = new Button("Load eigenfaces database");
+		btn_loadEGDB.getStyleClass().add("btn_loadEGDB");
+		createEgdbFileChooser();
+		btn_loadEGDB.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent event) {
+				/*Select EGDB folder*/
+				try {
+					db = new EigenFacesDB(egdbFileChooser.showOpenDialog(primaryStage).getAbsolutePath());
+					dbStatusLabel.setText("Database loaded (" + db.g.getNbRow() + " images)");
+				} catch (NullPointerException e) {
+					//Do nothing
+				} catch (Exception e) {
+					Alert error = new Alert(AlertType.ERROR, e.toString());
+					error.setHeight(300);
+					error.setWidth(533);
+					error.showAndWait();
+				}
+			}
+		});
+		hb_loadEGDB.getChildren().add(btn_loadEGDB);
+		return hb_loadEGDB;
 	}
 
 	public FlowPane createEgdbDisplay() {
 		FlowPane display = new FlowPane(10,10);
+		//display.
 		display.setAlignment(Pos.CENTER);
 		if (references != null) {
 			for(int i = 0; i < references.getSize(); i++) {
@@ -217,52 +252,7 @@ public class Main extends Application {
 		return display;
 	}
 
-	public FlowPane createImgDisplay() {
-		FlowPane paneDisplay = new FlowPane(10,10);
-		paneDisplay.setAlignment(Pos.BASELINE_LEFT);
-		paneDisplay.setPrefSize(177,250);
-		//TODO
-		//if references != null then display current image in 'references' ImageDatabase object
-		//control + observer
-		paneDisplay.getChildren().add(imgRef);
-		return paneDisplay;
-	}
-
-	@Override
-	public void start(Stage primaryStage) {
-		/*Title of the scene*/
-		primaryStage.setTitle("Facial Recognition");
-		primaryStage.setFullScreen(true); 
-		//Benjamin say : C'est horrrible le fullscreen
-		//Opinion rejected
-		defaultDB = new ImageDatabase();
-		imgRef = new ImageView(defaultDB.getCurrentPicture().getImage());
-		displayRef = new ArrayList<Button>();
-		
-		/*Scene 1 layout, panes & labels*/
-		BorderPane recognitionTest = new BorderPane();
-		BorderPane leftTest = new BorderPane();
-		BorderPane rightTest = new BorderPane();
-		
-		Scene scene1 = new Scene(recognitionTest, 1280, 720);
-		scene1.getStylesheets().add("../css/recognition.css");
-		recognitionTest.getStyleClass().add("recognitionTest");
-		
-		Label dbStatusLabel = new Label("No database loaded");
-		dbStatusLabel.getStyleClass().add("dbStatusLabel");
-
-		/*Scene 2 panes & layout*/
-		VBox configEGDB = new VBox();
-		Scene scene2 = new Scene(configEGDB, 1280, 720);
-		scene2.getStylesheets().add("../css/configEGDB.css");
-
-	/*Scene1*/
-		/*Left window*/
-		ImageView testImgDisplay = new ImageView(/*img url selected*/);
-		
-		HBox hb_match = new HBox();
-		hb_match.getStyleClass().add("hb_match");
-		
+	public Button createBtnImgTest() {	
 		Button btn_imgTest = new Button("Test");
 		btn_imgTest.getStyleClass().add("btn_imgTest");
 		btn_imgTest.setOnAction(new EventHandler<ActionEvent>() {
@@ -284,21 +274,21 @@ public class Main extends Application {
 				}
 			}
 		});
-		
-		hb_match.getChildren().add(btn_imgTest);
+		return btn_imgTest;
+	}
 
-		HBox hb_config = new HBox();
-		hb_config.getStyleClass().add("hb_config");
-		hb_config.setSpacing(50);
-
+	public Button createBtnConfigEgdb(Stage primaryStage, Scene scene) {
 		Button btn_configEGDB = new Button("Databases\n(Compile/Load/View)");
 		btn_configEGDB.getStyleClass().add("btn_configEGDB");
 		btn_configEGDB.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
-				primaryStage.setScene(scene2);
+				primaryStage.setScene(scene);
 			}
 		});
+		return btn_configEGDB;
+	}
 
+	public Button createBtnImgFile(Stage primaryStage) {
 		Button btn_imgFile = new Button("Image to test"); 
 		createTestFileChooser();
 		btn_imgFile.getStyleClass().add("btn_imgFile");
@@ -306,22 +296,71 @@ public class Main extends Application {
 			public void handle(ActionEvent event) {
 				/*filechooser - image the user wants to test*/
 				File f = testFileChooser.showOpenDialog(primaryStage);
-				testImg = f.getAbsolutePath();
-				testImgDisplay.setImage(new Image(f.toURI().toString()));
+				//testImg = f.getAbsolutePath();
+				imgTest.setImage(new Image(f.toURI().toString()));
 			}
 		});
+		return btn_imgFile;
+	}
 
+
+	public FlowPane createImgDisplay(ImageView display) {
+		FlowPane paneDisplay = new FlowPane(10,10);
+		paneDisplay.setAlignment(Pos.CENTER);
+		paneDisplay.setPrefSize(177,250);
+		//TODO
+		//if references != null then display current image in 'references' ImageDatabase object
+		//control + observer
+		if (display!=null) {
+			paneDisplay.getChildren().add(display);
+		}
+		return paneDisplay;
+	}
+
+	@Override
+	public void start(Stage primaryStage) {
+		/*Title of the scene*/
+		primaryStage.setTitle("Facial Recognition"); 	 
+		
+		//Default value
+		defaultDB = new ImageDatabase();
+		imgRef = new ImageView(defaultDB.getCurrentPicture().getImage());
+		
+		BorderPane recognitionTest = new BorderPane();
+		recognitionTest.getStyleClass().add("recognitionTest");
+		BorderPane leftTest = new BorderPane();
+		BorderPane rightTest = new BorderPane();
+		
+		Label dbStatusLabel = new Label("No database loaded");
+		dbStatusLabel.getStyleClass().add("dbStatusLabel");
+		VBox configEGDB = new VBox();
+
+
+	/*Scene1*/
+		/*Left window*/
+		HBox hb_config = new HBox();
+		hb_config.getStyleClass().add("hb_config");
+		hb_config.setSpacing(50);
+		Button btn_configEGDB = createBtnConfigEgdb(primaryStage,scene2);
+		Button btn_imgFile = createBtnImgFile(primaryStage);
 		hb_config.getChildren().addAll(dbStatusLabel, btn_configEGDB, btn_imgFile);
+		
+		FlowPane displayImgTest = createImgDisplay(imgTest);
+
+		HBox hb_match = new HBox();
+		hb_match.getStyleClass().add("hb_match"); 
+		Button btn_imgTest = createBtnImgTest();
+		hb_match.getChildren().add(btn_imgTest);
 
 		leftTest.setTop(hb_config);
-		leftTest.setCenter(testImgDisplay);
+		leftTest.setCenter(displayImgTest);
 		leftTest.setBottom(hb_match);
 
-		/*Right*/
+		/*Right window*/
 		FlowPane egdbDisplay = createEgdbDisplay();
 		egdbDisplay.getStyleClass().add("egdbDisplay");
 
-		FlowPane matchedImgDisplay = createImgDisplay();
+		FlowPane matchedImgDisplay = createImgDisplay(imgRef);
 		matchedImgDisplay.getStyleClass().add("matchedImgDisplay");
 		
 		//TODO distance
@@ -334,7 +373,7 @@ public class Main extends Application {
 		recognitionTest.setLeft(leftTest);
 		
 	/*Scene2*/
-		/*Return button*/	
+		/*Return button - temporary -> scene1 accessible through compilation*/	
 		HBox hb_back = new HBox();
 		hb_back.getStyleClass().add("hb_back");
 		Button btn_back = new Button("Back");
@@ -348,36 +387,27 @@ public class Main extends Application {
 		hb_back.getChildren().add(btn_back);
 		
 		/*EGDB loading button*/
-		HBox hb_loadEGDB = new HBox();
-		hb_loadEGDB.getStyleClass().add("hb_loadEGDB");
-		Button btn_loadEGDB = new Button("Load eigenfaces database");
-		btn_loadEGDB.getStyleClass().add("btn_loadEGDB");
-		createEgdbFileChooser();
-		btn_loadEGDB.setOnAction(new EventHandler<ActionEvent>() {
-			public void handle(ActionEvent event) {
-				/*Select EGDB folder*/
-				try {
-					db = new EigenFacesDB(egdbFileChooser.showOpenDialog(primaryStage).getAbsolutePath());
-					dbStatusLabel.setText("Database loaded (" + db.g.getNbRow() + " images)");
-				} catch (NullPointerException e) {
-					//Do nothing
-				} catch (Exception e) {
-					Alert error = new Alert(AlertType.ERROR, e.toString());
-					error.setHeight(300);
-					error.setWidth(533);
-					error.showAndWait();
-				}
-			}
-		});
-		hb_loadEGDB.getChildren().add(btn_loadEGDB);
-		
+		HBox hb_loadEGDB = createLoadEgdb(primaryStage, dbStatusLabel);
+
 		/*EGDB table*/
-		VBox vb_eigenfaces = createEigenfacesTable();
-		HBox hb_compileEGDB = createCompilationMenu(primaryStage, dbStatusLabel);
-		configEGDB.getChildren().addAll(hb_back, hb_loadEGDB, vb_eigenfaces, hb_compileEGDB);
+		GridPane gp_eigenfaces = createEigenfacesTable();
+		FlowPane fp_compileEGDB = createCompilationMenu(primaryStage, dbStatusLabel);
+		
+		//configEGDB.setTop(hb_loadEGDB);
+		//configEGDB.setCenter(gp_eigenfaces);
+		//configEGDB.setBottom(fp_compileEGDB);
+		configEGDB.getChildren().addAll(hb_back, hb_loadEGDB, gp_eigenfaces, fp_compileEGDB);
 
+	/*Scenes*/
+		/*Scene 1: layout, panes & labels*/	
+		scene1 = new Scene(recognitionTest, 1280, 720);	
+		scene1.getStylesheets().add("../css/recognition.css");
 
-		primaryStage.setScene(scene1);
+		/*Scene 2 panes & layout*/
+		scene2 = new Scene(configEGDB, 1280, 720);
+		scene2.getStylesheets().add("../css/configEGDB.css");
+
+		primaryStage.setScene(scene2);
 		primaryStage.show();
 	}
-}	
+}
