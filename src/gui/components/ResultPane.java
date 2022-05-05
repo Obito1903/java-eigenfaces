@@ -3,10 +3,14 @@ package gui.components;
 import gui.Gui;
 import gui.utils.ImageAlbum;
 import gui.utils.Picture;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 
@@ -58,9 +62,30 @@ public class ResultPane extends BorderPane {
         this.btnList.getChildren().removeAll(this.btnList.getChildren());
         for (int i = 0; i < album.getSize(); i++) {
             Button btn = new Button();
-            btn.setGraphic(new ImageView(album.getPicture(i).getIcon()));
+            ImageView imgView = new ImageView(album.getPicture(i).getImage());
+            imgView.setFitHeight(90);
+            imgView.setPreserveRatio(true);
+            btn.setGraphic(imgView);
+            btn.setText(String.valueOf(i));
+            btn.setStyle("-fx-text-fill: transparent;");
+            btn.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    Button btn = (Button) event.getSource();
+                    ResultPane.this.app.getResultAlbum().setCurrentIndex(Integer.parseInt(btn.getText()));
+                    ResultPane.this.app.getEigenPane().getRightPane()
+                            .setPicture(ResultPane.this.app.getResultAlbum().getCurrentPicture());
+                    ResultPane.this.app.getEigenPane().getRightPane()
+                            .setDistanceWith(ResultPane.this.app.getResultAlbum().getCurrentPicture());
+                }
+            });
+
             this.btnList.getChildren().add(btn);
         }
+    }
+
+    public void setDistanceWith(Picture pic) {
+        this.distBox.setDistanceWith(pic);
     }
 
     public void setPicture(Picture pic) {

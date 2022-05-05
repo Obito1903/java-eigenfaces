@@ -6,6 +6,7 @@ import eigenfaces.EigenFacesDB;
 import eigenfaces.image.VectorWithDistance;
 import gui.control.CtrlOpenScene;
 import gui.utils.ImageAlbum;
+import gui.utils.Picture;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -25,8 +26,13 @@ public class Gui extends Application {
      */
     private ImageAlbum references;
 
+    private ImageAlbum resultAlbum;
+
     private EigenPane eigenPane;
     private ConfigPane configPane;
+
+    private Picture testImage;
+    private String testImagePath;
 
     private Scene configScene;
     private Scene eigenScene;
@@ -58,7 +64,7 @@ public class Gui extends Application {
         this.configPane.setupCtrl();
 
         mainStage.setTitle("Facial Recognition");
-        mainStage.setScene(this.eigenScene);
+        mainStage.setScene(this.configScene);
         mainStage.show();
     }
 
@@ -90,6 +96,22 @@ public class Gui extends Application {
         return eigenScene;
     }
 
+    public Picture getTestPicture() {
+        return this.testImage;
+    }
+
+    public void setTestPicture(Picture pic) {
+        this.testImage = pic;
+    }
+
+    public String getTestPicturePath() {
+        return this.testImagePath;
+    }
+
+    public void setTestPicturePath(String path) {
+        this.testImagePath = path;
+    }
+
     public List<VectorWithDistance> getTestResults() {
         return this.results;
     }
@@ -100,6 +122,22 @@ public class Gui extends Application {
 
     public void setEgdb(EigenFacesDB egdb) {
         this.egdb = egdb;
+    }
+
+    public List<VectorWithDistance> getResults() {
+        return this.results;
+    }
+
+    public void setResults(List<VectorWithDistance> results) {
+        this.results = results;
+    }
+
+    public ImageAlbum getResultAlbum() {
+        return this.resultAlbum;
+    }
+
+    public void setResultAlbum(ImageAlbum resultAlbum) {
+        this.resultAlbum = resultAlbum;
     }
 
     // TEST

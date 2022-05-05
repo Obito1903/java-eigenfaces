@@ -2,6 +2,7 @@ package gui;
 
 import gui.components.ResultPane;
 import gui.components.TestFacePane;
+import gui.control.CtrlTestImage;
 import javafx.application.Application;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
@@ -14,6 +15,8 @@ public class EigenPane extends HBox {
     private TestFacePane leftPane;
     private BorderPane centerPane;
     private ResultPane righPane;
+
+    private Button testBtn;
 
     public EigenPane(Gui app) {
         super();
@@ -50,12 +53,15 @@ public class EigenPane extends HBox {
     private BorderPane createCenterPane() {
         BorderPane center = new BorderPane();
         Button testBtn = new Button("Test against DB");
-
+        this.testBtn = testBtn;
         center.setCenter(testBtn);
         return center;
     }
 
     public void setupCtrl() {
         this.leftPane.setupCtrl();
+
+        CtrlTestImage ctrlTestImage = new CtrlTestImage(this.app);
+        this.testBtn.setOnAction(ctrlTestImage);
     }
 }

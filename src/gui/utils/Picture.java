@@ -52,10 +52,14 @@ public class Picture {
 		return this.name;
 	}
 
+	public void setFilename(String name) {
+		this.filename = name;
+	}
+
 	public Image getIcon() {
 		float ratio = Math.max(this.widthInit, this.heightInit);
 		int width = (int) (ICON_SIZE * (float) this.widthInit / ratio);
 		int height = (int) (ICON_SIZE * (float) this.heightInit / ratio);
-		return new Image(this.filename, width, height, false, false);
+		return new Image("file://" + this.filename, width, height, false, false);
 	}
 }

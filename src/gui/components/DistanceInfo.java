@@ -21,17 +21,22 @@ public class DistanceInfo extends VBox {
         this.app = app;
         this.setAlignment(Pos.CENTER);
 
-        this.imageName = new Label("salut");
-        this.distance = new Label("salut12");
+        this.imageName = new Label("");
+        this.imageName.getStyleClass().add("dbStatusLabel");
+        this.distance = new Label("");
+        this.distance.getStyleClass().add("dbStatusLabel");
 
         this.getChildren().addAll(this.imageName, this.distance);
     }
 
     public void setDistanceWith(Picture pic) {
-        List<VectorWithDistance> results = this.app.getTestResults();
+        List<VectorWithDistance> results = this.app.getResults();
 
         for (int i = 0; i < results.size(); i++) {
-            if (results.get(i).getName() == pic.getName()) {
+            System.out.println(results.get(i).getName());
+            System.out.println(pic.getName());
+            if (results.get(i).getName().equals(pic.getName())) {
+                System.out.println("salur");
                 this.imageName.setText("Name : " + pic.getName());
                 this.distance.setText("Distance : " + results.get(i).getDistance());
                 break; // I know it's ugly

@@ -2,6 +2,7 @@ package gui.components;
 
 import gui.Gui;
 import gui.control.CtrlOpenScene;
+import gui.control.CtrlSelectTest;
 import gui.utils.Picture;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -27,13 +28,6 @@ public class TestFacePane extends BorderPane {
 
         this.setTop(this.topButtons);
         this.setCenter(this.imgView);
-    }
-
-    public void setupCtrl() {
-        CtrlOpenScene CtrlOpenConfig = new CtrlOpenScene(this.app.getMainStage(),
-                this.getConfigBtn(),
-                this.app.getConfigScene());
-        this.getConfigBtn().setOnAction(CtrlOpenConfig);
     }
 
     private ImageView createImageView() {
@@ -67,5 +61,19 @@ public class TestFacePane extends BorderPane {
 
     public Button getConfigBtn() {
         return (Button) this.topButtons.getChildren().get(0);
+    }
+
+    public Button getLoadTestBtn() {
+        return (Button) this.topButtons.getChildren().get(1);
+    }
+
+    public void setupCtrl() {
+        CtrlOpenScene CtrlOpenConfig = new CtrlOpenScene(this.app.getMainStage(),
+                this.getConfigBtn(),
+                this.app.getConfigScene());
+        this.getConfigBtn().setOnAction(CtrlOpenConfig);
+
+        CtrlSelectTest ctrlSelectTest = new CtrlSelectTest(this.app);
+        this.getLoadTestBtn().setOnAction(ctrlSelectTest);
     }
 }
