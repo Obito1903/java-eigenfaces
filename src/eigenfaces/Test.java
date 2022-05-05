@@ -1,6 +1,11 @@
 package eigenfaces;
 
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Collections;
+
 import eigenfaces.image.ImageVector;
+import eigenfaces.image.VectorWithDistance;
 import eigenfaces.math.*;
 
 public class Test {
@@ -12,7 +17,7 @@ public class Test {
 	 * @param test The test image
 	 * @return An array of distances (doubles)
 	 */
-	public static double[] calculateDistances(EigenFacesDB db, ImageVector test, boolean debug) {
+	public static double[] calculateDistances(EigenFacesDB db, ImageVector test) {
 		// Compute the projection of the test image
 		Vector testProjection = db.getE().transpose().multiply(test);
 
@@ -21,11 +26,6 @@ public class Test {
 		for (int i = 0; i < db.getG().getNbImages(); i++) {
 			distances[i] = Vector.distance(testProjection, db.getG().getRow(i));
 
-			if (debug) {
-
-				// Print the distance between the test image from each Face in the db
-				System.out.println("Distance to " + db.getG().getNameOf(i) + ": " + distances[i]);
-			}
 		}
 
 		return distances;
@@ -37,29 +37,24 @@ public class Test {
 	 *
 	 * @param db   The database to use
 	 * @param test The test image
-	 * @return The name of the closest image
+	 * @return The list of all matched images sorted in decreasing distance
 	 */
-	public static String findBestMatch(EigenFacesDB db, ImageVector test, boolean debug) {
+	public static List<VectorWithDistance> findBestMatches(EigenFacesDB db, ImageVector test, double threshold) {
 		// Subtract the average Face from the test image
 		test.subtract(db.averageFace);
 
-		double[] distances = calculateDistances(db, test, debug);
+		double[] distances = calculateDistances(db, test);
 
 		// Find the best match
-		double bestDistance = Double.MAX_VALUE;
-		String bestMatch = "";
+		List<VectorWithDistance> matches = new ArrayList();
 		for (int i = 0; i < db.getG().getNbImages(); i++) {
-			if (distances[i] < bestDistance) {
-				bestDistance = distances[i];
-				bestMatch = db.getG().getNameOf(i);
+			if (distances[i] <= threshold) {
+				matches.add(new VectorWithDistance(db.getG().getRow(i), distances[i], db.getG().getNameOf(i)));
 			}
 		}
 
-		// Verify if the best distance belongs to the db according to our threshold
-		if (bestDistance > 40) {
-			System.out.println("No face was recognized");
-		}
+		Collections.sort(matches, Collections.reverseOrder());
 
-		return bestMatch;
+		return matches;
 	}
 }
