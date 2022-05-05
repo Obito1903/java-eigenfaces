@@ -3,6 +3,7 @@ package eigenfaces;
 import java.io.Serializable;
 
 import eigenfaces.math.*;
+import eigenfaces.image.ImageVector;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -116,5 +117,13 @@ public class EigenFacesDB implements Serializable {
             e.printStackTrace();
         }
     }
+
+	public ImageVector reconstruct(Vector v, String name) {
+		return new ImageVector(e.multiply(v).getElements(), height, width, name);
+	}
+
+	public ImageVector reconstruct(int i) {
+		return reconstruct(g.getRow(i), g.getNameOf(i));
+	}
 
 }
