@@ -1,7 +1,7 @@
 /*Scene 1*/
 
 .recognitionTest {
-	-fx-background-color: #32353b;
+	-fx-background-color: lightblue;
 	-fx-color: #fdfefe;
 }
 
@@ -10,7 +10,7 @@
 .dbStatusLabel {
 	-fx-color: #fdfefe;
 	/*Not working*/
-	-fx-background-color: #fdfefe;
+	-fx-background-color: lightblue;
 	-fx-font-size: 15px;
 }
 
@@ -48,7 +48,7 @@
 .matchedImgDisplay {
 	-fx-height: 35px;
 	-fx-width: 200px;
-	-fx-background-color: black;
+	-fx-background-color: lightblue;
 	-fx-padding: 20px;
 	-fx-border: solid white 2px;
 }
