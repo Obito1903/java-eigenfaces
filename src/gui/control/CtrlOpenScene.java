@@ -9,12 +9,10 @@ import javafx.stage.Stage;
 public class CtrlOpenScene implements EventHandler<ActionEvent> {
 
     private Stage mainStage;
-    private Button button;
     private Scene targetScene;
 
     public CtrlOpenScene(Stage mainStage, Button btn, Scene targetScene) {
         this.mainStage = mainStage;
-        this.button = btn;
         this.targetScene = targetScene;
     }
 

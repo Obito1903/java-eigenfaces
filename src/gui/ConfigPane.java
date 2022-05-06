@@ -2,7 +2,6 @@ package gui;
 
 import gui.components.ConfigAlbumsPane;
 import gui.components.ConfigMenuPane;
-import gui.components.PictureListPane;
 import gui.control.CtrlOpenEgdb;
 import gui.control.CtrlOpenScene;
 import gui.utils.ImageAlbum;

@@ -1,12 +1,10 @@
 package gui.control;
 
 import java.io.File;
-import java.util.Observer;
 
 import eigenfaces.EigenFacesDB;
 import eigenfaces.image.ImageVector;
 import gui.Gui;
-import javafx.beans.Observable;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
@@ -14,7 +12,6 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 
-@SuppressWarnings("deprecation")
 public class CtrlOpenEgdb implements EventHandler<ActionEvent> {
 
     private FileChooser fileChooser;

@@ -4,7 +4,6 @@ import java.util.List;
 
 import eigenfaces.EigenFacesDB;
 import eigenfaces.image.VectorWithDistance;
-import gui.control.CtrlOpenScene;
 import gui.utils.ImageAlbum;
 import gui.utils.Picture;
 import javafx.application.Application;
@@ -145,7 +144,7 @@ public class Gui extends Application {
         launch();
     }
 
-	public static void mainLoop() {
-		launch();
-	}
+    public static void mainLoop() {
+        launch();
+    }
 }
