@@ -42,9 +42,10 @@ public class CtrlOpenEgdb implements EventHandler<ActionEvent> {
 
             this.app.getRefAlbum().reset();
             for (int i = 0; i < this.app.getEgdb().getG().getNbColumn(); i++) {
-                ImageVector image = this.app.getEgdb().reconstruct(i).centerReduce();
+                ImageVector image = this.app.getEgdb().reconstruct(i);
+				image.add(app.getEgdb().getAverageFace());
 
-                this.app.getRefAlbum().addPicture(image);
+                this.app.getRefAlbum().addPicture(image.centerReduce());
             }
 
         } catch (Exception e) {

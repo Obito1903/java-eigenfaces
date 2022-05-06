@@ -31,9 +31,9 @@ public class CtrlTestImage implements EventHandler<ActionEvent> {
         ImageAlbum resultAlbum = new ImageAlbum();
 
         for (int i = 0; i < imageList.size(); i++) {
-            ImageVector imV = this.app.getEgdb().reconstruct(imageList.get(i), imageList.get(i).getName())
-                    .centerReduce();
-            resultAlbum.addPicture(imV);
+            ImageVector imV = this.app.getEgdb().reconstruct(imageList.get(i), imageList.get(i).getName());
+			imV.add(app.getEgdb().getAverageFace());
+            resultAlbum.addPicture(imV.centerReduce());
         }
         this.app.setResultAlbum(resultAlbum);
         this.app.getEigenPane().getRightPane().reloadTopIcons(resultAlbum);
